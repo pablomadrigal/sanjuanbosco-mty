@@ -18,13 +18,13 @@ export default function Formacion() {
         entrada="Somos una parroquia universitaria: aquí la fe se piensa y se discute, no sólo se practica. Estas son las convocatorias abiertas."
       />
 
-      <section className="contenedor pb-28">
-        <ul className="grid gap-6 md:grid-cols-3">
+      <section className="contenedor pb-20 md:pb-28">
+        <ul className="grid gap-4 md:grid-cols-3 md:gap-6">
           {formacion.map((f, i) => (
-            <Reveal key={f.nombre} as="li" delay={i * 0.08} className="panel flex flex-col rounded-3xl p-9">
-              <h2 className="text-xl font-bold leading-tight text-balance">{f.nombre}</h2>
-              <p className="mt-4 flex-1 text-sm leading-relaxed text-blanco/65">{f.descripcion}</p>
-              <div className="mt-8">
+            <Reveal key={f.nombre} as="li" delay={i * 0.08} className="panel flex flex-col rounded-3xl p-6 sm:p-9">
+              <h2 className="text-lg font-bold leading-tight text-balance sm:text-xl">{f.nombre}</h2>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-blanco/65 md:mt-4">{f.descripcion}</p>
+              <div className="mt-6 md:mt-8">
                 <BotonSecundario href={f.href} externo>
                   {f.cta}
                 </BotonSecundario>
@@ -33,7 +33,7 @@ export default function Formacion() {
           ))}
         </ul>
 
-        <Reveal className="mt-24">
+        <Reveal className="mt-16 md:mt-24">
           <Cita autor="San Juan Bosco">{frasesDonBosco[1]}</Cita>
         </Reveal>
       </section>

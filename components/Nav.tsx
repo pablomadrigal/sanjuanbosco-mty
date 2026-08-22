@@ -22,24 +22,30 @@ export default function Nav() {
   useEffect(() => setAbierto(false), [ruta]);
 
   useEffect(() => {
-    document.body.style.overflow = abierto ? "hidden" : "";
+    if (!abierto) return;
+    document.body.style.overflow = "hidden";
+    const alTeclear = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setAbierto(false);
+    };
+    window.addEventListener("keydown", alTeclear);
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", alTeclear);
     };
   }, [abierto]);
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 pt-[env(safe-area-inset-top)] transition-colors duration-500 ${
         desplazado || abierto
-          ? "bg-noche/80 border-b border-white/10 backdrop-blur-xl"
+          ? "border-b border-white/10 bg-noche lg:bg-noche/80 lg:backdrop-blur-xl"
           : "border-b border-transparent"
       }`}
     >
-      <nav className="contenedor flex h-[4.5rem] items-center justify-between gap-6">
+      <nav className="contenedor flex h-[var(--barra)] items-center justify-between gap-4">
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-3"
+          className="-my-2 flex shrink-0 items-center gap-3 py-2"
           aria-label={`${parroquia.nombre}, inicio`}
         >
           <Image
@@ -47,14 +53,17 @@ export default function Nav() {
             alt=""
             width={668}
             height={711}
+            sizes="40px"
             loading="eager"
-            className="h-9 w-auto"
+            className="h-8 w-auto lg:h-9"
           />
-          <span className="hidden leading-none sm:block">
-            <span className="block text-[0.5625rem] font-semibold uppercase tracking-[0.2em] text-blanco/55">
+          {/* Con el menú abierto el nombre completo estorba: el logotipo ya
+              dice dónde estamos y el ancho hace falta para el botón. */}
+          <span className={`leading-none ${abierto ? "hidden sm:block" : "block"}`}>
+            <span className="block text-[0.5rem] font-semibold uppercase tracking-[0.18em] text-blanco/55 sm:text-[0.5625rem] sm:tracking-[0.2em]">
               Parroquia Universitaria
             </span>
-            <span className="mt-1 block text-base font-extrabold uppercase tracking-[0.04em]">
+            <span className="mt-1 block text-sm font-extrabold uppercase tracking-[0.04em] sm:text-base">
               San Juan Bosco
             </span>
           </span>
@@ -85,12 +94,12 @@ export default function Nav() {
           })}
         </ul>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <a
             href={enlaces.whatsapp}
             target="_blank"
             rel="noreferrer"
-            className="hidden rounded-full bg-blanco px-5 py-2.5 text-sm font-semibold text-noche transition-transform duration-300 hover:scale-[1.03] sm:inline-flex"
+            className="hidden rounded-full bg-blanco px-5 py-2.5 text-sm font-semibold text-noche transition-transform duration-300 hover:scale-[1.03] active:scale-[0.97] sm:inline-flex lg:inline-flex"
           >
             Escríbenos
           </a>
@@ -99,7 +108,7 @@ export default function Nav() {
             onClick={() => setAbierto((v) => !v)}
             aria-expanded={abierto}
             aria-controls="menu-movil"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 lg:hidden"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 transition-colors duration-200 active:bg-white/10 lg:hidden"
           >
             <span className="sr-only">{abierto ? "Cerrar menú" : "Abrir menú"}</span>
             <span className="relative block h-3 w-5">
@@ -123,43 +132,60 @@ export default function Nav() {
         </div>
       </nav>
 
+      {/* El menú ocupa la pantalla completa por debajo de la barra: así los
+          destinos caen en la zona del pulgar y la lista puede desplazarse
+          sola en un teléfono chico sin arrastrar la página de atrás. */}
       <AnimatePresence>
         {abierto && (
           <motion.div
             id="menu-movil"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden lg:hidden"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-x-0 bottom-0 top-[calc(var(--barra)+env(safe-area-inset-top))] overflow-y-auto overscroll-contain bg-noche lg:hidden"
           >
-            <ul className="contenedor flex flex-col gap-1 pb-8 pt-2">
-              {navegacion.map((item, i) => (
-                <motion.li
-                  key={item.href}
-                  initial={{ opacity: 0, x: -14 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 + i * 0.045, duration: 0.4 }}
-                >
-                  <Link
-                    href={item.href}
-                    className="block border-b border-white/10 py-4 text-2xl font-semibold tracking-tight"
-                  >
-                    {item.label}
-                  </Link>
-                </motion.li>
-              ))}
-              <li className="pt-5">
+            <div className="contenedor flex min-h-full flex-col pb-[calc(2rem+env(safe-area-inset-bottom))] pt-2">
+              <ul className="flex flex-col">
+                {navegacion.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      aria-current={ruta === item.href ? "page" : undefined}
+                      className={`flex min-h-[3.5rem] items-center border-b border-white/10 py-3 text-xl font-semibold tracking-tight transition-colors active:text-alba sm:text-2xl ${
+                        ruta === item.href ? "text-alba" : ""
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-auto pt-8">
                 <a
                   href={enlaces.whatsapp}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex rounded-full bg-blanco px-6 py-3 font-semibold text-noche"
+                  className="flex min-h-[3.25rem] w-full items-center justify-center rounded-full bg-blanco px-6 font-semibold text-noche transition-transform duration-200 active:scale-[0.98]"
                 >
                   Escríbenos por WhatsApp
                 </a>
-              </li>
-            </ul>
+                <a
+                  href={parroquia.direccion.maps}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 flex min-h-[3.25rem] w-full items-center justify-center rounded-full border border-white/25 px-6 font-semibold transition-colors duration-200 active:bg-white/10"
+                >
+                  Cómo llegar
+                </a>
+                <address className="mt-6 text-center text-sm not-italic leading-relaxed text-blanco/50">
+                  {parroquia.direccion.calle} · {parroquia.direccion.colonia}
+                  <br />
+                  {parroquia.direccion.ciudad}
+                </address>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

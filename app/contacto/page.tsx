@@ -28,32 +28,32 @@ export default function Contacto() {
         entrada="Pasa a la oficina, escríbenos o simplemente llega a una misa. Cualquiera de las tres funciona."
       />
 
-      <section className="contenedor pb-28">
-        <div className="grid gap-6 lg:grid-cols-2">
-          <Reveal className="panel rounded-3xl p-9">
+      <section className="contenedor pb-20 md:pb-28">
+        <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
+          <Reveal className="panel rounded-3xl p-6 sm:p-9">
             <h2 className="rotulo">Dirección</h2>
-            <address className="mt-5 not-italic text-2xl font-semibold leading-snug">
+            <address className="mt-4 not-italic text-xl font-semibold leading-snug sm:text-2xl md:mt-5">
               {parroquia.direccion.calle}
               <br />
               {parroquia.direccion.colonia}, {parroquia.direccion.cp}
               <br />
               {parroquia.direccion.ciudad}
             </address>
-            <div className="mt-8">
+            <div className="mt-7 md:mt-8">
               <BotonPrincipal href={parroquia.direccion.maps} externo>
                 Abrir en Google Maps
               </BotonPrincipal>
             </div>
           </Reveal>
 
-          <Reveal delay={0.1} className="panel rounded-3xl p-9">
+          <Reveal delay={0.1} className="panel rounded-3xl p-6 sm:p-9">
             <h2 className="rotulo">Oficina parroquial</h2>
-            <ul className="mt-5 space-y-2 text-lg">
+            <ul className="mt-4 space-y-1 text-lg md:mt-5 md:space-y-2">
               {oficina?.lineas.map((linea) => (
                 <li key={linea}>{linea}</li>
               ))}
             </ul>
-            <div className="mt-8">
+            <div className="mt-7 md:mt-8">
               <BotonSecundario href={enlaces.whatsapp} externo>
                 Escríbenos por WhatsApp
               </BotonSecundario>
@@ -61,26 +61,29 @@ export default function Contacto() {
           </Reveal>
         </div>
 
-        <Reveal className="mt-6">
+        <Reveal className="mt-4 md:mt-6">
           <ul className="grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 sm:grid-cols-2 lg:grid-cols-3">
             {canales.map((canal) => (
-              <li key={canal.nombre} className="bg-noche/70 backdrop-blur-xl transition-colors duration-500 hover:bg-azul/45">
-                <a href={canal.href} target="_blank" rel="noreferrer" className="block p-8">
+              <li
+                key={canal.nombre}
+                className="bg-noche/90 transition-colors duration-500 hover:bg-azul/45 active:bg-azul/45 md:bg-noche/70 md:backdrop-blur-xl"
+              >
+                <a href={canal.href} target="_blank" rel="noreferrer" className="block p-6 sm:p-8">
                   <h3 className="text-lg font-semibold">{canal.nombre}</h3>
-                  <p className="mt-2 text-sm text-blanco/60">{canal.detalle}</p>
+                  <p className="mt-1.5 text-sm text-blanco/60 sm:mt-2">{canal.detalle}</p>
                 </a>
               </li>
             ))}
           </ul>
         </Reveal>
 
-        <Reveal className="mt-6 overflow-hidden rounded-3xl border border-white/12">
+        <Reveal className="mt-4 overflow-hidden rounded-3xl border border-white/12 md:mt-6">
           <iframe
             title="Mapa de la Parroquia San Juan Bosco"
             src="https://www.google.com/maps?q=Bogot%C3%A1%20211%2C%20Alta%20Vista%2C%2064840%20Monterrey%2C%20N.L.&output=embed"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            className="h-[420px] w-full grayscale-[0.35] contrast-[1.05]"
+            className="h-[260px] w-full grayscale-[0.35] contrast-[1.05] sm:h-[340px] md:h-[420px]"
           />
         </Reveal>
       </section>

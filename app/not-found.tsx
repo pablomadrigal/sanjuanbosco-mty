@@ -8,7 +8,7 @@ export default function NoEncontrado() {
         titulo="Este camino no lleva a ningún lado"
         entrada="La página que buscas cambió de lugar o nunca existió. Desde el inicio llegas a todo."
       />
-      <div className="contenedor flex flex-wrap gap-4 pb-28">
+      <div className="contenedor flex flex-col gap-3 pb-20 sm:flex-row sm:flex-wrap sm:gap-4 md:pb-28">
         <BotonPrincipal href="/">Ir al inicio</BotonPrincipal>
         <BotonSecundario href="/horarios">Ver horarios</BotonSecundario>
       </div>
