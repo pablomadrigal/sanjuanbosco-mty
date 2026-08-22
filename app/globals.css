@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+/* ── Identidad visual SJB 2021 ──────────────────────────────────────────
+   Paleta oficial del manual de marca. No agregar colores fuera de esta
+   lista: la energía del sitio viene de la luz, no de un segundo color.   */
+@theme {
+  --color-blanco: #ffffff;
+  --color-azul-claro: #2c5d90;
+  --color-azul: #2a4a82;
+  --color-azul-profundo: #20486b;
+  --color-noche: #232038;
+  --color-tinta: #1b1c1b;
+
+  /* Luz: derivados del azul para brillos y estados de foco. */
+  --color-alba: #7fb2e5;
+  --color-alba-tenue: #b9d4ef;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+
+  --ease-camino: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  --fondo: var(--color-noche);
+  --texto: var(--color-blanco);
+  color-scheme: dark;
+}
+
+* {
+  min-width: 0;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--font-sans);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-alba);
+  color: var(--color-noche);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-alba);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Escala tipográfica fluida ────────────────────────────────────────── */
+@utility display-xl {
+  font-size: clamp(2.75rem, 1.2rem + 7vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+
+@utility display-lg {
+  font-size: clamp(2.1rem, 1rem + 4.4vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+@utility display-md {
+  font-size: clamp(1.6rem, 1rem + 2.2vw, 2.75rem);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  font-weight: 700;
+}
+
+/* Etiqueta corta en versalitas. Marca la sección, no la decora. */
+@utility rotulo {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-alba);
+}
+
+@utility cifra {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Ancho de lectura cómodo para párrafos largos. */
+@utility prosa {
+  max-width: 62ch;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.65;
+  color: color-mix(in oklab, var(--color-blanco) 78%, var(--color-noche));
+}
+
+@utility contenedor {
+  width: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+/* Superficie de tarjeta: hairline, sin sombras. */
+@utility panel {
+  background: color-mix(in oklab, var(--color-blanco) 5%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-blanco) 12%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+/* ── Animaciones ──────────────────────────────────────────────────────── */
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes latido {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes recorrer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Entrada de bloques ────────────────────────────────────────────────
+   Todo es CSS. Si el navegador no soporta líneas de tiempo de scroll, o si
+   alguien pidió menos movimiento, el contenido simplemente ya está ahí. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Portada: entra al cargar, escalonada. */
+  [data-entrada] {
+    animation: subir 0.8s var(--ease-camino) var(--retraso, 0s) both;
+  }
+
+  /* Resto de la página: entra conforme aparece en pantalla. */
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation: subir 1s linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}
