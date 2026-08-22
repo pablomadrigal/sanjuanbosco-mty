@@ -39,6 +39,39 @@ Casi todo el texto del sitio está en un solo archivo: **`lib/site.ts`**.
 El indicador de **«Próxima misa»** de la portada se calcula solo a partir de `misas`, en la
 zona horaria de Monterrey. Si cambian los horarios, se actualiza sin tocar nada más.
 
+## Mobile first
+
+Casi todo el que entra al sitio lo hace desde el celular, así que el teléfono no es el caso
+que hay que "soportar": es el caso base. Los estilos empiezan en la pantalla chica y los
+`breakpoints` sólo **agregan** cuando hay ancho de sobra, nunca al revés.
+
+Lo que eso significa en concreto:
+
+| Decisión | Dónde |
+| --- | --- |
+| Barra de acciones al alcance del pulgar (horarios, cómo llegar, WhatsApp) | `components/AccionesMovil.tsx` |
+| Menú de pantalla completa, con su propio scroll y sus botones abajo | `components/Nav.tsx` |
+| Botones de ancho completo y objetivos táctiles de 44 px (`toque`) | `components/ui.tsx`, `app/globals.css` |
+| Horarios en rejilla de dos columnas en el teléfono, uno por renglón en escritorio | `app/page.tsx`, `app/horarios/page.tsx` |
+| Márgenes que respetan el notch y la barra de gestos (`env(safe-area-inset-*)`) | `contenedor` en `app/globals.css` |
+| Se puede guardar en la pantalla de inicio y abre en los horarios | `app/manifest.ts` |
+
+Y lo que **no** se le cobra a un teléfono:
+
+- **La escena 3D no siempre se enciende.** `components/three/Camino.tsx` la salta si el aparato
+  tiene poca memoria, pocos núcleos, red lenta o el ahorro de datos activado. El degradado de
+  CSS ya pinta la noche y el alba, así que la página no pierde nada esencial.
+- **Cuando sí se enciende, gasta menos.** En pantallas chicas la escena baja la densidad de
+  píxeles a 1.25×, apaga el suavizado y recorta estrellas y segmentos (`presupuesto()` en
+  `CaminoScene.tsx`). Con la pestaña en segundo plano deja de dibujarse.
+- **El desenfoque de fondo es de escritorio.** `backdrop-filter` cuesta una capa de composición
+  por tarjeta; en el teléfono las superficies son opacas y se ven igual.
+- **Lenis no corre en el dedo.** El scroll suave existe para la rueda del mouse. El teléfono ya
+  trae su propia inercia, mejor calibrada, y sustituirla sólo gasta batería.
+
+Al tocar el diseño, la regla es la de siempre: escribe el estilo del teléfono sin prefijo y usa
+`sm:`, `md:`, `lg:` para lo que se agrega en pantallas grandes.
+
 ## Identidad visual
 
 Paleta oficial del manual *Identidad Visual SJB 2021*, definida en `app/globals.css`:

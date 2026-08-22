@@ -25,6 +25,19 @@
   --fondo: var(--color-noche);
   --texto: var(--color-blanco);
   color-scheme: dark;
+
+  /* Alto de la barra superior. En el teléfono es más baja: cada píxel de
+     alto que no gasta el encabezado lo gana el contenido. */
+  --barra: 4rem;
+  /* Alto de la barra de acciones del pie, sólo en teléfono. */
+  --acciones: 3.75rem;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --barra: 4.5rem;
+    --acciones: 0rem;
+  }
 }
 
 * {
@@ -33,6 +46,10 @@
 
 html {
   -webkit-tap-highlight-color: transparent;
+  /* iOS agranda el texto solo al girar el teléfono si no se le dice que no. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overflow-x: clip;
 }
 
 body {
@@ -55,25 +72,27 @@ body {
   border-radius: 2px;
 }
 
-/* ── Escala tipográfica fluida ────────────────────────────────────────── */
+/* ── Escala tipográfica fluida ──────────────────────────────────────────
+   Los mínimos están calculados para 360 px de ancho, que es la pantalla
+   real de la mayoría de quien nos visita, no para el escritorio.        */
 @utility display-xl {
-  font-size: clamp(2.75rem, 1.2rem + 7vw, 8rem);
-  line-height: 0.92;
-  letter-spacing: -0.035em;
-  font-weight: 800;
-}
-
-@utility display-lg {
-  font-size: clamp(2.1rem, 1rem + 4.4vw, 5rem);
-  line-height: 0.98;
+  font-size: clamp(2.5rem, 1.2rem + 7vw, 8rem);
+  line-height: 0.95;
   letter-spacing: -0.03em;
   font-weight: 800;
 }
 
+@utility display-lg {
+  font-size: clamp(2rem, 1.15rem + 4.2vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+  font-weight: 800;
+}
+
 @utility display-md {
-  font-size: clamp(1.6rem, 1rem + 2.2vw, 2.75rem);
-  line-height: 1.06;
-  letter-spacing: -0.022em;
+  font-size: clamp(1.55rem, 1.05rem + 2.1vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   font-weight: 700;
 }
 
@@ -99,18 +118,46 @@ body {
   color: color-mix(in oklab, var(--color-blanco) 78%, var(--color-noche));
 }
 
+/* ── Contenedor ─────────────────────────────────────────────────────────
+   La página se dibuja de borde a borde bajo el notch (viewport-fit=cover),
+   así que el margen seguro lo pone el contenedor, no el sistema.        */
 @utility contenedor {
   width: 100%;
   max-width: 78rem;
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+  padding-left: max(1.25rem, env(safe-area-inset-left) + 1rem);
+  padding-right: max(1.25rem, env(safe-area-inset-right) + 1rem);
 }
 
-/* Superficie de tarjeta: hairline, sin sombras. */
+@media (min-width: 40rem) {
+  .contenedor {
+    padding-left: max(clamp(1.75rem, 4vw, 3.5rem), env(safe-area-inset-left) + 1rem);
+    padding-right: max(clamp(1.75rem, 4vw, 3.5rem), env(safe-area-inset-right) + 1rem);
+  }
+}
+
+/* Superficie de tarjeta: hairline, sin sombras.
+   En el teléfono el panel es casi opaco a propósito. Desenfocar el fondo
+   cuesta una capa de composición por tarjeta y es de lo más caro que hay
+   en una GPU móvil; el desenfoque entra sólo cuando hay con qué pagarlo. */
 @utility panel {
-  background: color-mix(in oklab, var(--color-blanco) 5%, transparent);
+  background: color-mix(in oklab, var(--color-blanco) 7%, color-mix(in oklab, var(--color-noche) 82%, transparent));
   border: 1px solid color-mix(in oklab, var(--color-blanco) 12%, transparent);
-  backdrop-filter: blur(14px);
+}
+
+@media (min-width: 48rem) {
+  .panel {
+    background: color-mix(in oklab, var(--color-blanco) 5%, transparent);
+    backdrop-filter: blur(14px);
+  }
+}
+
+/* Objetivo táctil mínimo. Da los 44 px de alto que pide el dedo sin
+   agrandar el texto ni el diseño. */
+@utility toque {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
 }
 
 /* ── Animaciones ──────────────────────────────────────────────────────── */
@@ -169,7 +216,16 @@ body {
     [data-reveal] {
       animation: subir 1s linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 55%;
+      /* En una pantalla de teléfono el bloque ocupa casi todo el alto: si
+         el rango fuera tan largo como en escritorio, el texto pasaría
+         medio transparente justo mientras se lee. */
+      animation-range: entry 0% entry 35%;
+    }
+
+    @media (min-width: 48rem) {
+      [data-reveal] {
+        animation-range: entry 0% entry 55%;
+      }
     }
   }
 }

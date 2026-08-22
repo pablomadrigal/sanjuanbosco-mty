@@ -5,6 +5,37 @@ import { useEffect, useState } from "react";
 
 const CaminoScene = dynamic(() => import("./CaminoScene"), { ssr: false });
 
+type NavegadorConPistas = Navigator & {
+  deviceMemory?: number;
+  connection?: { saveData?: boolean; effectiveType?: string };
+};
+
+/**
+ * ¿Vale la pena encender WebGL en este aparato?
+ *
+ * El camino es la idea del sitio, pero no es la información: los horarios, la
+ * dirección y los grupos se leen igual sin él. En un teléfono de gama baja, o
+ * con datos contados, encender una escena 3D es cobrarle a alguien batería y
+ * megas por un fondo. Ante la duda, gana el degradado de CSS —que ya pinta la
+ * noche y el alba— y la página queda ligera.
+ */
+function valeLaPena() {
+  const nav = navigator as NavegadorConPistas;
+
+  // Ahorro de datos activado: es una petición explícita, se respeta.
+  if (nav.connection?.saveData) return false;
+
+  // Red lenta: primero que cargue el texto.
+  const red = nav.connection?.effectiveType ?? "";
+  if (red === "slow-2g" || red === "2g" || red === "3g") return false;
+
+  // Aparatos con poca memoria o pocos núcleos: el canvas se los come.
+  if (typeof nav.deviceMemory === "number" && nav.deviceMemory < 4) return false;
+  if (typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency < 4) return false;
+
+  return true;
+}
+
 /**
  * Fondo fijo de toda la página. El degradado de CSS pinta la noche y el alba
  * sobre el horizonte; el canvas sólo dibuja el camino encima.
@@ -13,6 +44,8 @@ export default function Camino() {
   const [montado, setMontado] = useState(false);
 
   useEffect(() => {
+    if (!valeLaPena()) return;
+
     // Evita cargar WebGL en el primer pintado: la página debe leerse antes.
     const id = window.requestIdleCallback
       ? window.requestIdleCallback(() => setMontado(true), { timeout: 600 })
@@ -24,7 +57,13 @@ export default function Camino() {
   }, []);
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    /* Alto fijo en `lvh`, no en `inset-0`: en el teléfono la barra del
+       navegador aparece y desaparece al desplazarse, y si el fondo siguiera esa
+       altura se redimensionaría el canvas a media lectura. */
+    <div
+      aria-hidden
+      className="pointer-events-none fixed left-0 top-0 -z-10 h-[100lvh] w-full overflow-hidden"
+    >
       <div
         className="absolute inset-0"
         style={{
@@ -35,9 +74,18 @@ export default function Camino() {
         }}
       />
       {montado && <CaminoScene />}
-      {/* Viñeta: aterriza el contenido sobre el fondo sin robarle brillo. */}
+      {/* Viñeta: aterriza el contenido sobre el fondo sin robarle brillo.
+          En el teléfono el texto cruza el centro de la pantalla, así que el
+          velo es parejo en vez de venir sólo desde la izquierda. */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 md:hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(27,28,27,0.72) 0%, rgba(27,28,27,0.42) 45%, rgba(27,28,27,0.30) 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 hidden md:block"
         style={{
           background:
             "linear-gradient(90deg, rgba(27,28,27,0.78) 0%, rgba(27,28,27,0.30) 42%, rgba(27,28,27,0) 68%)," +

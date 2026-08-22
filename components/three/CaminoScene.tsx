@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -18,6 +18,22 @@ const LUZ = new THREE.Color("#5c93cf");
 
 const LARGO = 260;
 const LATERAL = 4.2;
+
+/**
+ * Lo que la escena se puede gastar en este aparato.
+ *
+ * Un teléfono dibuja el mismo camino en una pantalla cinco veces más chica y
+ * con una GPU que además tiene que durar el día. Bajar la densidad de píxeles,
+ * apagar el suavizado y recortar estrellas y segmentos no se nota a esa
+ * escala, y es la diferencia entre un fondo que acompaña y uno que calienta el
+ * teléfono.
+ */
+function presupuesto() {
+  const movil = window.matchMedia("(max-width: 47.99rem)").matches;
+  return movil
+    ? { estrellas: 240, segmentos: 190, dpr: [1, 1.25] as [number, number], suavizado: false }
+    : { estrellas: 700, segmentos: 420, dpr: [1, 1.75] as [number, number], suavizado: true };
+}
 
 function crearCurva() {
   const puntos: THREE.Vector3[] = [];
@@ -238,9 +254,9 @@ function Caminantes({
   );
 }
 
-function Estrellas({ resplandor }: { resplandor: THREE.Texture }) {
+function Estrellas({ resplandor, cantidad }: { resplandor: THREE.Texture; cantidad: number }) {
   const geo = useMemo(() => {
-    const n = 700;
+    const n = cantidad;
     const pos = new Float32Array(n * 3);
     for (let i = 0; i < n; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 340;
@@ -250,7 +266,7 @@ function Estrellas({ resplandor }: { resplandor: THREE.Texture }) {
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     return g;
-  }, []);
+  }, [cantidad]);
 
   const ref = useRef<THREE.Points>(null);
   useFrame(({ clock }) => {
@@ -276,9 +292,17 @@ function Estrellas({ resplandor }: { resplandor: THREE.Texture }) {
   );
 }
 
-function Escena({ reducido }: { reducido: boolean }) {
+function Escena({
+  reducido,
+  estrellas,
+  segmentos,
+}: {
+  reducido: boolean;
+  estrellas: number;
+  segmentos: number;
+}) {
   const curva = useMemo(() => crearCurva(), []);
-  const geoCamino = useMemo(() => crearGeometriaCamino(curva), [curva]);
+  const geoCamino = useMemo(() => crearGeometriaCamino(curva, segmentos), [curva, segmentos]);
   const resplandor = useMemo(() => texturaResplandor(), []);
   const { camera } = useThree();
 
@@ -338,7 +362,7 @@ function Escena({ reducido }: { reducido: boolean }) {
   return (
     <>
       <fog attach="fog" args={["#232038", 26, 190]} />
-      <Estrellas resplandor={resplandor} />
+      <Estrellas resplandor={resplandor} cantidad={estrellas} />
       <Cruz posicion={posCruz} resplandor={resplandor} />
       <mesh geometry={geoCamino}>
         <shaderMaterial
@@ -356,21 +380,34 @@ function Escena({ reducido }: { reducido: boolean }) {
 }
 
 export default function CaminoScene() {
-  const reducido =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const [gasto] = useState(presupuesto);
+
+  // Con la pestaña en segundo plano —o el teléfono guardado en la bolsa— el
+  // camino deja de dibujarse. Es batería que no se gasta en nadie.
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    const alCambiar = () => setVisible(!document.hidden);
+    document.addEventListener("visibilitychange", alCambiar);
+    return () => document.removeEventListener("visibilitychange", alCambiar);
+  }, []);
 
   return (
     <Canvas
-      dpr={[1, 1.75]}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      frameloop={visible ? "always" : "never"}
+      dpr={gasto.dpr}
+      gl={{
+        antialias: gasto.suavizado,
+        alpha: true,
+        powerPreference: "high-performance",
+      }}
       camera={{ fov: 52, near: 0.1, far: 460 }}
       onCreated={({ scene }) => {
         scene.background = null;
         NOCHE.getHex();
       }}
     >
-      <Escena reducido={reducido} />
+      <Escena reducido={reducido} estrellas={gasto.estrellas} segmentos={gasto.segmentos} />
     </Canvas>
   );
 }

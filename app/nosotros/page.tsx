@@ -19,8 +19,8 @@ export default function Nosotros() {
         entrada={parroquia.mision}
       />
 
-      <section className="contenedor pb-28">
-        <div className="grid items-center gap-16 lg:grid-cols-[1fr_0.8fr]">
+      <section className="contenedor pb-20 md:pb-28">
+        <div className="grid items-center gap-10 md:gap-16 lg:grid-cols-[1fr_0.8fr]">
           <Reveal>
             <p className="rotulo">Lema 2026</p>
             <Image
@@ -28,9 +28,10 @@ export default function Nosotros() {
               alt={parroquia.lema}
               width={2000}
               height={546}
-              className="mt-6 w-full max-w-2xl"
+              sizes="(min-width: 1024px) 42rem, 92vw"
+              className="mt-5 w-full max-w-2xl md:mt-6"
             />
-            <p className="prosa mt-8">
+            <p className="prosa mt-6 md:mt-8">
               Dos personas caminando juntas hacia la cruz. Ese es el año: nadie recorre el camino
               solo, y el camino tiene una dirección. Todo lo que hacemos en la parroquia —la misa,
               los grupos, la formación, el servicio— es una parada de ese mismo camino.
@@ -43,24 +44,25 @@ export default function Nosotros() {
               alt=""
               width={1200}
               height={1200}
-              className="mx-auto w-full max-w-sm opacity-90"
+              sizes="(min-width: 1024px) 24rem, 60vw"
+              className="mx-auto w-[60%] max-w-sm opacity-90 lg:w-full"
             />
           </Reveal>
         </div>
 
-        <Reveal className="mt-28">
+        <Reveal className="mt-16 md:mt-28">
           <p className="rotulo">Equipo sacerdotal</p>
-          <ul className="mt-8 grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 md:grid-cols-3">
+          <ul className="mt-6 grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 md:mt-8 md:grid-cols-3">
             {equipo.map((persona) => (
-              <li key={persona.nombre} className="bg-noche/70 p-8 backdrop-blur-xl">
-                <h2 className="text-xl font-bold leading-tight">{persona.nombre}</h2>
-                <p className="rotulo mt-3">{persona.cargo}</p>
+              <li key={persona.nombre} className="bg-noche/90 p-6 sm:p-8 md:bg-noche/70 md:backdrop-blur-xl">
+                <h2 className="text-lg font-bold leading-tight sm:text-xl">{persona.nombre}</h2>
+                <p className="rotulo mt-2 md:mt-3">{persona.cargo}</p>
               </li>
             ))}
           </ul>
         </Reveal>
 
-        <div className="mt-28 space-y-20">
+        <div className="mt-16 space-y-12 md:mt-28 md:space-y-20">
           {frasesDonBosco.slice(1).map((frase, i) => (
             <Reveal key={frase} delay={i * 0.05}>
               <Cita autor="San Juan Bosco">{frase}</Cita>
@@ -68,13 +70,14 @@ export default function Nosotros() {
           ))}
         </div>
 
-        <Reveal className="mt-28 flex justify-center">
+        <Reveal className="mt-16 flex justify-center md:mt-28">
           <Image
             src="/brand/siempre-alegres-blanco.png"
             alt={parroquia.hashtag}
             width={1600}
             height={1116}
-            className="w-full max-w-md opacity-90"
+            sizes="(min-width: 768px) 28rem, 70vw"
+            className="w-[70%] max-w-md opacity-90 md:w-full"
           />
         </Reveal>
       </section>

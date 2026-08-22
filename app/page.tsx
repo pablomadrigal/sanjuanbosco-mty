@@ -18,14 +18,14 @@ export default function Inicio() {
   return (
     <>
       {/* ── El punto de partida ─────────────────────────────────────────── */}
-      <section className="contenedor flex min-h-[100svh] flex-col justify-center pb-24 pt-32">
+      <section className="contenedor flex min-h-[100svh] flex-col justify-center pb-16 pt-24 sm:pb-24 sm:pt-32">
         <Reveal entrada>
           <p className="rotulo">
             Parroquia Universitaria · {parroquia.diocesis}
           </p>
         </Reveal>
 
-        <Reveal entrada delay={0.08} className="mt-8">
+        <Reveal entrada delay={0.08} className="mt-6 sm:mt-8">
           <h1>
             <span className="sr-only">{parroquia.lema}</span>
             <Image
@@ -33,13 +33,14 @@ export default function Inicio() {
               alt=""
               width={2000}
               height={546}
+              sizes="(min-width: 1024px) 56rem, 92vw"
               priority
               className="w-full max-w-4xl"
             />
           </h1>
         </Reveal>
 
-        <Reveal entrada delay={0.16} className="mt-10 max-w-xl">
+        <Reveal entrada delay={0.16} className="mt-7 max-w-xl sm:mt-10">
           <p className="prosa">
             Somos San Juan Bosco: una comunidad de puertas abiertas en {parroquia.direccion.colonia.replace("Col. ", "")},
             Monterrey. Llega a la misa que te acomode, encuentra un grupo donde te conozcan por tu
@@ -47,42 +48,49 @@ export default function Inicio() {
           </p>
         </Reveal>
 
-        <Reveal entrada delay={0.24} className="mt-10 flex flex-wrap items-center gap-4">
+        <Reveal entrada delay={0.24} className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
           <BotonPrincipal href="/horarios">Ver horarios de misa</BotonPrincipal>
           <BotonSecundario href={parroquia.direccion.maps} externo>
             Cómo llegar
           </BotonSecundario>
         </Reveal>
 
-        <Reveal entrada delay={0.34} className="mt-12">
+        <Reveal entrada delay={0.34} className="mt-8 sm:mt-12">
           <ProximaMisa />
         </Reveal>
       </section>
 
       {/* ── Lo primero que la gente busca: a qué hora es la misa ─────────── */}
-      <section id="esta-semana" className="contenedor scroll-mt-24 py-20 md:py-28">
+      <section id="esta-semana" className="contenedor scroll-mt-20 py-16 md:scroll-mt-24 md:py-28">
         <EncabezadoSeccion
           rotulo="Esta semana"
           titulo="Hay misa casi a cualquier hora que puedas llegar"
           accion={{ href: "/horarios", label: "Horario completo" }}
         />
 
-        <div className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 md:grid-cols-3">
+        <div className="mt-8 grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 md:mt-12 md:grid-cols-3">
           {misas.map((bloque, i) => (
             <Reveal
               key={bloque.etiqueta}
               delay={i * 0.08}
-              className="bg-noche/70 p-8 backdrop-blur-xl md:p-10"
+              className="bg-noche/90 p-6 sm:p-8 md:bg-noche/70 md:p-10 md:backdrop-blur-xl"
             >
               <p className="rotulo">{bloque.etiqueta}</p>
-              <ul className="mt-6 space-y-4">
+              {/* Ocho horarios de domingo, uno por renglón, son ocho pantallazos
+                  de pulgar en un teléfono. En rejilla se leen de un vistazo. */}
+              <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3 md:mt-6 md:grid-cols-1 md:gap-y-4">
                 {bloque.misas.map((misa) => (
-                  <li key={misa.hora} className="flex items-baseline gap-4">
+                  <li
+                    key={misa.hora}
+                    className="flex flex-col gap-0.5 md:flex-row md:items-baseline md:gap-4"
+                  >
                     <span className="cifra text-2xl font-bold tabular-nums md:text-[1.75rem]">
                       {misa.hora}
                     </span>
                     {misa.nota && (
-                      <span className="text-sm text-alba">{misa.nota}</span>
+                      <span className="text-[0.8125rem] leading-snug text-alba md:text-sm">
+                        {misa.nota}
+                      </span>
                     )}
                   </li>
                 ))}
@@ -91,9 +99,9 @@ export default function Inicio() {
           ))}
         </div>
 
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
+        <div className="mt-4 grid gap-4 md:mt-6 md:grid-cols-3 md:gap-6">
           {otrosHorarios.map((item, i) => (
-            <Reveal key={item.titulo} delay={i * 0.06} className="panel rounded-2xl p-7">
+            <Reveal key={item.titulo} delay={i * 0.06} className="panel rounded-2xl p-6 sm:p-7">
               <h3 className="text-lg font-semibold">{item.titulo}</h3>
               <ul className="mt-3 space-y-1.5 text-sm text-blanco/65">
                 {item.lineas.map((linea) => (
@@ -106,15 +114,15 @@ export default function Inicio() {
       </section>
 
       {/* ── Quiénes somos, contado con la casa y con Don Bosco ───────────── */}
-      <section id="la-casa" className="contenedor scroll-mt-24 py-20 md:py-28">
-        <div className="grid items-center gap-16 lg:grid-cols-[1fr_0.85fr]">
+      <section id="la-casa" className="contenedor scroll-mt-20 py-16 md:scroll-mt-24 md:py-28">
+        <div className="grid items-center gap-10 md:gap-16 lg:grid-cols-[1fr_0.85fr]">
           <Reveal>
             <p className="rotulo">La casa</p>
-            <h2 className="display-md mt-4 text-balance">
+            <h2 className="display-md mt-3 text-balance md:mt-4">
               Un hogar alegre de puertas abiertas
             </h2>
-            <p className="prosa mt-6">{parroquia.mision}</p>
-            <div className="mt-10">
+            <p className="prosa mt-5 md:mt-6">{parroquia.mision}</p>
+            <div className="mt-8 md:mt-10">
               <Cita autor="San Juan Bosco">{frasesDonBosco[0]}</Cita>
             </div>
             <Image
@@ -122,17 +130,21 @@ export default function Inicio() {
               alt={parroquia.hashtag}
               width={1600}
               height={1116}
-              className="mt-10 h-24 w-auto opacity-85"
+              sizes="(min-width: 768px) 140px, 110px"
+              className="mt-8 h-20 w-auto opacity-85 md:mt-10 md:h-24"
             />
           </Reveal>
 
+          {/* La ilustración es acompañamiento, no información: en el teléfono
+              se queda, pero más chica, para no gastar media pantalla en ella. */}
           <Reveal delay={0.12} className="relative">
             <Image
               src="/brand/templo.png"
               alt="Ilustración del templo parroquial de San Juan Bosco con la sierra de Monterrey detrás"
               width={1400}
               height={1400}
-              className="w-full"
+              sizes="(min-width: 1024px) 40vw, 70vw"
+              className="mx-auto w-[70%] max-w-md lg:w-full lg:max-w-none"
               style={{ filter: "brightness(0) invert(1)", opacity: 0.9 }}
             />
           </Reveal>
@@ -140,7 +152,7 @@ export default function Inicio() {
       </section>
 
       {/* ── Grupos: el motivo real por el que alguien se queda ───────────── */}
-      <section id="grupos" className="contenedor scroll-mt-24 py-20 md:py-28">
+      <section id="grupos" className="contenedor scroll-mt-20 py-16 md:scroll-mt-24 md:py-28">
         <EncabezadoSeccion
           rotulo="Encuentra tu lugar"
           titulo="Diez pastorales. Alguna es para ti."
@@ -148,43 +160,43 @@ export default function Inicio() {
           accion={{ href: "/grupos", label: "Ver los grupos" }}
         />
 
-        <ul className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-8 grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
           {grupos.map((grupo, i) => (
             <Reveal
               key={grupo.slug}
               as="li"
               delay={(i % 3) * 0.07}
-              className="group bg-noche/70 backdrop-blur-xl transition-colors duration-500 hover:bg-azul/45"
+              className="group bg-noche/90 transition-colors duration-500 hover:bg-azul/45 active:bg-azul/45 md:bg-noche/70 md:backdrop-blur-xl"
             >
-              <Link href={`/grupos#${grupo.slug}`} className="flex h-full flex-col p-8">
+              <Link href={`/grupos#${grupo.slug}`} className="flex h-full flex-col p-6 sm:p-8">
                 <p className="rotulo">{grupo.para}</p>
-                <h3 className="mt-4 text-xl font-bold leading-tight text-balance">
+                <h3 className="mt-3 text-xl font-bold leading-tight text-balance md:mt-4">
                   {grupo.nombre}
                 </h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-blanco/60">
                   {grupo.descripcion}
                 </p>
-                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-alba transition-transform duration-300 group-hover:translate-x-1">
+                <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-alba transition-transform duration-300 group-hover:translate-x-1 md:mt-6">
                   Conocer más →
                 </span>
               </Link>
             </Reveal>
           ))}
-          <Reveal as="li" className="bg-azul/35 backdrop-blur-xl transition-colors duration-500 hover:bg-azul/55">
+          <Reveal as="li" className="bg-azul/45 transition-colors duration-500 hover:bg-azul/55 active:bg-azul/55 md:bg-azul/35 md:backdrop-blur-xl">
             <a
               href={enlaces.whatsapp}
               target="_blank"
               rel="noreferrer"
-              className="flex h-full flex-col p-8"
+              className="flex h-full flex-col p-6 sm:p-8"
             >
               <p className="rotulo">Si ninguno te queda</p>
-              <h3 className="mt-4 text-xl font-bold leading-tight text-balance">
+              <h3 className="mt-3 text-xl font-bold leading-tight text-balance md:mt-4">
                 Te ayudamos a escoger
               </h3>
               <p className="mt-3 flex-1 text-sm leading-relaxed text-blanco/70">
                 Dinos tu edad y tus horarios y te decimos cuál grupo te toca y cuándo se reúne.
               </p>
-              <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-blanco">
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blanco md:mt-6">
                 Escríbenos →
               </span>
             </a>
@@ -193,25 +205,27 @@ export default function Inicio() {
       </section>
 
       {/* ── El siguiente paso ────────────────────────────────────────────── */}
-      <section id="da-un-paso" className="contenedor scroll-mt-24 py-20 md:py-28">
+      <section id="da-un-paso" className="contenedor scroll-mt-20 py-16 md:scroll-mt-24 md:py-28">
         <EncabezadoSeccion
           rotulo="Da un paso"
           titulo="Sacramentos y formación"
           descripcion="Ya sea que vengas a bautizar, a confirmarte, a casarte o a estudiar en serio lo que crees, aquí empieza el trámite."
         />
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          <Reveal className="panel rounded-3xl p-9">
+        <div className="mt-8 grid gap-4 md:mt-12 md:gap-6 lg:grid-cols-2">
+          <Reveal className="panel rounded-3xl p-6 sm:p-9">
             <h3 className="rotulo">Sacramentos</h3>
-            <ul className="mt-7 divide-y divide-white/10">
+            <ul className="mt-5 divide-y divide-white/10 md:mt-7">
               {sacramentos.map((s) => (
                 <li key={s.slug}>
+                  {/* La flecha se ve siempre. Cuando sólo aparecía al pasar el
+                      cursor, en un teléfono no aparecía nunca. */}
                   <Link
                     href={`/sacramentos#${s.slug}`}
-                    className="group flex items-baseline justify-between gap-6 py-4"
+                    className="group flex min-h-[3.25rem] items-center justify-between gap-6 py-3"
                   >
                     <span className="text-lg font-semibold">{s.nombre}</span>
-                    <span className="shrink-0 text-alba opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <span className="shrink-0 text-alba opacity-60 transition-opacity duration-300 group-hover:opacity-100">
                       →
                     </span>
                   </Link>
@@ -220,9 +234,9 @@ export default function Inicio() {
             </ul>
           </Reveal>
 
-          <Reveal delay={0.1} className="panel rounded-3xl p-9">
+          <Reveal delay={0.1} className="panel rounded-3xl p-6 sm:p-9">
             <h3 className="rotulo">Formación</h3>
-            <ul className="mt-7 space-y-7">
+            <ul className="mt-5 space-y-6 md:mt-7 md:space-y-7">
               {formacion.map((f) => (
                 <li key={f.nombre}>
                   <h4 className="text-lg font-semibold">{f.nombre}</h4>
@@ -231,7 +245,7 @@ export default function Inicio() {
                     href={f.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-alba"
+                    className="toque mt-1 gap-2 text-sm font-semibold text-alba"
                   >
                     {f.cta} →
                   </a>
@@ -243,20 +257,20 @@ export default function Inicio() {
       </section>
 
       {/* ── Ven ──────────────────────────────────────────────────────────── */}
-      <section id="ven" className="contenedor scroll-mt-24 py-20 md:py-28">
-        <Reveal className="panel overflow-hidden rounded-3xl p-10 md:p-16">
-          <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:items-end">
+      <section id="ven" className="contenedor scroll-mt-20 py-16 md:scroll-mt-24 md:py-28">
+        <Reveal className="panel overflow-hidden rounded-3xl p-6 sm:p-10 md:p-16">
+          <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-12">
             <div>
               <p className="rotulo">Ven</p>
-              <h2 className="display-md mt-4 text-balance">
+              <h2 className="display-md mt-3 text-balance md:mt-4">
                 Te esperamos en {parroquia.direccion.calle}
               </h2>
-              <address className="prosa mt-5 not-italic">
+              <address className="prosa mt-4 not-italic md:mt-5">
                 {parroquia.direccion.colonia}, {parroquia.direccion.cp}
                 <br />
                 {parroquia.direccion.ciudad}
               </address>
-              <div className="mt-9 flex flex-wrap gap-4">
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4 md:mt-9">
                 <BotonPrincipal href={parroquia.direccion.maps} externo>
                   Abrir en Maps
                 </BotonPrincipal>
@@ -268,19 +282,19 @@ export default function Inicio() {
 
             <div>
               <p className="rotulo">Síguenos</p>
-              <ul className="mt-5 space-y-3 text-lg">
+              <ul className="mt-3 md:mt-5">
                 <li>
-                  <a href={enlaces.instagram} target="_blank" rel="noreferrer" className="hover:text-alba">
+                  <a href={enlaces.instagram} target="_blank" rel="noreferrer" className="toque text-lg hover:text-alba active:text-alba">
                     Instagram · @sanjuanboscomty
                   </a>
                 </li>
                 <li>
-                  <a href={enlaces.youtube} target="_blank" rel="noreferrer" className="hover:text-alba">
+                  <a href={enlaces.youtube} target="_blank" rel="noreferrer" className="toque text-lg hover:text-alba active:text-alba">
                     YouTube · San Juan Bosco MTY
                   </a>
                 </li>
                 <li>
-                  <a href={enlaces.facebook} target="_blank" rel="noreferrer" className="hover:text-alba">
+                  <a href={enlaces.facebook} target="_blank" rel="noreferrer" className="toque text-lg hover:text-alba active:text-alba">
                     Facebook · SanJuanBoscoMTY
                   </a>
                 </li>

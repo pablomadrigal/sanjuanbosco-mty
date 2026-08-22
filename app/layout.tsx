@@ -4,6 +4,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Camino from "@/components/three/Camino";
+import AccionesMovil from "@/components/AccionesMovil";
 import SmoothScroll from "@/components/SmoothScroll";
 import { parroquia } from "@/lib/site";
 import { sitioUrl } from "@/lib/url";
@@ -62,6 +63,15 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#232038",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+  /* La página se dibuja bajo el notch y bajo la barra de gestos; los
+     márgenes seguros los pone `contenedor` con env(safe-area-inset-*). */
+  viewportFit: "cover",
+  /* Al abrir el teclado la ventana no se reacomoda: nada salta de lugar
+     mientras alguien escribe. */
+  interactiveWidget: "resizes-content",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -81,6 +91,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
+        <AccionesMovil />
       </body>
     </html>
   );

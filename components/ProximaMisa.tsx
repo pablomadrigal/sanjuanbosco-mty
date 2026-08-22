@@ -69,17 +69,22 @@ export default function ProximaMisa() {
 
   if (!proxima) return null;
 
+  /* En el teléfono el dato no cabe en una línea, y una píldora con el texto
+     partido en dos se ve rota: ahí es una tarjeta de ancho completo, con la
+     hora grande. La píldora vuelve cuando hay ancho para sostenerla. */
   return (
-    <div className="panel inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-full py-2 pl-3 pr-5">
-      <span className="relative flex h-2 w-2 shrink-0">
-        <span
-          className="absolute inline-flex h-full w-full rounded-full bg-alba"
-          style={{ animation: "latido 2.4s ease-in-out infinite" }}
-        />
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-alba" />
+    <div className="panel flex w-full flex-col gap-1 rounded-2xl px-4 py-3 sm:inline-flex sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-1 sm:rounded-full sm:py-2 sm:pl-3 sm:pr-5">
+      <span className="flex items-center gap-2">
+        <span className="relative flex h-2 w-2 shrink-0">
+          <span
+            className="absolute inline-flex h-full w-full rounded-full bg-alba"
+            style={{ animation: "latido 2.4s ease-in-out infinite" }}
+          />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-alba" />
+        </span>
+        <span className="rotulo">Próxima misa</span>
       </span>
-      <span className="rotulo">Próxima misa</span>
-      <span className="cifra text-sm font-semibold">
+      <span className="cifra text-base font-semibold sm:text-sm">
         {proxima.etiqueta} {proxima.hora}
         {proxima.nota ? ` · ${proxima.nota}` : ""}
       </span>
