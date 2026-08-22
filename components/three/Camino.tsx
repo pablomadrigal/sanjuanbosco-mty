@@ -15,8 +15,8 @@ export default function Camino() {
   useEffect(() => {
     // Evita cargar WebGL en el primer pintado: la página debe leerse antes.
     const id = window.requestIdleCallback
-      ? window.requestIdleCallback(() => setMontado(true), { timeout: 1200 })
-      : window.setTimeout(() => setMontado(true), 400);
+      ? window.requestIdleCallback(() => setMontado(true), { timeout: 600 })
+      : window.setTimeout(() => setMontado(true), 250);
     return () => {
       if (window.cancelIdleCallback) window.cancelIdleCallback(id as number);
       else clearTimeout(id as number);
