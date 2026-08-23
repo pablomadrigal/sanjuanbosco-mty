@@ -132,6 +132,10 @@ export default function Nav() {
         </div>
       </nav>
 
+      {/* Cuánto llevas del camino. La dibuja la línea de tiempo del scroll:
+          ni un listener, ni un re-render. */}
+      <div aria-hidden className="avance" />
+
       {/* El menú ocupa la pantalla completa por debajo de la barra: así los
           destinos caen en la zona del pulgar y la lista puede desplazarse
           sola en un teléfono chico sin arrastrar la página de atrás. */}
@@ -147,22 +151,36 @@ export default function Nav() {
           >
             <div className="contenedor flex min-h-full flex-col pb-[calc(2rem+env(safe-area-inset-bottom))] pt-2">
               <ul className="flex flex-col">
-                {navegacion.map((item) => (
-                  <li key={item.href}>
+                {navegacion.map((item, i) => (
+                  <li
+                    key={item.href}
+                    data-entrada
+                    style={{ "--retraso": `${0.04 + i * 0.045}s` } as React.CSSProperties}
+                  >
                     <Link
                       href={item.href}
                       aria-current={ruta === item.href ? "page" : undefined}
-                      className={`flex min-h-[3.5rem] items-center border-b border-white/10 py-3 text-xl font-semibold tracking-tight transition-colors active:text-alba sm:text-2xl ${
+                      className={`group flex min-h-[3.5rem] items-center justify-between gap-4 border-b border-white/10 py-3 text-xl font-semibold tracking-tight transition-colors active:text-alba sm:text-2xl ${
                         ruta === item.href ? "text-alba" : ""
                       }`}
                     >
                       {item.label}
+                      <span
+                        aria-hidden
+                        className="text-alba opacity-0 transition-all duration-300 group-active:translate-x-1.5 group-active:opacity-100"
+                      >
+                        →
+                      </span>
                     </Link>
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-auto pt-8">
+              <div
+                className="mt-auto pt-8"
+                data-entrada
+                style={{ "--retraso": "0.3s" } as React.CSSProperties}
+              >
                 <a
                   href={enlaces.whatsapp}
                   target="_blank"

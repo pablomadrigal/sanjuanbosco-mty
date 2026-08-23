@@ -24,13 +24,13 @@ export default function Contacto() {
     <>
       <CabeceraPagina
         rotulo="Contacto"
-        titulo="Aquí estamos"
+        titulo="*Aquí* estamos"
         entrada="Pasa a la oficina, escríbenos o simplemente llega a una misa. Cualquiera de las tres funciona."
       />
 
       <section className="contenedor pb-20 md:pb-28">
         <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
-          <Reveal className="panel rounded-3xl p-6 sm:p-9">
+          <Reveal tipo="izq" className="panel rounded-3xl p-6 sm:p-9">
             <h2 className="rotulo">Dirección</h2>
             <address className="mt-4 not-italic text-xl font-semibold leading-snug sm:text-2xl md:mt-5">
               {parroquia.direccion.calle}
@@ -46,7 +46,7 @@ export default function Contacto() {
             </div>
           </Reveal>
 
-          <Reveal delay={0.1} className="panel rounded-3xl p-6 sm:p-9">
+          <Reveal tipo="der" className="panel rounded-3xl p-6 sm:p-9">
             <h2 className="rotulo">Oficina parroquial</h2>
             <ul className="mt-4 space-y-1 text-lg md:mt-5 md:space-y-2">
               {oficina?.lineas.map((linea) => (
@@ -66,10 +66,18 @@ export default function Contacto() {
             {canales.map((canal) => (
               <li
                 key={canal.nombre}
-                className="bg-noche/90 transition-colors duration-500 hover:bg-azul/45 active:bg-azul/45 md:bg-noche/70 md:backdrop-blur-xl"
+                className="group bg-noche/90 transition-colors duration-500 hover:bg-azul/45 active:bg-azul/45 md:bg-noche/70 md:backdrop-blur-xl"
               >
                 <a href={canal.href} target="_blank" rel="noreferrer" className="block p-6 sm:p-8">
-                  <h3 className="text-lg font-semibold">{canal.nombre}</h3>
+                  <h3 className="flex items-center gap-2 text-lg font-semibold">
+                    {canal.nombre}
+                    <span
+                      aria-hidden
+                      className="text-alba opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100 group-active:translate-x-1 group-active:opacity-100"
+                    >
+                      →
+                    </span>
+                  </h3>
                   <p className="mt-1.5 text-sm text-blanco/60 sm:mt-2">{canal.detalle}</p>
                 </a>
               </li>

@@ -14,16 +14,21 @@ export default function Sacramentos() {
     <>
       <CabeceraPagina
         rotulo="Sacramentos"
-        titulo="Cómo empezar el trámite"
+        titulo="Cómo empezar *el trámite*"
         entrada="Cada sacramento se aparta en la oficina parroquial. Aquí está lo que necesitas llevar y en qué orden, para que no hagas el viaje dos veces."
       />
 
       <section className="contenedor pb-20 md:pb-28">
         <ul className="grid gap-4 md:gap-6 lg:grid-cols-2">
           {sacramentos.map((s, i) => (
-            <Reveal key={s.slug} as="li" delay={(i % 2) * 0.08} className="panel rounded-3xl p-6 sm:p-9">
+            <Reveal key={s.slug} as="li" tipo={i % 2 ? "der" : "izq"} className="panel rounded-3xl p-6 sm:p-9">
               <article id={s.slug} className="scroll-mt-20 md:scroll-mt-28">
-                <h2 className="text-xl font-bold sm:text-2xl">{s.nombre}</h2>
+                <div className="flex items-baseline gap-3">
+                  <span aria-hidden className="indice">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h2 className="text-xl font-bold sm:text-2xl">{s.nombre}</h2>
+                </div>
                 <p className="mt-3 text-sm leading-relaxed text-blanco/70 sm:text-base">{s.resumen}</p>
                 {/* Los pasos van en orden porque el trámite lo tiene: la
                     numeración aquí es información, no adorno. */}
@@ -40,7 +45,7 @@ export default function Sacramentos() {
           ))}
         </ul>
 
-        <Reveal className="panel mt-6 rounded-3xl p-6 sm:p-10 md:mt-10">
+        <Reveal tipo="escala" className="panel-azul mt-6 rounded-3xl p-6 sm:p-10 md:mt-10">
           <h2 className="display-md text-balance">La oficina te resuelve lo demás</h2>
           <p className="prosa mt-3 md:mt-4">
             Lunes a viernes de 9:00 a 13:00 y de 15:00 a 19:00, sábado de 9:00 a 13:00, en{" "}

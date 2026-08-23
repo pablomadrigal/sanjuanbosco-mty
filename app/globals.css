@@ -152,6 +152,17 @@ body {
   }
 }
 
+/* Bloque en azul de marca. El azul primario casi no se usaba como
+   superficie y es lo que rompe la seguidilla de tarjetas oscuras. */
+@utility panel-azul {
+  background: linear-gradient(
+    140deg,
+    color-mix(in oklab, var(--color-azul) 92%, var(--color-noche)),
+    color-mix(in oklab, var(--color-azul-profundo) 88%, var(--color-noche))
+  );
+  border: 1px solid color-mix(in oklab, var(--color-alba) 28%, transparent);
+}
+
 /* Objetivo táctil mínimo. Da los 44 px de alto que pide el dedo sin
    agrandar el texto ni el diseño. */
 @utility toque {
@@ -160,7 +171,74 @@ body {
   min-height: 2.75rem;
 }
 
-/* ── Animaciones ──────────────────────────────────────────────────────── */
+/* Palabra en cursiva serif dentro de un titular. Instrument Serif ya estaba
+   cargada y sólo se usaba en las citas: mezclarla en los títulos les quita
+   el tono de comunicado y les pone voz. */
+@utility acento {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  color: var(--color-alba-tenue);
+}
+
+/* Número grande, para la banda de cifras. */
+@utility numero {
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(2.75rem, 1.5rem + 6vw, 5.5rem);
+  line-height: 0.85;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+}
+
+/* Índice de una tarjeta: 01, 02, 03… */
+@utility indice {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: color-mix(in oklab, var(--color-alba) 70%, transparent);
+}
+
+/* ── Marquesina ─────────────────────────────────────────────────────────
+   Una banda que nunca se detiene. Es el único elemento del sitio que se
+   mueve solo todo el tiempo, y es a propósito: le da pulso a la página
+   aunque nadie esté haciendo scroll. */
+@utility marquesina {
+  overflow: hidden;
+  border-block: 1px solid color-mix(in oklab, var(--color-blanco) 12%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+@utility marquesina-pista {
+  display: flex;
+  width: max-content;
+  align-items: center;
+}
+
+/* ── Barra de avance ────────────────────────────────────────────────────
+   Cuánto llevas del camino. Se dibuja sola con la línea de tiempo del
+   scroll: cero JavaScript, cero listeners. */
+@utility avance {
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--color-azul), var(--color-alba), var(--color-blanco));
+}
+
+/* ── Cinética ───────────────────────────────────────────────────────────
+   El lema es un camino y el scroll es lo que avanza por él, así que la
+   página entera se mueve con el scroll: los bloques entran por un lado y
+   por otro, lo decorativo va a otra velocidad que el texto y arriba avanza
+   una barra que dice cuánto llevas.
+
+   Todo es CSS —líneas de tiempo de scroll, ninguna dependencia de
+   hidratación—, así que si el script nunca carga el contenido igual se lee,
+   y si alguien pidió menos movimiento no se mueve nada.                   */
+
 @keyframes subir {
   from {
     opacity: 0;
@@ -172,6 +250,85 @@ body {
   }
 }
 
+/* Recorrido corto: para las palabras de un titular, que se mueven poco
+   porque son muchas y muy seguidas. */
+@keyframes asomar {
+  from {
+    opacity: 0;
+    transform: translateY(0.55em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes desde-izq {
+  from {
+    opacity: 0;
+    transform: translate3d(-2.25rem, 0.75rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes desde-der {
+  from {
+    opacity: 0;
+    transform: translate3d(2.25rem, 0.75rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Crece pasándose de largo y regresa. El rebote es lo que separa «aparecer»
+   de «llegar». */
+@keyframes crecer {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(1.5rem);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.025) translateY(0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Entra ladeado y se endereza, como algo que se acomoda al llegar. */
+@keyframes enderezar {
+  from {
+    opacity: 0;
+    transform: rotate(-3deg) translateY(1.75rem);
+  }
+  72% {
+    opacity: 1;
+    transform: rotate(0.9deg) translateY(0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Deriva: lo decorativo avanza a distinta velocidad que el texto y de ahí
+   sale la sensación de profundidad al recorrer la página. */
+@keyframes deriva {
+  from {
+    transform: translateY(var(--deriva, 2.5rem));
+  }
+  to {
+    transform: translateY(calc(var(--deriva, 2.5rem) * -1));
+  }
+}
+
 @keyframes latido {
   0%,
   100% {
@@ -179,6 +336,59 @@ body {
   }
   50% {
     opacity: 1;
+  }
+}
+
+@keyframes flotar {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.4rem);
+  }
+}
+
+/* La flecha de «desliza»: cae, se detiene y vuelve. */
+@keyframes caer {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(0.4rem);
+    opacity: 1;
+  }
+}
+
+@keyframes marquesina-corre {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Un brillo que cruza el botón principal cada tantos segundos. En un
+   teléfono no hay cursor que lo despierte, así que se despierta solo. */
+@keyframes destello {
+  0% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  55%,
+  100% {
+    transform: translateX(240%) skewX(-18deg);
+  }
+}
+
+@keyframes avanzar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 
@@ -202,16 +412,49 @@ body {
   }
 }
 
-/* ── Entrada de bloques ────────────────────────────────────────────────
-   Todo es CSS. Si el navegador no soporta líneas de tiempo de scroll, o si
-   alguien pidió menos movimiento, el contenido simplemente ya está ahí. */
 @media (prefers-reduced-motion: no-preference) {
   /* Portada: entra al cargar, escalonada. */
   [data-entrada] {
     animation: subir 0.8s var(--ease-camino) var(--retraso, 0s) both;
   }
 
-  /* Resto de la página: entra conforme aparece en pantalla. */
+  /* Titulares palabra por palabra. Sobre el pliegue las marca el reloj;
+     más abajo, el scroll (ver el bloque @supports). */
+  [data-palabra] {
+    display: inline-block;
+  }
+
+  [data-palabra="reloj"] {
+    animation: asomar 0.7s var(--ease-camino) var(--retraso, 0s) both;
+  }
+
+  /* Pulsos permanentes: lo poco que se mueve sin que nadie haga nada. */
+  .marquesina-pista {
+    animation: marquesina-corre var(--vuelta, 34s) linear infinite;
+  }
+
+  .flota {
+    animation: flotar 4.5s ease-in-out infinite;
+  }
+
+  .cae {
+    animation: caer 2s ease-in-out infinite;
+  }
+
+  .destella::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 35%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    animation: destello 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Resto de la página: entra conforme aparece en pantalla, y no siempre
+     por el mismo lado. La variedad es lo que hace que recorrer la página no
+     se sienta como pasar diapositivas. */
   @supports (animation-timeline: view()) {
     [data-reveal] {
       animation: subir 1s linear both;
@@ -222,10 +465,55 @@ body {
       animation-range: entry 0% entry 35%;
     }
 
+    [data-reveal="izq"] {
+      animation-name: desde-izq;
+    }
+
+    [data-reveal="der"] {
+      animation-name: desde-der;
+    }
+
+    [data-reveal="escala"] {
+      animation-name: crecer;
+    }
+
+    [data-reveal="girar"] {
+      animation-name: enderezar;
+    }
+
+    /* Escalón: retrasa la entrada de los hermanos de una misma fila para que
+       lleguen uno tras otro en vez de todos de golpe. */
+    [data-reveal][style*="--escalon"] {
+      animation-range: entry var(--escalon) entry calc(35% + var(--escalon));
+    }
+
+    [data-palabra]:not([data-palabra="reloj"]) {
+      animation: asomar 1s linear both;
+      animation-timeline: view();
+      animation-range: entry var(--escalon, 0%) entry calc(30% + var(--escalon, 0%));
+    }
+
+    [data-deriva] {
+      animation: deriva 1s linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
     @media (min-width: 48rem) {
       [data-reveal] {
         animation-range: entry 0% entry 55%;
       }
+
+      [data-reveal][style*="--escalon"] {
+        animation-range: entry var(--escalon) entry calc(55% + var(--escalon));
+      }
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .avance {
+      animation: avanzar linear both;
+      animation-timeline: scroll(root block);
     }
   }
 }

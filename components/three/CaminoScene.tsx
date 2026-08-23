@@ -127,15 +127,21 @@ const fragmentShader = /* glsl */ `
 
     // Raya central discontinua, como la de una carretera.
     float centro = 1.0 - smoothstep(0.0, 0.045, d);
-    float guion = step(0.45, fract(vUv.y * 120.0 - uTime * 0.35));
-    color += uLuz * centro * guion * 0.8;
-    alfa += centro * guion * 0.34;
+    float guion = step(0.45, fract(vUv.y * 120.0 - uTime * 0.55));
+    color += uLuz * centro * guion * 0.85;
+    alfa += centro * guion * 0.36;
 
-    // Un pulso de luz que recorre el camino hacia la cruz.
-    float onda = fract(vUv.y - uTime * 0.045);
-    float pulso = exp(-pow(onda * 9.0, 2.0)) + exp(-pow((onda - 1.0) * 9.0, 2.0));
-    color += uLuz * pulso * 0.45;
-    alfa += pulso * 0.2;
+    // Tres pulsos de luz recorriendo el camino hacia la cruz, en fila y a
+    // distinta velocidad. Uno solo se leía como un destello suelto; varios
+    // se leen como tráfico: el camino está vivo y va a algún lado.
+    float pulso = 0.0;
+    for (int i = 0; i < 3; i++) {
+      float fase = float(i) * 0.333;
+      float onda = fract(vUv.y - uTime * (0.075 + float(i) * 0.018) - fase);
+      pulso += exp(-pow(onda * 8.0, 2.0)) + exp(-pow((onda - 1.0) * 8.0, 2.0));
+    }
+    color += uLuz * pulso * 0.4;
+    alfa += pulso * 0.18;
 
     // Niebla: el camino se disuelve en la noche a lo lejos.
     float niebla = 1.0 - smoothstep(uNiebla * 0.25, uNiebla, vDepth);

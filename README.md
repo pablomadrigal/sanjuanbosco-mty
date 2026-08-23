@@ -39,6 +39,38 @@ Casi todo el texto del sitio está en un solo archivo: **`lib/site.ts`**.
 El indicador de **«Próxima misa»** de la portada se calcula solo a partir de `misas`, en la
 zona horaria de Monterrey. Si cambian los horarios, se actualiza sin tocar nada más.
 
+## Cómo se mueve
+
+Somos una parroquia universitaria y la página tiene que sonar a eso. El principio es uno:
+**el scroll es lo que avanza por el camino**, así que la página entera reacciona a él.
+
+Hay tres capas de movimiento, y ninguna depende de JavaScript:
+
+**Ritmo.** Los bloques no entran todos igual. `Reveal` acepta `tipo`: `izq`, `der`, `escala`
+—que se pasa de largo y regresa— y `girar` —que llega ladeado y se endereza—. Alternarlos es lo
+que hace que recorrer la página no se sienta como pasar diapositivas. Los titulares entran
+palabra por palabra con `<Palabras>`, y lo que va entre asteriscos se compone en la serif
+cursiva de la marca: `titulo="Hay misa *casi a cualquier hora* que puedas llegar"`.
+Lo decorativo lleva `data-deriva` y avanza a otra velocidad que el texto, que es de donde sale
+la sensación de profundidad.
+
+**Pulso.** Lo poco que se mueve sin que nadie haga nada: la marquesina que nunca se detiene
+(`components/Marquesina.tsx`), el brillo que cruza el botón principal cada cinco segundos —en un
+teléfono no hay cursor que lo despierte—, el latido de «próxima misa» y la flecha de «desliza».
+
+**Respuesta.** Todo lo que se toca contesta: las flechas corren, las tarjetas cambian de fondo,
+los botones se hunden. Cada estado `hover:` tiene su `active:`, porque en un teléfono el primero
+no ocurre nunca.
+
+Las tres se apagan solas con `prefers-reduced-motion: reduce`, y todo lo que depende del scroll
+vive dentro de `@supports (animation-timeline: view())`: si el navegador no lo soporta, el
+contenido simplemente ya está ahí. Verificado con el script apagado y con movimiento reducido.
+
+La energía visual usa sólo la paleta de siempre: bloques en `panel-azul` para romper la
+seguidilla de tarjetas oscuras, `numero` para la banda de cifras —que se cuenta sola desde
+`misas`, `grupos` y `sacramentos`—, `indice` para numerar las pastorales y `acento` para las
+palabras en cursiva.
+
 ## Mobile first
 
 Casi todo el que entra al sitio lo hace desde el celular, así que el teléfono no es el caso
