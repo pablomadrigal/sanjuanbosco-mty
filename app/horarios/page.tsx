@@ -15,7 +15,7 @@ export default function Horarios() {
     <>
       <CabeceraPagina
         rotulo="Horarios"
-        titulo="A qué hora es la misa"
+        titulo="A qué hora es *la misa*"
         entrada="Los horarios de misa, confesión y oficina. Si cambian por una fiesta o por Semana Santa, lo avisamos primero en Instagram."
       />
 

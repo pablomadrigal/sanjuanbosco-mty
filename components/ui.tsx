@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import Palabras from "./Palabras";
 import Reveal from "./Reveal";
 
 export function EncabezadoSeccion({
@@ -9,27 +10,42 @@ export function EncabezadoSeccion({
   accion,
 }: {
   rotulo: string;
-  titulo: ReactNode;
+  /** Lo que va entre asteriscos se compone en la serif cursiva de la marca. */
+  titulo: string;
   descripcion?: string;
   accion?: { href: string; label: string };
 }) {
   return (
-    <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
+    <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
       <div>
-        <p className="rotulo">{rotulo}</p>
-        <h2 className="display-md mt-3 max-w-2xl text-balance md:mt-4">{titulo}</h2>
-        {descripcion && <p className="prosa mt-4 md:mt-5">{descripcion}</p>}
+        <Reveal tipo="izq">
+          <p className="rotulo">{rotulo}</p>
+        </Reveal>
+        {/* El título se anima palabra por palabra, así que va fuera del
+            Reveal: si no, se desvanecería dos veces. */}
+        <h2 className="display-md mt-3 max-w-2xl text-balance md:mt-4">
+          <Palabras texto={titulo} />
+        </h2>
+        {descripcion && (
+          <Reveal delay={0.06}>
+            <p className="prosa mt-4 md:mt-5">{descripcion}</p>
+          </Reveal>
+        )}
       </div>
       {accion && (
-        <Link
-          href={accion.href}
-          className="group toque shrink-0 gap-2 text-sm font-semibold text-alba"
-        >
-          {accion.label}
-          <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-        </Link>
+        <Reveal tipo="der" className="shrink-0">
+          <Link
+            href={accion.href}
+            className="group toque gap-2 text-sm font-semibold text-alba"
+          >
+            {accion.label}
+            <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5 group-active:translate-x-1.5">
+              →
+            </span>
+          </Link>
+        </Reveal>
       )}
-    </Reveal>
+    </div>
   );
 }
 
@@ -48,9 +64,15 @@ export function CabeceraPagina({
     <header className="contenedor pb-10 pt-28 sm:pt-32 md:pb-20 md:pt-44">
       <Reveal entrada>
         <p className="rotulo">{rotulo}</p>
-        <h1 className="display-lg mt-4 max-w-4xl text-balance md:mt-5">{titulo}</h1>
-        {entrada && <p className="prosa mt-5 md:mt-7">{entrada}</p>}
       </Reveal>
+      <h1 className="display-lg mt-4 max-w-4xl text-balance md:mt-5">
+        <Palabras texto={titulo} entrada desde={0.1} />
+      </h1>
+      {entrada && (
+        <Reveal entrada delay={0.35}>
+          <p className="prosa mt-5 md:mt-7">{entrada}</p>
+        </Reveal>
+      )}
     </header>
   );
 }
@@ -58,7 +80,7 @@ export function CabeceraPagina({
 /* Los botones ocupan el ancho completo en el teléfono: es lo que hace que se
    puedan tocar sin apuntar, y apilados dejan clarísimo cuál es el primero. */
 const baseBoton =
-  "inline-flex w-full items-center justify-center gap-2 rounded-full px-7 text-center font-semibold min-h-[3.25rem] transition-transform duration-300 active:scale-[0.98] sm:w-auto";
+  "relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full px-7 text-center font-semibold min-h-[3.25rem] transition-transform duration-300 ease-camino active:scale-[0.96] sm:w-auto";
 
 export function BotonPrincipal({
   href,
@@ -69,7 +91,7 @@ export function BotonPrincipal({
   children: ReactNode;
   externo?: boolean;
 }) {
-  const clases = `${baseBoton} bg-blanco text-noche hover:scale-[1.03]`;
+  const clases = `${baseBoton} destella bg-blanco text-noche hover:scale-[1.04]`;
   return externo ? (
     <a href={href} target="_blank" rel="noreferrer" className={clases}>
       {children}
@@ -106,7 +128,9 @@ export function Cita({ children, autor }: { children: ReactNode; autor: string }
   return (
     <figure className="max-w-3xl">
       <blockquote className="font-serif text-[clamp(1.4rem,1rem+2.4vw,3rem)] leading-[1.16] text-balance text-blanco/92 md:leading-[1.12]">
-        «{children}»
+        <span className="text-alba">«</span>
+        {children}
+        <span className="text-alba">»</span>
       </blockquote>
       <figcaption className="rotulo mt-5 md:mt-6">{autor}</figcaption>
     </figure>

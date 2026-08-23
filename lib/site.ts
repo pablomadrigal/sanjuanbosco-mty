@@ -276,6 +276,37 @@ export const frasesDonBosco = [
   "Siempre ha de triunfar la caridad.",
 ];
 
+/**
+ * Banda que corre sin parar entre secciones. Se lee en bucle, así que cada
+ * línea tiene que funcionar sola: es un lema, no una oración larga.
+ */
+export const marquesina = [
+  "Camino de encuentro",
+  "que forma discípulos",
+  "#SiempreAlegres",
+  "Parroquia Universitaria",
+  "San Juan Bosco",
+  "Monterrey",
+];
+
+/**
+ * Etiquetas de la banda de cifras de la portada. Los números no se escriben
+ * aquí: se cuentan solos desde `misas`, `grupos` y `sacramentos`, para que
+ * nunca digan una cosa distinta al resto del sitio.
+ */
+export const cifras = {
+  rotulo: "La parroquia en números",
+  misas: "misas cada semana",
+  grupos: "pastorales",
+  sacramentos: "sacramentos",
+  camino: "camino, y es de todos",
+};
+
+/** Misas que se celebran en una semana, sumando todos los bloques. */
+export function misasPorSemana() {
+  return misas.reduce((total, bloque) => total + bloque.dias.length * bloque.misas.length, 0);
+}
+
 export const navegacion = [
   { href: "/horarios", label: "Horarios" },
   { href: "/grupos", label: "Grupos" },

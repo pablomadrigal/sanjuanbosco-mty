@@ -15,7 +15,7 @@ export default function Nosotros() {
     <>
       <CabeceraPagina
         rotulo="Nosotros"
-        titulo="Un hogar alegre de puertas abiertas"
+        titulo="Un hogar *alegre* de puertas abiertas"
         entrada={parroquia.mision}
       />
 
@@ -38,7 +38,7 @@ export default function Nosotros() {
             </p>
           </Reveal>
 
-          <Reveal delay={0.12}>
+          <div data-deriva style={{ "--deriva": "2rem" } as React.CSSProperties}>
             <Image
               src="/brand/camino-icono-blanco.png"
               alt=""
@@ -47,14 +47,14 @@ export default function Nosotros() {
               sizes="(min-width: 1024px) 24rem, 60vw"
               className="mx-auto w-[60%] max-w-sm opacity-90 lg:w-full"
             />
-          </Reveal>
+          </div>
         </div>
 
         <Reveal className="mt-16 md:mt-28">
           <p className="rotulo">Equipo sacerdotal</p>
           <ul className="mt-6 grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 md:mt-8 md:grid-cols-3">
             {equipo.map((persona) => (
-              <li key={persona.nombre} className="bg-noche/90 p-6 sm:p-8 md:bg-noche/70 md:backdrop-blur-xl">
+              <li key={persona.nombre} className="bg-noche/90 p-6 transition-colors duration-500 hover:bg-azul/40 sm:p-8 md:bg-noche/70 md:backdrop-blur-xl">
                 <h2 className="text-lg font-bold leading-tight sm:text-xl">{persona.nombre}</h2>
                 <p className="rotulo mt-2 md:mt-3">{persona.cargo}</p>
               </li>
@@ -64,13 +64,13 @@ export default function Nosotros() {
 
         <div className="mt-16 space-y-12 md:mt-28 md:space-y-20">
           {frasesDonBosco.slice(1).map((frase, i) => (
-            <Reveal key={frase} delay={i * 0.05}>
+            <Reveal key={frase} tipo={i % 2 ? "der" : "izq"}>
               <Cita autor="San Juan Bosco">{frase}</Cita>
             </Reveal>
           ))}
         </div>
 
-        <Reveal className="mt-16 flex justify-center md:mt-28">
+        <Reveal tipo="escala" className="mt-16 flex justify-center md:mt-28">
           <Image
             src="/brand/siempre-alegres-blanco.png"
             alt={parroquia.hashtag}

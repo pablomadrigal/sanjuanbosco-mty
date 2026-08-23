@@ -5,7 +5,7 @@ export default function NoEncontrado() {
     <>
       <CabeceraPagina
         rotulo="Página no encontrada"
-        titulo="Este camino no lleva a ningún lado"
+        titulo="Este camino *no lleva* a ningún lado"
         entrada="La página que buscas cambió de lugar o nunca existió. Desde el inicio llegas a todo."
       />
       <div className="contenedor flex flex-col gap-3 pb-20 sm:flex-row sm:flex-wrap sm:gap-4 md:pb-28">
