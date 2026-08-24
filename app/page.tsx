@@ -6,17 +6,16 @@ import Palabras from "@/components/Palabras";
 import Reveal from "@/components/Reveal";
 import ProximaMisa from "@/components/ProximaMisa";
 import { BotonPrincipal, BotonSecundario, Cita, EncabezadoSeccion } from "@/components/ui";
-import {
-  enlaces,
-  formacion,
-  frasesDonBosco,
-  grupos,
-  misas,
-  otrosHorarios,
-  parroquia,
-  sacramentos,
-} from "@/lib/site";
+import { enlaces, frasesDonBosco, misas, otrosHorarios, parroquia, puertas } from "@/lib/site";
 
+/**
+ * La portada.
+ *
+ * Invita; no cuenta todo. Quien llega viene por el horario de misa —eso se
+ * responde completo aquí mismo— y quien además quiere quedarse necesita una
+ * puerta clara, no el catálogo de las diez pastorales antes de haber decidido
+ * nada. Cada lista larga vive en su propia página.
+ */
 export default function Inicio() {
   return (
     <>
@@ -50,8 +49,7 @@ export default function Inicio() {
           <p className="prosa">
             Somos San Juan Bosco: una comunidad de puertas abiertas en{" "}
             {parroquia.direccion.colonia.replace("Col. ", "")}, Monterrey. Llega a la misa que te
-            acomode, encuentra un grupo donde te conozcan por tu nombre y da el siguiente paso
-            cuando estés listo.
+            acomode y quédate el tiempo que quieras.
           </p>
         </Reveal>
 
@@ -87,7 +85,8 @@ export default function Inicio() {
 
       <Marquesina />
 
-      {/* ── Lo primero que la gente busca: a qué hora es la misa ─────────── */}
+      {/* ── Lo primero que la gente busca, y lo único que la portada
+             responde completo: a qué hora es la misa. ──────────────────── */}
       <section id="esta-semana" className="contenedor scroll-mt-20 py-12 md:scroll-mt-24 md:py-20">
         <EncabezadoSeccion
           rotulo="Esta semana"
@@ -146,6 +145,8 @@ export default function Inicio() {
         </div>
       </section>
 
+      {/* Las cifras dicen el tamaño de la parroquia sin listar nada: es lo que
+          antes hacían las diez tarjetas de pastorales. */}
       <Cifras />
 
       {/* ── Quiénes somos, contado con la casa y con Don Bosco ───────────── */}
@@ -163,16 +164,6 @@ export default function Inicio() {
             </Reveal>
             <Reveal tipo="izq" delay={0.1} className="mt-8 md:mt-10">
               <Cita autor="San Juan Bosco">{frasesDonBosco[0]}</Cita>
-            </Reveal>
-            <Reveal delay={0.14}>
-              <Image
-                src="/brand/siempre-alegres-blanco.png"
-                alt={parroquia.hashtag}
-                width={1600}
-                height={1116}
-                sizes="(min-width: 768px) 140px, 110px"
-                className="mt-8 h-20 w-auto opacity-85 md:mt-10 md:h-24"
-              />
             </Reveal>
           </div>
 
@@ -192,39 +183,41 @@ export default function Inicio() {
         </div>
       </section>
 
-      {/* ── Grupos: el motivo real por el que alguien se queda ───────────── */}
-      <section id="grupos" className="contenedor scroll-mt-20 py-12 md:scroll-mt-24 md:py-20">
+      {/* ── Tres puertas ─────────────────────────────────────────────────
+             Una tarjeta por camino, no el contenido de cada camino. Quien
+             quiera el detalle da un toque y lo encuentra completo. ──────── */}
+      <section id="da-un-paso" className="contenedor scroll-mt-20 py-12 md:scroll-mt-24 md:py-20">
         <EncabezadoSeccion
-          rotulo="Encuentra tu lugar"
-          titulo="Diez pastorales. *Alguna es para ti.*"
-          descripcion="Los grupos se organizan por edad, por intereses o por el servicio que hacen. En todos pasa lo mismo: amistad, formación y oración."
-          accion={{ href: "/grupos", label: "Ver los grupos" }}
+          rotulo="Y si te quieres quedar"
+          titulo="Aquí empieza *lo que sigue*"
         />
 
-        <ul className="mt-8 grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
-          {grupos.map((grupo, i) => (
+        <ul className="mt-8 grid gap-4 md:mt-12 md:grid-cols-3 md:gap-6">
+          {puertas.map((puerta, i) => (
             <Reveal
-              key={grupo.slug}
+              key={puerta.href}
               as="li"
-              tipo={i % 2 ? "der" : "izq"}
-              delay={(i % 3) * 0.05}
-              className="group bg-noche/90 transition-colors duration-500 hover:bg-azul/45 active:bg-azul/45 md:bg-noche/70 md:backdrop-blur-xl"
+              tipo={i === 1 ? "escala" : i === 0 ? "izq" : "der"}
+              delay={i * 0.05}
             >
-              <Link href={`/grupos#${grupo.slug}`} className="flex h-full flex-col p-6 sm:p-8">
+              <Link
+                href={puerta.href}
+                className="group panel flex h-full flex-col rounded-3xl p-6 transition-colors duration-500 hover:bg-azul/40 active:bg-azul/40 sm:p-8 md:p-9"
+              >
                 <div className="flex items-baseline justify-between gap-4">
-                  <p className="rotulo">{grupo.para}</p>
+                  <p className="rotulo">{puerta.rotulo}</p>
                   <span aria-hidden className="indice">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="mt-3 text-xl font-bold leading-tight text-balance md:mt-4">
-                  {grupo.nombre}
+                <h3 className="mt-3 text-2xl font-bold leading-tight text-balance md:mt-4">
+                  {puerta.titulo}
                 </h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-blanco/60">
-                  {grupo.descripcion}
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-blanco/60 md:mt-4">
+                  {puerta.texto}
                 </p>
-                <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-alba md:mt-6">
-                  Conocer más
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-alba md:mt-8">
+                  {puerta.cta}
                   <span
                     aria-hidden
                     className="inline-block transition-transform duration-300 group-hover:translate-x-1.5 group-active:translate-x-1.5"
@@ -235,100 +228,7 @@ export default function Inicio() {
               </Link>
             </Reveal>
           ))}
-
-          {/* En azul de marca: es la salida para quien no se reconoció en
-              ninguna de las diez, y tiene que verse distinta a las diez. */}
-          <Reveal as="li" tipo="escala" className="panel-azul group border-0 lg:col-span-2">
-            <a
-              href={enlaces.whatsapp}
-              target="_blank"
-              rel="noreferrer"
-              className="flex h-full flex-col p-6 sm:p-8"
-            >
-              <p className="rotulo text-alba-tenue">Si ninguno te queda</p>
-              <h3 className="mt-3 text-xl font-bold leading-tight text-balance md:mt-4">
-                Te ayudamos a escoger
-              </h3>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-blanco/75">
-                Dinos tu edad y tus horarios y te decimos cuál grupo te toca y cuándo se reúne.
-              </p>
-              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blanco md:mt-6">
-                Escríbenos
-                <span
-                  aria-hidden
-                  className="inline-block transition-transform duration-300 group-hover:translate-x-1.5 group-active:translate-x-1.5"
-                >
-                  →
-                </span>
-              </span>
-            </a>
-          </Reveal>
         </ul>
-      </section>
-
-      <Marquesina vuelta="46s" />
-
-      {/* ── El siguiente paso ────────────────────────────────────────────── */}
-      <section id="da-un-paso" className="contenedor scroll-mt-20 py-12 md:scroll-mt-24 md:py-20">
-        <EncabezadoSeccion
-          rotulo="Da un paso"
-          titulo="Sacramentos y *formación*"
-          descripcion="Ya sea que vengas a bautizar, a confirmarte, a casarte o a estudiar en serio lo que crees, aquí empieza el trámite."
-        />
-
-        <div className="mt-8 grid gap-4 md:mt-12 md:gap-6 lg:grid-cols-2">
-          <Reveal tipo="izq" className="panel rounded-3xl p-6 sm:p-9">
-            <h3 className="rotulo">Sacramentos</h3>
-            <ul className="mt-5 divide-y divide-white/10 md:mt-7">
-              {sacramentos.map((s, i) => (
-                <li key={s.slug}>
-                  {/* La flecha se ve siempre. Cuando sólo aparecía al pasar el
-                      cursor, en un teléfono no aparecía nunca. */}
-                  <Link
-                    href={`/sacramentos#${s.slug}`}
-                    className="group flex min-h-[3.25rem] items-center justify-between gap-6 py-3"
-                  >
-                    <span className="flex items-baseline gap-3">
-                      <span aria-hidden className="indice">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="text-lg font-semibold">{s.nombre}</span>
-                    </span>
-                    <span className="shrink-0 text-alba opacity-60 transition-all duration-300 group-hover:translate-x-1.5 group-hover:opacity-100 group-active:translate-x-1.5 group-active:opacity-100">
-                      →
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-
-          <Reveal tipo="der" delay={0.08} className="panel rounded-3xl p-6 sm:p-9">
-            <h3 className="rotulo">Formación</h3>
-            <ul className="mt-5 space-y-6 md:mt-7 md:space-y-7">
-              {formacion.map((f) => (
-                <li key={f.nombre}>
-                  <h4 className="text-lg font-semibold">{f.nombre}</h4>
-                  <p className="mt-2 text-sm leading-relaxed text-blanco/60">{f.descripcion}</p>
-                  <a
-                    href={f.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="toque group mt-1 gap-2 text-sm font-semibold text-alba"
-                  >
-                    {f.cta}
-                    <span
-                      aria-hidden
-                      className="inline-block transition-transform duration-300 group-hover:translate-x-1.5 group-active:translate-x-1.5"
-                    >
-                      →
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
       </section>
 
       {/* ── Ven ──────────────────────────────────────────────────────────── */}

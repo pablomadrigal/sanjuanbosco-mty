@@ -302,6 +302,41 @@ export const cifras = {
   camino: "camino, y es de todos",
 };
 
+/**
+ * Las tres puertas de entrada desde la portada.
+ *
+ * La portada invita; el detalle vive en su página. Quien llega al sitio viene
+ * casi siempre por el horario de misa, y quien además quiere quedarse necesita
+ * una puerta clara —no el catálogo completo de diez pastorales antes de haber
+ * decidido nada.
+ */
+export const puertas = [
+  {
+    href: "/grupos",
+    rotulo: "Encuentra tu lugar",
+    titulo: "Grupos y pastorales",
+    texto:
+      "Diez pastorales organizadas por edad, por intereses o por el servicio que hacen. En todas pasa lo mismo: amistad, formación y oración.",
+    cta: "Ver los grupos",
+  },
+  {
+    href: "/sacramentos",
+    rotulo: "Da un paso",
+    titulo: "Sacramentos",
+    texto:
+      "Bautizo, primera comunión, confirmación, confesión, matrimonio y unción: qué llevar y en qué orden, para no hacer el viaje dos veces.",
+    cta: "Cómo empezar",
+  },
+  {
+    href: "/formacion",
+    rotulo: "Somos universitarios",
+    titulo: "Formación",
+    texto:
+      "El Diplomado en Teología para Jóvenes, Christianus Ductor y el misal digital. Aquí la fe se piensa y se discute.",
+    cta: "Ver convocatorias",
+  },
+];
+
 /** Misas que se celebran en una semana, sumando todos los bloques. */
 export function misasPorSemana() {
   return misas.reduce((total, bloque) => total + bloque.dias.length * bloque.misas.length, 0);
