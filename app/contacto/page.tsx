@@ -30,7 +30,7 @@ export default function Contacto() {
 
       <section className="contenedor pb-20 md:pb-28">
         <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
-          <Reveal tipo="izq" className="panel rounded-3xl p-6 sm:p-9">
+          <Reveal className="panel rounded-xl p-6 sm:p-9">
             <h2 className="rotulo">Dirección</h2>
             <address className="mt-4 not-italic text-xl font-semibold leading-snug sm:text-2xl md:mt-5">
               {parroquia.direccion.calle}
@@ -46,7 +46,7 @@ export default function Contacto() {
             </div>
           </Reveal>
 
-          <Reveal tipo="der" className="panel rounded-3xl p-6 sm:p-9">
+          <Reveal className="panel rounded-xl p-6 sm:p-9">
             <h2 className="rotulo">Oficina parroquial</h2>
             <ul className="mt-4 space-y-1 text-lg md:mt-5 md:space-y-2">
               {oficina?.lineas.map((linea) => (
@@ -62,30 +62,30 @@ export default function Contacto() {
         </div>
 
         <Reveal className="mt-4 md:mt-6">
-          <ul className="grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-px overflow-hidden rounded-xl border border-regla bg-regla sm:grid-cols-2 lg:grid-cols-3">
             {canales.map((canal) => (
               <li
                 key={canal.nombre}
-                className="group bg-noche/90 transition-colors duration-500 hover:bg-azul/45 active:bg-azul/45 md:bg-noche/70 md:backdrop-blur-xl"
+                className="group bg-noche/90 transition-colors duration-[180ms] hover:bg-azul/45 active:bg-azul/45 md:bg-noche/70 md:backdrop-blur-xl"
               >
                 <a href={canal.href} target="_blank" rel="noreferrer" className="block p-6 sm:p-8">
                   <h3 className="flex items-center gap-2 text-lg font-semibold">
                     {canal.nombre}
                     <span
                       aria-hidden
-                      className="text-alba opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100 group-active:translate-x-1 group-active:opacity-100"
+                      className="text-alba opacity-0 transition-all duration-[120ms] group-hover:translate-x-1 group-hover:opacity-100 group-active:translate-x-1 group-active:opacity-100"
                     >
                       →
                     </span>
                   </h3>
-                  <p className="mt-1.5 text-sm text-blanco/60 sm:mt-2">{canal.detalle}</p>
+                  <p className="mt-1.5 text-sm text-tenue sm:mt-2">{canal.detalle}</p>
                 </a>
               </li>
             ))}
           </ul>
         </Reveal>
 
-        <Reveal className="mt-4 overflow-hidden rounded-3xl border border-white/12 md:mt-6">
+        <Reveal className="mt-4 overflow-hidden rounded-xl border border-regla md:mt-6">
           <iframe
             title="Mapa de la Parroquia San Juan Bosco"
             src="https://www.google.com/maps?q=Bogot%C3%A1%20211%2C%20Alta%20Vista%2C%2064840%20Monterrey%2C%20N.L.&output=embed"

@@ -50,11 +50,11 @@ export default function Nosotros() {
           </div>
         </div>
 
-        <Reveal className="mt-16 md:mt-28">
+        <Reveal className="mt-16 md:mt-24">
           <p className="rotulo">Equipo sacerdotal</p>
-          <ul className="mt-6 grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 md:mt-8 md:grid-cols-3">
+          <ul className="mt-6 grid gap-px overflow-hidden rounded-xl border border-regla bg-regla md:mt-8 md:grid-cols-3">
             {equipo.map((persona) => (
-              <li key={persona.nombre} className="bg-noche/90 p-6 transition-colors duration-500 hover:bg-azul/40 sm:p-8 md:bg-noche/70 md:backdrop-blur-xl">
+              <li key={persona.nombre} className="bg-noche/90 p-6 transition-colors duration-[180ms] hover:bg-azul/40 sm:p-8 md:bg-noche/70 md:backdrop-blur-xl">
                 <h2 className="text-lg font-bold leading-tight sm:text-xl">{persona.nombre}</h2>
                 <p className="rotulo mt-2 md:mt-3">{persona.cargo}</p>
               </li>
@@ -62,15 +62,15 @@ export default function Nosotros() {
           </ul>
         </Reveal>
 
-        <div className="mt-16 space-y-12 md:mt-28 md:space-y-20">
-          {frasesDonBosco.slice(1).map((frase, i) => (
-            <Reveal key={frase} tipo={i % 2 ? "der" : "izq"}>
+        <div className="mt-16 space-y-12 md:mt-24 md:space-y-16">
+          {frasesDonBosco.slice(1).map((frase) => (
+            <Reveal key={frase}>
               <Cita autor="San Juan Bosco">{frase}</Cita>
             </Reveal>
           ))}
         </div>
 
-        <Reveal tipo="escala" className="mt-16 flex justify-center md:mt-28">
+        <Reveal tipo="escala" className="mt-16 flex justify-center md:mt-24">
           <Image
             src="/brand/siempre-alegres-blanco.png"
             alt={parroquia.hashtag}

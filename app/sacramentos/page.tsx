@@ -21,7 +21,7 @@ export default function Sacramentos() {
       <section className="contenedor pb-20 md:pb-28">
         <ul className="grid gap-4 md:gap-6 lg:grid-cols-2">
           {sacramentos.map((s, i) => (
-            <Reveal key={s.slug} as="li" tipo={i % 2 ? "der" : "izq"} className="panel rounded-3xl p-6 sm:p-9">
+            <Reveal key={s.slug} as="li" className="panel rounded-xl p-6 sm:p-9">
               <article id={s.slug} className="scroll-mt-20 md:scroll-mt-28">
                 <div className="flex items-baseline gap-3">
                   <span aria-hidden className="indice">
@@ -29,14 +29,14 @@ export default function Sacramentos() {
                   </span>
                   <h2 className="text-xl font-bold sm:text-2xl">{s.nombre}</h2>
                 </div>
-                <p className="mt-3 text-sm leading-relaxed text-blanco/70 sm:text-base">{s.resumen}</p>
+                <p className="mt-3 text-sm leading-relaxed text-suave sm:text-base">{s.resumen}</p>
                 {/* Los pasos van en orden porque el trámite lo tiene: la
                     numeración aquí es información, no adorno. */}
                 <ol className="mt-5 space-y-3 md:mt-6">
                   {s.pasos.map((paso, n) => (
                     <li key={paso} className="flex gap-3 md:gap-4">
                       <span className="cifra rotulo shrink-0 pt-1">{n + 1}</span>
-                      <span className="text-sm leading-relaxed text-blanco/65">{paso}</span>
+                      <span className="text-sm leading-relaxed text-suave">{paso}</span>
                     </li>
                   ))}
                 </ol>
@@ -45,7 +45,7 @@ export default function Sacramentos() {
           ))}
         </ul>
 
-        <Reveal tipo="escala" className="panel-azul mt-6 rounded-3xl p-6 sm:p-10 md:mt-10">
+        <Reveal tipo="escala" className="panel-azul mt-6 rounded-xl p-6 sm:p-10 md:mt-10">
           <h2 className="display-md text-balance">La oficina te resuelve lo demás</h2>
           <p className="prosa mt-3 md:mt-4">
             Lunes a viernes de 9:00 a 13:00 y de 15:00 a 19:00, sábado de 9:00 a 13:00, en{" "}

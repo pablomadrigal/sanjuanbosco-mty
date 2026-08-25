@@ -36,9 +36,9 @@ export default function Nav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 pt-[env(safe-area-inset-top)] transition-colors duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 pt-[env(safe-area-inset-top)] transition-colors duration-[180ms] ${
         desplazado || abierto
-          ? "border-b border-white/10 bg-noche lg:bg-noche/80 lg:backdrop-blur-xl"
+          ? "border-b border-regla bg-noche lg:bg-noche/80 lg:backdrop-blur-xl"
           : "border-b border-transparent"
       }`}
     >
@@ -60,7 +60,7 @@ export default function Nav() {
           {/* Con el menú abierto el nombre completo estorba: el logotipo ya
               dice dónde estamos y el ancho hace falta para el botón. */}
           <span className={`leading-none ${abierto ? "hidden sm:block" : "block"}`}>
-            <span className="block text-[0.5rem] font-semibold uppercase tracking-[0.18em] text-blanco/55 sm:text-[0.5625rem] sm:tracking-[0.2em]">
+            <span className="block text-[0.5rem] font-semibold uppercase tracking-[0.18em] text-tenue sm:text-[0.5625rem] sm:tracking-[0.2em]">
               Parroquia Universitaria
             </span>
             <span className="mt-1 block text-sm font-extrabold uppercase tracking-[0.04em] sm:text-base">
@@ -77,7 +77,7 @@ export default function Nav() {
                 <Link
                   href={item.href}
                   className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                    activo ? "text-blanco" : "text-blanco/65 hover:text-blanco"
+                    activo ? "text-blanco" : "text-suave hover:text-blanco"
                   }`}
                 >
                   {activo && (
@@ -99,7 +99,7 @@ export default function Nav() {
             href={enlaces.whatsapp}
             target="_blank"
             rel="noreferrer"
-            className="hidden rounded-full bg-blanco px-5 py-2.5 text-sm font-semibold text-noche transition-transform duration-300 hover:scale-[1.03] active:scale-[0.97] sm:inline-flex lg:inline-flex"
+            className="hidden rounded-full bg-blanco px-5 py-2.5 text-sm font-semibold text-noche transition-transform duration-[120ms] hover:scale-[1.03] active:scale-[0.97] sm:inline-flex lg:inline-flex"
           >
             Escríbenos
           </a>
@@ -108,22 +108,22 @@ export default function Nav() {
             onClick={() => setAbierto((v) => !v)}
             aria-expanded={abierto}
             aria-controls="menu-movil"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 transition-colors duration-200 active:bg-white/10 lg:hidden"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-regla transition-colors duration-[120ms] active:bg-white/10 lg:hidden"
           >
             <span className="sr-only">{abierto ? "Cerrar menú" : "Abrir menú"}</span>
             <span className="relative block h-3 w-5">
               <span
-                className={`absolute inset-x-0 top-0 h-px bg-blanco transition-transform duration-300 ${
+                className={`absolute inset-x-0 top-0 h-px bg-blanco transition-transform duration-[120ms] ${
                   abierto ? "translate-y-[6px] rotate-45" : ""
                 }`}
               />
               <span
-                className={`absolute inset-x-0 top-[6px] h-px bg-blanco transition-opacity duration-200 ${
+                className={`absolute inset-x-0 top-[6px] h-px bg-blanco transition-opacity duration-[120ms] ${
                   abierto ? "opacity-0" : ""
                 }`}
               />
               <span
-                className={`absolute inset-x-0 top-3 h-px bg-blanco transition-transform duration-300 ${
+                className={`absolute inset-x-0 top-3 h-px bg-blanco transition-transform duration-[120ms] ${
                   abierto ? "-translate-y-[6px] -rotate-45" : ""
                 }`}
               />
@@ -160,14 +160,14 @@ export default function Nav() {
                     <Link
                       href={item.href}
                       aria-current={ruta === item.href ? "page" : undefined}
-                      className={`group flex min-h-[3.5rem] items-center justify-between gap-4 border-b border-white/10 py-3 text-xl font-semibold tracking-tight transition-colors active:text-alba sm:text-2xl ${
+                      className={`group flex min-h-[3.5rem] items-center justify-between gap-4 border-b border-regla py-3 text-xl font-semibold tracking-tight transition-colors active:text-alba sm:text-2xl ${
                         ruta === item.href ? "text-alba" : ""
                       }`}
                     >
                       {item.label}
                       <span
                         aria-hidden
-                        className="text-alba opacity-0 transition-all duration-300 group-active:translate-x-1.5 group-active:opacity-100"
+                        className="text-alba opacity-0 transition-all duration-[120ms] group-active:translate-x-1.5 group-active:opacity-100"
                       >
                         →
                       </span>
@@ -185,7 +185,7 @@ export default function Nav() {
                   href={enlaces.whatsapp}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex min-h-[3.25rem] w-full items-center justify-center rounded-full bg-blanco px-6 font-semibold text-noche transition-transform duration-200 active:scale-[0.98]"
+                  className="flex min-h-[3.25rem] w-full items-center justify-center rounded-full bg-blanco px-6 font-semibold text-noche transition-transform duration-[120ms] active:scale-[0.98]"
                 >
                   Escríbenos por WhatsApp
                 </a>
@@ -193,11 +193,11 @@ export default function Nav() {
                   href={parroquia.direccion.maps}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-3 flex min-h-[3.25rem] w-full items-center justify-center rounded-full border border-white/25 px-6 font-semibold transition-colors duration-200 active:bg-white/10"
+                  className="mt-3 flex min-h-[3.25rem] w-full items-center justify-center rounded-full border border-regla-viva px-6 font-semibold transition-colors duration-[120ms] active:bg-white/10"
                 >
                   Cómo llegar
                 </a>
-                <address className="mt-6 text-center text-sm not-italic leading-relaxed text-blanco/50">
+                <address className="mt-6 text-center text-sm not-italic leading-relaxed text-tenue">
                   {parroquia.direccion.calle} · {parroquia.direccion.colonia}
                   <br />
                   {parroquia.direccion.ciudad}

@@ -1,7 +1,16 @@
 import type { CSSProperties, ReactNode } from "react";
 
-/** Cómo entra el bloque a escena. */
-export type Entrada = "subir" | "izq" | "der" | "escala" | "girar";
+/**
+ * Cómo entra el bloque a escena.
+ *
+ * Son dos, no cinco. Había también `izq`, `der` y `girar`, y alternarlos por
+ * fila parecía darle ritmo a la página; lo que hacían de verdad era mover
+ * cada renglón de una lista de diez pastorales 36 px en horizontal, uno para
+ * cada lado, mientras alguien intentaba leerlos en un teléfono. El ritmo lo
+ * tiene que poner el diseño —el tamaño de la tipografía, las reglas, el
+ * bloque claro a media página—, no un vaivén distinto cada dos elementos.
+ */
+export type Entrada = "subir" | "escala";
 
 type Props = {
   children: ReactNode;
@@ -16,7 +25,7 @@ type Props = {
   as?: "div" | "li" | "section" | "article" | "figure" | "header";
   /** true en la portada: entra al cargar en vez de al aparecer. */
   entrada?: boolean;
-  /** Por dónde entra. Alternar `izq` y `der` es lo que le da ritmo a la página. */
+  /** `escala` se reserva para el bloque que cierra la página. Uno por página. */
   tipo?: Entrada;
 };
 

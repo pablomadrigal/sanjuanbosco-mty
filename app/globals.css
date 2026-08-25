@@ -15,10 +15,42 @@
   --color-alba: #7fb2e5;
   --color-alba-tenue: #b9d4ef;
 
+  /* Grises de texto, con piso de contraste.
+     Antes había siete opacidades distintas (40, 45, 50, 55, 60, 65, 70) puestas
+     a ojo, y las dos más bajas no llegaban a 4.5:1 sobre el fondo. Son dos, y
+     las dos pasan: `suave` para párrafos, `tenue` para letra chica. Debajo de
+     `tenue` no hay nada; si un texto necesita verse menos, no debería estar. */
+  --color-suave: color-mix(in oklab, #ffffff 78%, #232038);
+  --color-tenue: color-mix(in oklab, #ffffff 62%, #232038);
+
+  /* Reglas. Toda la información va separada por líneas, no por cajas, así que
+     hay exactamente dos: la que divide y la que rodea algo que se toca. */
+  --color-regla: color-mix(in oklab, #ffffff 14%, transparent);
+  --color-regla-viva: color-mix(in oklab, #ffffff 30%, transparent);
+
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
 
+  /* Radios. Antes eran `2xl`, `3xl`, `full` y un `2px` suelto: cuatro tamaños
+     elegidos sobre la marcha. La escala es corta a propósito y arranca chica —
+     una tarjeta con 24 px de radio en una pantalla de 390 px se ve inflada, y
+     el redondeo grande es justo lo que hace que algo parezca plantilla. */
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.375rem;
+
   --ease-camino: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Lo que responde al dedo sale rápido y frena al llegar. */
+  --ease-salida: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Duraciones. Lo que contesta a un toque no pasa de 200 ms: más allá se
+     siente que la página va detrás del dedo, no con él. Las entradas —que se
+     ven una vez— pueden durar más. */
+  --duracion-toque: 120ms;
+  --duracion-respuesta: 180ms;
+  --duracion-entrada: 520ms;
 }
 
 :root {
@@ -120,12 +152,36 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Ancho de lectura cómodo para párrafos largos. */
+/* Ancho de lectura cómodo para párrafos largos. `pretty` evita que el último
+   renglón quede con una sola palabra, que es lo que más delata un párrafo sin
+   componer. */
 @utility prosa {
   max-width: 62ch;
   font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-  line-height: 1.65;
-  color: color-mix(in oklab, var(--color-blanco) 78%, var(--color-noche));
+  line-height: 1.6;
+  text-wrap: pretty;
+  color: var(--color-suave);
+}
+
+/* ── Ritmo vertical ─────────────────────────────────────────────────────
+   El aire entre secciones era distinto en cada página —`py-8`, `pb-20`,
+   `mt-16`, `mt-28`— y un ritmo que cambia cada dos pantallas se lee como
+   descuido. Una sola medida, y en el teléfono más corta: ahí el aire de más
+   no es respiro, es scroll.                                              */
+@utility seccion {
+  padding-block: 2.75rem;
+}
+
+@media (min-width: 48rem) {
+  .seccion {
+    padding-block: 6rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .seccion {
+    padding-block: 7.5rem;
+  }
 }
 
 /* ── Contenedor ─────────────────────────────────────────────────────────
@@ -152,7 +208,7 @@ body {
    en una GPU móvil; el desenfoque entra sólo cuando hay con qué pagarlo. */
 @utility panel {
   background: color-mix(in oklab, var(--color-blanco) 7%, color-mix(in oklab, var(--color-noche) 82%, transparent));
-  border: 1px solid color-mix(in oklab, var(--color-blanco) 12%, transparent);
+  border: 1px solid var(--color-regla);
 }
 
 @media (min-width: 48rem) {
@@ -202,6 +258,36 @@ body {
   pointer-events: none;
 }
 
+/* ── Marcatextos ────────────────────────────────────────────────────────
+   Una palabra remarcada con plumón, como en un cuaderno de clase. Es el gesto
+   más juvenil que cabe sin salirse del manual: la mancha es el azul de luz de
+   la marca, nada más.
+
+   No se anima. Un trazo que se dibuja solo funciona una vez —el titular de la
+   sección—; repetido en cada página es un adorno que se ve cien veces, y eso
+   ya no deleita a nadie: estorba. El subrayado a mano sigue teniendo su
+   entrada porque aparece una sola vez por página; el marcatextos ya está
+   pintado cuando llegas.
+
+   La mancha va antes que la palabra en el marcado y la palabra va en una caja
+   posicionada: así se pinta encima sin `z-index` negativo, que se colaría
+   detrás del fondo de la sección. Blanco sobre el azul al 34 % da 8.5:1.    */
+@utility resaltado {
+  position: absolute;
+  /* La mancha cubre de la altura de x para abajo y desborda un poco por los
+     lados, como un trazo que se pasa. Cubriendo la caja entera se veía una
+     calcomanía rectangular; así se ve tinta. */
+  left: -0.16em;
+  top: 0.14em;
+  width: calc(100% + 0.32em);
+  height: 0.86em;
+  overflow: visible;
+  color: color-mix(in oklab, var(--color-alba) 38%, transparent);
+  /* El plumón nunca queda derecho. */
+  transform: rotate(-0.8deg);
+  pointer-events: none;
+}
+
 /* ── Etiqueta pegada a mano ─────────────────────────────────────────────
    Nada en una página está torcido por accidente, y justo por eso un par de
    grados de más se leen como mano y no como plantilla. */
@@ -245,7 +331,9 @@ body {
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.16em;
-  color: color-mix(in oklab, var(--color-alba) 70%, transparent);
+  /* Al 70 % se quedaba en 4.2:1. El azul de luz entero pasa de 7:1 y el
+     índice sigue leyéndose como índice, no como titular. */
+  color: var(--color-alba);
 }
 
 /* ── Marquesina ─────────────────────────────────────────────────────────
@@ -254,8 +342,10 @@ body {
    aunque nadie esté haciendo scroll. */
 @utility marquesina {
   overflow: hidden;
-  border-block: 1px solid color-mix(in oklab, var(--color-blanco) 12%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  border-block: 1px solid var(--color-regla);
+  /* La máscara empezaba a comerse el texto al 8 % del ancho: en un teléfono
+     eso son 30 px y la primera palabra siempre se leía a medias. */
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
 }
 
 @utility marquesina-pista {
@@ -277,20 +367,48 @@ body {
   background: linear-gradient(90deg, var(--color-azul), var(--color-alba), var(--color-blanco));
 }
 
+
 /* ── Cinética ───────────────────────────────────────────────────────────
-   El lema es un camino y el scroll es lo que avanza por él, así que la
-   página entera se mueve con el scroll: los bloques entran por un lado y
-   por otro, lo decorativo va a otra velocidad que el texto y arriba avanza
-   una barra que dice cuánto llevas.
+   El lema es un camino y el scroll es lo que avanza por él. La tentación
+   —que este archivo tuvo— es traducir eso a que TODO se mueva: bloques
+   entrando por izquierda y por derecha, títulos armándose palabra por
+   palabra en cada sección, un brillo cruzando el botón cada cinco segundos,
+   una calcomanía bamboleándose para siempre.
+
+   El problema es que una animación deja de deleitar la segunda vez que la
+   ves, y en un sitio de seis páginas cortas eso pasa antes de terminar la
+   primera. Peor en un teléfono: con la pantalla ocupada casi entera por un
+   bloque, un desvanecido ligado al scroll deja el texto a medio opacar
+   justo mientras alguien lo está leyendo.
+
+   Así que el presupuesto de movimiento es corto y cada gasto se justifica:
+
+   - `subir`     entrada única y corta. Es la ÚNICA forma de entrar.
+   - `crecer`    la excepción: un bloque por página, el que cierra.
+   - `asomar`    palabra por palabra, sólo en el H1 de cada página.
+   - `deriva`    profundidad en lo decorativo; un elemento por página.
+   - `trazar`    el subrayado a mano; una palabra por página.
+   - `avanzar`   cuánto llevas de la página: es información, no adorno.
+   - `latido`    el punto de «próxima misa»: dice que el dato está vivo.
+   - `caer`      la flecha de «desliza»: es la instrucción, no un adorno.
+   - marquesina  el pulso de la portada, y la única que no para.
+
+   Lo que se fue, y por qué: las entradas laterales (36 px de vaivén
+   horizontal en cada renglón de una lista de diez), el titular armándose en
+   cada sección, el brillo permanente del botón, el flotar del lema y el
+   bamboleo de la calcomanía —que se queda torcida, quieta, que es de donde
+   venía la gracia—.
 
    Todo es CSS —líneas de tiempo de scroll, ninguna dependencia de
    hidratación—, así que si el script nunca carga el contenido igual se lee,
    y si alguien pidió menos movimiento no se mueve nada.                   */
 
+/* El recorrido es corto a propósito: lo justo para que se note que llegó.
+   A 24 px la entrada se lee como un empujón; a 10 px, como que estaba. */
 @keyframes subir {
   from {
     opacity: 0;
-    transform: translateY(1.5rem);
+    transform: translateY(0.625rem);
   }
   to {
     opacity: 1;
@@ -298,34 +416,12 @@ body {
   }
 }
 
-/* Recorrido corto: para las palabras de un titular, que se mueven poco
-   porque son muchas y muy seguidas. */
+/* Recorrido más corto todavía: para las palabras de un titular, que se
+   mueven poco porque son muchas y muy seguidas. */
 @keyframes asomar {
   from {
     opacity: 0;
-    transform: translateY(0.55em);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes desde-izq {
-  from {
-    opacity: 0;
-    transform: translate3d(-2.25rem, 0.75rem, 0);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes desde-der {
-  from {
-    opacity: 0;
-    transform: translate3d(2.25rem, 0.75rem, 0);
+    transform: translateY(0.4em);
   }
   to {
     opacity: 1;
@@ -334,31 +430,15 @@ body {
 }
 
 /* Crece pasándose de largo y regresa. El rebote es lo que separa «aparecer»
-   de «llegar». */
+   de «llegar», y por eso se guarda para el bloque que cierra la página. */
 @keyframes crecer {
   from {
     opacity: 0;
-    transform: scale(0.9) translateY(1.5rem);
+    transform: scale(0.96) translateY(0.75rem);
   }
   70% {
     opacity: 1;
-    transform: scale(1.025) translateY(0);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Entra ladeado y se endereza, como algo que se acomoda al llegar. */
-@keyframes enderezar {
-  from {
-    opacity: 0;
-    transform: rotate(-3deg) translateY(1.75rem);
-  }
-  72% {
-    opacity: 1;
-    transform: rotate(0.9deg) translateY(0);
+    transform: scale(1.008) translateY(0);
   }
   to {
     opacity: 1;
@@ -387,22 +467,12 @@ body {
   }
 }
 
-@keyframes flotar {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-0.4rem);
-  }
-}
-
 /* La flecha de «desliza»: cae, se detiene y vuelve. */
 @keyframes caer {
   0%,
   100% {
     transform: translateY(0);
-    opacity: 0.5;
+    opacity: 0.55;
   }
   50% {
     transform: translateY(0.4rem);
@@ -420,17 +490,6 @@ body {
   }
 }
 
-/* El bamboleo de una calcomanía mal pegada. */
-@keyframes bambolear {
-  0%,
-  100% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(-2.2deg);
-  }
-}
-
 @keyframes marquesina-corre {
   from {
     transform: translateX(0);
@@ -440,8 +499,6 @@ body {
   }
 }
 
-/* Un brillo que cruza el botón principal cada tantos segundos. En un
-   teléfono no hay cursor que lo despierte, así que se despierta solo. */
 /* La segunda banda corre al revés que la primera. */
 @keyframes marquesina-vuelve {
   from {
@@ -452,31 +509,12 @@ body {
   }
 }
 
-@keyframes destello {
-  0% {
-    transform: translateX(-130%) skewX(-18deg);
-  }
-  55%,
-  100% {
-    transform: translateX(240%) skewX(-18deg);
-  }
-}
-
 @keyframes avanzar {
   from {
     transform: scaleX(0);
   }
   to {
     transform: scaleX(1);
-  }
-}
-
-@keyframes recorrer {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(100%);
   }
 }
 
@@ -494,17 +532,15 @@ body {
 @media (prefers-reduced-motion: no-preference) {
   /* Portada: entra al cargar, escalonada. */
   [data-entrada] {
-    animation: subir 0.8s var(--ease-camino) var(--retraso, 0s) both;
+    animation: subir var(--duracion-entrada) var(--ease-camino) var(--retraso, 0s) both;
   }
 
-  /* Titulares palabra por palabra. Sobre el pliegue las marca el reloj;
-     más abajo, el scroll (ver el bloque @supports). */
+  /* Titulares palabra por palabra. Sólo el H1, y sólo por reloj: es el
+     único de la página, se ve una vez y no depende del scroll, así que
+     nunca deja el texto a medio opacar mientras alguien lo lee. */
   [data-palabra] {
     display: inline-block;
-  }
-
-  [data-palabra="reloj"] {
-    animation: asomar 0.7s var(--ease-camino) var(--retraso, 0s) both;
+    animation: asomar 0.6s var(--ease-camino) var(--retraso, 0s) both;
   }
 
   /* Pulsos permanentes: lo poco que se mueve sin que nadie haga nada. */
@@ -516,32 +552,13 @@ body {
     animation-name: marquesina-vuelve;
   }
 
-  .calcomania {
-    animation: bambolear 7s ease-in-out infinite;
-  }
-
-  .flota {
-    animation: flotar 4.5s ease-in-out infinite;
-  }
-
   .cae {
     animation: caer 2s ease-in-out infinite;
   }
 
-  .destella::after {
-    content: "";
-    position: absolute;
-    inset-block: 0;
-    left: 0;
-    width: 35%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-    animation: destello 5s ease-in-out infinite;
-    pointer-events: none;
-  }
-
-  /* Resto de la página: entra conforme aparece en pantalla, y no siempre
-     por el mismo lado. La variedad es lo que hace que recorrer la página no
-     se sienta como pasar diapositivas. */
+  /* Resto de la página: entra conforme aparece en pantalla. Una sola
+     dirección —hacia arriba— y un tramo corto del recorrido, para que el
+     bloque termine de llegar bastante antes de quedar centrado. */
   @supports (animation-timeline: view()) {
     [data-reveal] {
       animation: subir 1s linear both;
@@ -549,35 +566,17 @@ body {
       /* En una pantalla de teléfono el bloque ocupa casi todo el alto: si
          el rango fuera tan largo como en escritorio, el texto pasaría
          medio transparente justo mientras se lee. */
-      animation-range: entry 0% entry 35%;
-    }
-
-    [data-reveal="izq"] {
-      animation-name: desde-izq;
-    }
-
-    [data-reveal="der"] {
-      animation-name: desde-der;
+      animation-range: entry 0% entry 28%;
     }
 
     [data-reveal="escala"] {
       animation-name: crecer;
     }
 
-    [data-reveal="girar"] {
-      animation-name: enderezar;
-    }
-
     /* Escalón: retrasa la entrada de los hermanos de una misma fila para que
        lleguen uno tras otro en vez de todos de golpe. */
     [data-reveal][style*="--escalon"] {
-      animation-range: entry var(--escalon) entry calc(35% + var(--escalon));
-    }
-
-    [data-palabra]:not([data-palabra="reloj"]) {
-      animation: asomar 1s linear both;
-      animation-timeline: view();
-      animation-range: entry var(--escalon, 0%) entry calc(30% + var(--escalon, 0%));
+      animation-range: entry var(--escalon) entry calc(28% + var(--escalon));
     }
 
     /* El trazo empieza sin dibujar SÓLO aquí dentro: si el navegador no
@@ -597,11 +596,11 @@ body {
 
     @media (min-width: 48rem) {
       [data-reveal] {
-        animation-range: entry 0% entry 55%;
+        animation-range: entry 0% entry 45%;
       }
 
       [data-reveal][style*="--escalon"] {
-        animation-range: entry var(--escalon) entry calc(55% + var(--escalon));
+        animation-range: entry var(--escalon) entry calc(45% + var(--escalon));
       }
     }
   }
