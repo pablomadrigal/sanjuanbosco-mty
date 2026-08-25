@@ -22,7 +22,7 @@ export default function Cifras() {
   ];
 
   return (
-    <section className="border-y border-white/10 py-10 md:py-14">
+    <section className="border-y border-white/10 py-8 md:py-14">
       <div className="contenedor">
         <Reveal>
           <p className="rotulo">{cifras.rotulo}</p>

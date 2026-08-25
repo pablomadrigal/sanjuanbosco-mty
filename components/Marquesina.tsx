@@ -39,7 +39,7 @@ export default function Marquesina({ vuelta = "38s" }: { vuelta?: string }) {
   const vuelto = [...marquesina.slice(mitad), ...marquesina.slice(0, mitad)];
 
   return (
-    <div aria-hidden className="marquesina my-14 py-4 md:my-20 md:py-6">
+    <div aria-hidden className="marquesina my-8 py-4 md:my-20 md:py-6">
       {/* Cada pista lleva su tira dos veces y se desplaza medio ancho: cuando
           termina la primera copia, la segunda ya está exactamente donde
           estaba la primera y el bucle no tiene costura. */}

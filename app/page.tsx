@@ -97,7 +97,7 @@ export default function Inicio() {
 
       {/* ── Lo primero que la gente busca, y lo único que la portada
              responde completo: a qué hora es la misa. ──────────────────── */}
-      <section id="esta-semana" className="contenedor scroll-mt-20 py-12 md:scroll-mt-24 md:py-20">
+      <section id="esta-semana" className="contenedor scroll-mt-20 py-8 md:scroll-mt-24 md:py-20">
         <EncabezadoSeccion
           rotulo="Esta semana"
           titulo="Hay misa a la hora que _puedas llegar_"
@@ -151,7 +151,7 @@ export default function Inicio() {
 
         {/* Confesiones, Hora Santa y oficina: tres renglones, no tres
             tarjetas. Es información de una línea; no necesita marco. */}
-        <ul className="mt-10 border-t border-white/12 md:mt-14">
+        <ul className="mt-8 border-t border-white/12 md:mt-14">
           {otrosHorarios.map((item, i) => (
             <Reveal
               key={item.titulo}
@@ -173,7 +173,7 @@ export default function Inicio() {
       <Cifras />
 
       {/* ── Quiénes somos, contado con la casa y con Don Bosco ───────────── */}
-      <section id="la-casa" className="contenedor scroll-mt-20 py-12 md:scroll-mt-24 md:py-20">
+      <section id="la-casa" className="contenedor scroll-mt-20 py-8 md:scroll-mt-24 md:py-20">
         <div className="grid items-center gap-10 md:gap-16 lg:grid-cols-[1fr_0.85fr]">
           <div>
             <Reveal tipo="izq">
@@ -218,7 +218,7 @@ export default function Inicio() {
       {/* ── Tres puertas ─────────────────────────────────────────────────
              Una tarjeta por camino, no el contenido de cada camino. Quien
              quiera el detalle da un toque y lo encuentra completo. ──────── */}
-      <section id="da-un-paso" className="contenedor scroll-mt-20 py-12 md:scroll-mt-24 md:py-20">
+      <section id="da-un-paso" className="contenedor scroll-mt-20 py-8 md:scroll-mt-24 md:py-20">
         <EncabezadoSeccion rotulo="Si te quieres quedar" titulo="Aquí empieza _lo que sigue_" />
 
         {/* Tres tarjetas iguales en fila son la forma más rápida de que algo
@@ -235,9 +235,12 @@ export default function Inicio() {
             >
               <Link
                 href={puerta.href}
-                className="group flex flex-col gap-4 py-7 transition-colors duration-500 hover:bg-white/[0.04] active:bg-white/[0.04] md:flex-row md:items-baseline md:gap-10 md:py-10"
+                className="group relative flex flex-col gap-4 py-7 transition-colors duration-500 hover:bg-white/[0.04] active:bg-white/[0.04] md:flex-row md:items-baseline md:gap-10 md:py-10"
               >
-                <span aria-hidden className="indice md:w-10 md:shrink-0 md:pt-2">
+                {/* En el teléfono el número se colgaba solo en su renglón y
+                    costaba 34 px por puerta. Va a la esquina, donde no ocupa
+                    alto y sigue leyéndose como índice. */}
+                <span aria-hidden className="indice absolute right-0 top-7 md:static md:w-10 md:shrink-0 md:pt-2">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="flex-1">
@@ -264,7 +267,7 @@ export default function Inicio() {
       </section>
 
       {/* ── Ven ──────────────────────────────────────────────────────────── */}
-      <section id="ven" className="contenedor scroll-mt-20 py-12 md:scroll-mt-24 md:py-20">
+      <section id="ven" className="contenedor scroll-mt-20 py-8 md:scroll-mt-24 md:py-20">
         <Reveal tipo="escala" className="panel-azul overflow-hidden rounded-3xl p-6 sm:p-10 md:p-16">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-12">
             <div>

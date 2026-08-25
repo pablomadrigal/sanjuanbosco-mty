@@ -97,12 +97,22 @@ body {
 }
 
 /* Etiqueta corta en versalitas. Marca la sección, no la decora. */
+/* A 11 px con dos décimas de tracking, un rótulo en un teléfono se lee a
+   duras penas. Un punto más grande en pantalla chica; en escritorio vuelve al
+   tamaño del manual, donde se ve de lejos. */
 @utility rotulo {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-alba);
+}
+
+@media (min-width: 48rem) {
+  .rotulo {
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+  }
 }
 
 @utility cifra {
