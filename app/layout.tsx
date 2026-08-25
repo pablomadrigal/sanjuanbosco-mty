@@ -92,6 +92,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <Footer />
         <AccionesMovil />
+        {/* Encima de todo, incluso del texto: es lo que hace que la página se
+            sienta impresa y no renderizada. No se toca ni se lee. */}
+        <div aria-hidden className="grano" />
       </body>
     </html>
   );
