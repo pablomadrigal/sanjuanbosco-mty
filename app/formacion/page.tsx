@@ -22,9 +22,9 @@ export default function Formacion() {
       <section className="contenedor pb-20 md:pb-28">
         <ul className="grid gap-4 md:grid-cols-3 md:gap-6">
           {formacion.map((f, i) => (
-            <Reveal key={f.nombre} as="li" tipo="escala" delay={i * 0.06} className="panel flex flex-col rounded-3xl p-6 sm:p-9">
+            <Reveal key={f.nombre} as="li" tipo="escala" delay={i * 0.06} className="panel flex flex-col rounded-xl p-6 sm:p-9">
               <h2 className="text-lg font-bold leading-tight text-balance sm:text-xl">{f.nombre}</h2>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-blanco/65 md:mt-4">{f.descripcion}</p>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-suave md:mt-4">{f.descripcion}</p>
               <div className="mt-6 md:mt-8">
                 <BotonSecundario href={f.href} externo>
                   {f.cta}
@@ -34,9 +34,11 @@ export default function Formacion() {
           ))}
         </ul>
 
-        <Marquesina />
+        <div className="my-14 md:my-20">
+          <Marquesina />
+        </div>
 
-        <Reveal tipo="izq" className="mt-16 md:mt-24">
+        <Reveal className="mt-16 md:mt-24">
           <Cita autor="San Juan Bosco">{frasesDonBosco[1]}</Cita>
         </Reveal>
       </section>

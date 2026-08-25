@@ -24,6 +24,22 @@ export const parroquia = {
   fiesta: "31 de enero",
 } as const;
 
+/**
+ * La primera línea de la portada, compuesta en tipografía.
+ *
+ * Antes el H1 era la imagen del lema y el titular no existía: la pantalla
+ * abría con un logotipo. El lema sigue firmando abajo, pero lo primero que se
+ * lee ahora es una frase, y dice lo único que hace falta decir a alguien que
+ * llega desde el celular buscando a qué hora es la misa.
+ *
+ * Admite las marcas de `Palabras`: `*cursiva*`, `_subrayado_`, `=plumón=`.
+ */
+export const portada = {
+  titular: "Llega a la misa que =te acomode=",
+  entrada:
+    "Somos San Juan Bosco: una comunidad de puertas abiertas en Alta Vista, Monterrey. Quédate el tiempo que quieras.",
+} as const;
+
 export const enlaces = {
   instagram: "https://www.instagram.com/sanjuanboscomty/",
   facebook: "https://www.facebook.com/SanJuanBoscoMTY",

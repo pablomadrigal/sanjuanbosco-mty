@@ -33,7 +33,7 @@ export default function AccionesMovil() {
   return (
     <nav
       aria-label="Acciones rápidas"
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-noche pb-[env(safe-area-inset-bottom)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-regla bg-noche pb-[env(safe-area-inset-bottom)] transition-transform duration-[120ms] ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${
         visible ? "translate-y-0" : "translate-y-full"
       }`}
     >
@@ -44,7 +44,7 @@ export default function AccionesMovil() {
             className="flex h-[var(--acciones)] flex-col items-center justify-center gap-0.5 text-[0.8125rem] font-semibold transition-colors active:bg-white/10"
           >
             Horarios
-            <span className="text-[0.625rem] font-medium uppercase tracking-[0.14em] text-blanco/45">
+            <span className="text-[0.625rem] font-medium uppercase tracking-[0.14em] text-tenue">
               Misas
             </span>
           </Link>
@@ -54,10 +54,10 @@ export default function AccionesMovil() {
             href={parroquia.direccion.maps}
             target="_blank"
             rel="noreferrer"
-            className="flex h-[var(--acciones)] flex-col items-center justify-center gap-0.5 border-x border-white/10 text-[0.8125rem] font-semibold transition-colors active:bg-white/10"
+            className="flex h-[var(--acciones)] flex-col items-center justify-center gap-0.5 border-x border-regla text-[0.8125rem] font-semibold transition-colors active:bg-white/10"
           >
             Cómo llegar
-            <span className="text-[0.625rem] font-medium uppercase tracking-[0.14em] text-blanco/45">
+            <span className="text-[0.625rem] font-medium uppercase tracking-[0.14em] text-tenue">
               {parroquia.direccion.calle}
             </span>
           </a>
@@ -70,7 +70,7 @@ export default function AccionesMovil() {
             className="flex h-[var(--acciones)] flex-col items-center justify-center gap-0.5 text-[0.8125rem] font-semibold text-alba transition-colors active:bg-white/10"
           >
             Escríbenos
-            <span className="text-[0.625rem] font-medium uppercase tracking-[0.14em] text-blanco/45">
+            <span className="text-[0.625rem] font-medium uppercase tracking-[0.14em] text-tenue">
               WhatsApp
             </span>
           </a>

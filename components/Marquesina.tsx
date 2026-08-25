@@ -1,12 +1,17 @@
 import { marquesina } from "@/lib/site";
 
 /**
- * Las dos bandas que no se detienen.
+ * La banda que no se detiene.
  *
- * Son lo único del sitio que se mueve sin que nadie haga nada, y corren en
- * sentidos opuestos a propósito: una sola banda se lee como un adorno, dos
- * cruzándose se leen como energía. El desfase entre ellas —la segunda empieza
- * por otra frase— es lo que evita que parezcan la misma línea duplicada.
+ * Es lo único del sitio que se mueve sin que nadie haga nada, y en pantalla
+ * grande son dos corriendo en sentidos opuestos: una sola se lee como un
+ * adorno, dos cruzándose se leen como energía. El desfase entre ellas —la
+ * segunda empieza por otra frase— es lo que evita que parezcan la misma línea
+ * duplicada.
+ *
+ * En el teléfono corre una sola. La segunda iba al 45 % de opacidad sobre 390
+ * px de ancho: no se leía, sólo emborronaba a la primera, y costaba una
+ * segunda capa compuesta corriendo para siempre en una GPU de mano.
  *
  * Decorativas: todo lo que dicen ya está escrito en la portada y en el pie,
  * así que un lector de pantalla no tiene por qué oírlo doce veces.
@@ -39,7 +44,7 @@ export default function Marquesina({ vuelta = "38s" }: { vuelta?: string }) {
   const vuelto = [...marquesina.slice(mitad), ...marquesina.slice(0, mitad)];
 
   return (
-    <div aria-hidden className="marquesina my-8 py-4 md:my-20 md:py-6">
+    <div aria-hidden className="marquesina py-4 md:py-6">
       {/* Cada pista lleva su tira dos veces y se desplaza medio ancho: cuando
           termina la primera copia, la segunda ya está exactamente donde
           estaba la primera y el bucle no tiene costura. */}
@@ -47,13 +52,18 @@ export default function Marquesina({ vuelta = "38s" }: { vuelta?: string }) {
         <Tira lineas={marquesina} desde={0} />
         <Tira lineas={marquesina} desde={0} />
       </div>
-      <div
-        className="marquesina-pista mt-2 opacity-45 md:mt-3"
-        data-vuelta="revés"
-        style={{ "--vuelta": "52s" } as React.CSSProperties}
-      >
-        <Tira lineas={vuelto} desde={1} />
-        <Tira lineas={vuelto} desde={1} />
+      {/* El `hidden` va en una envoltura y no en la pista: `.marquesina-pista`
+          también declara `display`, y dejar que dos utilidades peleen por la
+          misma propiedad es apostarle al orden en que Tailwind las ordene. */}
+      <div className="hidden md:block">
+        <div
+          className="marquesina-pista mt-3 opacity-45"
+          data-vuelta="revés"
+          style={{ "--vuelta": "52s" } as React.CSSProperties}
+        >
+          <Tira lineas={vuelto} desde={1} />
+          <Tira lineas={vuelto} desde={1} />
+        </div>
       </div>
     </div>
   );

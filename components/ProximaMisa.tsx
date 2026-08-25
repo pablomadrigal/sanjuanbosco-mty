@@ -73,7 +73,7 @@ export default function ProximaMisa() {
      partido en dos se ve rota: ahí es una tarjeta de ancho completo, con la
      hora grande. La píldora vuelve cuando hay ancho para sostenerla. */
   return (
-    <div className="panel flex w-full flex-col gap-1 rounded-2xl px-4 py-3 sm:inline-flex sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-1 sm:rounded-full sm:py-2 sm:pl-3 sm:pr-5">
+    <div className="panel flex w-full flex-col gap-1 rounded-lg px-4 py-3 sm:inline-flex sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-1 sm:rounded-full sm:py-2 sm:pl-3 sm:pr-5">
       <span className="flex items-center gap-2">
         <span className="relative flex h-2 w-2 shrink-0">
           <span
@@ -88,7 +88,7 @@ export default function ProximaMisa() {
         {proxima.etiqueta} {proxima.hora}
         {proxima.nota ? ` · ${proxima.nota}` : ""}
       </span>
-      <span className="text-sm text-blanco/55">{proxima.faltan}</span>
+      <span className="text-sm text-tenue">{proxima.faltan}</span>
     </div>
   );
 }

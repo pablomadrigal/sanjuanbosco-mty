@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
 import ProximaMisa from "@/components/ProximaMisa";
-import { BotonSecundario, CabeceraPagina } from "@/components/ui";
+import { CabeceraPagina, EnlaceFlecha } from "@/components/ui";
 import { enlaces, misas, otrosHorarios } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export default function Horarios() {
       </div>
 
       <section className="contenedor pb-20 md:pb-28">
-        <div className="grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 md:grid-cols-3">
+        <div className="grid gap-px overflow-hidden rounded-xl border border-regla bg-regla md:grid-cols-3">
           {misas.map((bloque, i) => (
             <Reveal
               key={bloque.etiqueta}
@@ -59,9 +59,9 @@ export default function Horarios() {
 
         <div className="mt-4 grid gap-4 md:mt-6 md:grid-cols-3 md:gap-6">
           {otrosHorarios.map((item, i) => (
-            <Reveal key={item.titulo} delay={i * 0.06} className="panel rounded-2xl p-6 sm:p-7">
+            <Reveal key={item.titulo} delay={i * 0.06} className="panel rounded-lg p-6 sm:p-7">
               <h2 className="text-lg font-semibold">{item.titulo}</h2>
-              <ul className="mt-3 space-y-1.5 text-sm text-blanco/65">
+              <ul className="mt-3 space-y-1.5 text-sm text-suave">
                 {item.lineas.map((linea) => (
                   <li key={linea}>{linea}</li>
                 ))}
@@ -70,20 +70,20 @@ export default function Horarios() {
           ))}
         </div>
 
-        <Reveal className="panel mt-4 flex flex-col gap-5 rounded-2xl p-6 sm:p-8 md:mt-6 md:flex-row md:items-center md:justify-between md:gap-6">
+        <Reveal className="panel mt-4 flex flex-col gap-5 rounded-lg p-6 sm:p-8 md:mt-6 md:flex-row md:items-center md:justify-between md:gap-6">
           <div>
             <h2 className="text-lg font-semibold">¿Quién celebra?</h2>
-            <p className="mt-2 text-sm text-blanco/60">
+            <p className="mt-2 text-sm text-tenue">
               El calendario parroquial dice qué sacerdote celebra cada misa.
             </p>
           </div>
-          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
-            <BotonSecundario href={enlaces.calendarioMisas} externo>
+          <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8">
+            <EnlaceFlecha href={enlaces.calendarioMisas} externo>
               Abrir calendario
-            </BotonSecundario>
-            <BotonSecundario href={enlaces.misal} externo>
+            </EnlaceFlecha>
+            <EnlaceFlecha href={enlaces.misal} externo>
               Misal digital
-            </BotonSecundario>
+            </EnlaceFlecha>
           </div>
         </Reveal>
       </section>
