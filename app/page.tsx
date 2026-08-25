@@ -17,17 +17,27 @@ import { enlaces, frasesDonBosco, misas, otrosHorarios, parroquia, puertas } fro
  * nada. Cada lista larga vive en su propia página.
  */
 export default function Inicio() {
+  // El bloque con más misas manda la sección. Sale del dato, no de una
+  // decisión escrita a mano: si cambian los horarios, la jerarquía cambia.
+  const principal = misas.reduce((a, b) => (b.misas.length > a.misas.length ? b : a));
+  const secundarios = misas.filter((bloque) => bloque !== principal);
+
   return (
     <>
       {/* ── El punto de partida ─────────────────────────────────────────── */}
       <section className="contenedor relative flex min-h-[100svh] flex-col justify-center pb-24 pt-24 sm:pb-28 sm:pt-32">
-        <Reveal entrada className="flex flex-wrap gap-2">
-          <span className="panel rounded-full px-3.5 py-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-alba">
+        <Reveal entrada>
+          {/* En un teléfono las dos líneas no caben juntas, y el punto
+              separador se quedaba colgando al final del renglón. Ahí se
+              apilan; el punto vuelve cuando hay ancho para los dos. */}
+          <p className="rotulo">
             Parroquia Universitaria
-          </span>
-          <span className="panel rounded-full px-3.5 py-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-blanco/60">
-            {parroquia.diocesis}
-          </span>
+            <span
+              aria-hidden
+              className="mx-2.5 hidden h-1 w-1 rounded-full bg-alba/60 align-middle sm:inline-block"
+            />
+            <span className="block text-blanco/45 sm:inline">{parroquia.diocesis}</span>
+          </p>
         </Reveal>
 
         <Reveal entrada delay={0.08} className="mt-6 sm:mt-8">
@@ -90,59 +100,72 @@ export default function Inicio() {
       <section id="esta-semana" className="contenedor scroll-mt-20 py-12 md:scroll-mt-24 md:py-20">
         <EncabezadoSeccion
           rotulo="Esta semana"
-          titulo="Hay misa *casi a cualquier hora* que puedas llegar"
+          titulo="Hay misa a la hora que _puedas llegar_"
           accion={{ href: "/horarios", label: "Horario completo" }}
         />
 
-        <div className="mt-8 grid gap-px overflow-hidden rounded-3xl border border-white/12 bg-white/12 md:mt-12 md:grid-cols-3">
-          {misas.map((bloque, i) => (
-            <Reveal
-              key={bloque.etiqueta}
-              tipo={i === 1 ? "escala" : i === 0 ? "izq" : "der"}
-              delay={i * 0.05}
-              className="bg-noche/90 p-6 sm:p-8 md:bg-noche/70 md:p-10 md:backdrop-blur-xl"
-            >
-              <p className="rotulo">{bloque.etiqueta}</p>
-              {/* Ocho horarios de domingo, uno por renglón, son ocho pantallazos
-                  de pulgar en un teléfono. En rejilla se leen de un vistazo. */}
-              <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3 md:mt-6 md:grid-cols-1 md:gap-y-4">
-                {bloque.misas.map((misa) => (
-                  <li
-                    key={misa.hora}
-                    className="flex flex-col gap-0.5 md:flex-row md:items-baseline md:gap-4"
-                  >
-                    <span className="cifra text-2xl font-bold tabular-nums md:text-[1.75rem]">
-                      {misa.hora}
+        {/* Tres columnas iguales dicen que los tres días pesan lo mismo, y no
+            es cierto: el domingo tiene ocho misas y el sábado tres. La
+            asimetría no es un capricho de diseño, es el dato. */}
+        <div className="mt-8 grid gap-8 border-t border-white/12 pt-8 md:mt-12 md:gap-12 md:pt-10 lg:grid-cols-[1.55fr_1fr]">
+          <Reveal tipo="izq">
+            <p className="rotulo">{principal.etiqueta}</p>
+            <ul className="mt-5 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4 md:mt-7">
+              {principal.misas.map((misa) => (
+                <li key={misa.hora}>
+                  <span className="cifra block text-[clamp(1.9rem,1.2rem+2.4vw,2.9rem)] font-extrabold leading-none tracking-[-0.03em]">
+                    {misa.hora}
+                  </span>
+                  {misa.nota && (
+                    <span className="mt-1.5 block text-[0.8125rem] leading-snug text-alba">
+                      {misa.nota}
                     </span>
-                    {misa.nota && (
-                      <span className="text-[0.8125rem] leading-snug text-alba md:text-sm">
-                        {misa.nota}
+                  )}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+
+          <div className="grid gap-8 border-t border-white/12 pt-8 sm:grid-cols-2 lg:grid-cols-1 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
+            {secundarios.map((bloque, i) => (
+              <Reveal key={bloque.etiqueta} tipo="der" delay={i * 0.06}>
+                <p className="rotulo">{bloque.etiqueta}</p>
+                <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-4 md:mt-5">
+                  {bloque.misas.map((misa) => (
+                    <li key={misa.hora}>
+                      <span className="cifra block text-2xl font-bold leading-none tracking-[-0.02em]">
+                        {misa.hora}
                       </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          ))}
+                      {misa.nota && (
+                        <span className="mt-1 block max-w-[16ch] text-[0.75rem] leading-snug text-alba">
+                          {misa.nota}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-4 grid gap-4 md:mt-6 md:grid-cols-3 md:gap-6">
+        {/* Confesiones, Hora Santa y oficina: tres renglones, no tres
+            tarjetas. Es información de una línea; no necesita marco. */}
+        <ul className="mt-10 border-t border-white/12 md:mt-14">
           {otrosHorarios.map((item, i) => (
             <Reveal
               key={item.titulo}
-              tipo="girar"
-              delay={i * 0.06}
-              className="panel rounded-2xl p-6 sm:p-7"
+              as="li"
+              delay={i * 0.05}
+              className="flex flex-col gap-1 border-b border-white/12 py-5 md:flex-row md:items-baseline md:gap-10 md:py-6"
             >
-              <h3 className="text-lg font-semibold">{item.titulo}</h3>
-              <ul className="mt-3 space-y-1.5 text-sm text-blanco/65">
-                {item.lineas.map((linea) => (
-                  <li key={linea}>{linea}</li>
-                ))}
-              </ul>
+              <h3 className="text-lg font-semibold md:w-56 md:shrink-0">{item.titulo}</h3>
+              <p className="text-sm text-blanco/60 md:text-base">
+                {item.lineas.join(" · ")}
+              </p>
             </Reveal>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* Las cifras dicen el tamaño de la parroquia sin listar nada: es lo que
@@ -169,7 +192,7 @@ export default function Inicio() {
 
           {/* La ilustración va a otra velocidad que el texto: es lo que da la
               sensación de estar pasando junto a ella, no de leerla quieta. */}
-          <div data-deriva style={{ "--deriva": "2rem" } as React.CSSProperties}>
+          <div className="relative" data-deriva style={{ "--deriva": "2rem" } as React.CSSProperties}>
             <Image
               src="/brand/templo.png"
               alt="Ilustración del templo parroquial de San Juan Bosco con la sierra de Monterrey detrás"
@@ -179,6 +202,15 @@ export default function Inicio() {
               className="mx-auto w-[70%] max-w-md lg:w-full lg:max-w-none"
               style={{ filter: "brightness(0) invert(1)", opacity: 0.9 }}
             />
+            {/* Pegada encima y torcida, como en un cuaderno. */}
+            <Image
+              src="/brand/siempre-alegres-blanco.png"
+              alt={parroquia.hashtag}
+              width={1600}
+              height={1116}
+              sizes="160px"
+              className="calcomania absolute bottom-0 left-2 w-28 sm:left-6 md:w-36 lg:-left-4"
+            />
           </div>
         </div>
       </section>
@@ -187,36 +219,36 @@ export default function Inicio() {
              Una tarjeta por camino, no el contenido de cada camino. Quien
              quiera el detalle da un toque y lo encuentra completo. ──────── */}
       <section id="da-un-paso" className="contenedor scroll-mt-20 py-12 md:scroll-mt-24 md:py-20">
-        <EncabezadoSeccion
-          rotulo="Y si te quieres quedar"
-          titulo="Aquí empieza *lo que sigue*"
-        />
+        <EncabezadoSeccion rotulo="Si te quieres quedar" titulo="Aquí empieza _lo que sigue_" />
 
-        <ul className="mt-8 grid gap-4 md:mt-12 md:grid-cols-3 md:gap-6">
+        {/* Tres tarjetas iguales en fila son la forma más rápida de que algo
+            parezca salido de una plantilla. Como renglones se leen como el
+            índice de un libro: el número grande, el nombre enorme y la línea
+            de qué hay detrás. */}
+        <ul className="mt-8 border-t border-white/12 md:mt-12">
           {puertas.map((puerta, i) => (
             <Reveal
               key={puerta.href}
               as="li"
-              tipo={i === 1 ? "escala" : i === 0 ? "izq" : "der"}
-              delay={i * 0.05}
+              tipo={i % 2 ? "der" : "izq"}
+              className="border-b border-white/12"
             >
               <Link
                 href={puerta.href}
-                className="group panel flex h-full flex-col rounded-3xl p-6 transition-colors duration-500 hover:bg-azul/40 active:bg-azul/40 sm:p-8 md:p-9"
+                className="group flex flex-col gap-4 py-7 transition-colors duration-500 hover:bg-white/[0.04] active:bg-white/[0.04] md:flex-row md:items-baseline md:gap-10 md:py-10"
               >
-                <div className="flex items-baseline justify-between gap-4">
-                  <p className="rotulo">{puerta.rotulo}</p>
-                  <span aria-hidden className="indice">
-                    {String(i + 1).padStart(2, "0")}
+                <span aria-hidden className="indice md:w-10 md:shrink-0 md:pt-2">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="flex-1">
+                  <span className="display-md block text-balance transition-transform duration-500 group-hover:translate-x-2 group-active:translate-x-2">
+                    {puerta.titulo}
                   </span>
-                </div>
-                <h3 className="mt-3 text-2xl font-bold leading-tight text-balance md:mt-4">
-                  {puerta.titulo}
-                </h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-blanco/60 md:mt-4">
-                  {puerta.texto}
-                </p>
-                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-alba md:mt-8">
+                  <span className="mt-3 block max-w-xl text-sm leading-relaxed text-blanco/55 md:mt-4 md:text-base">
+                    {puerta.texto}
+                  </span>
+                </span>
+                <span className="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-alba md:w-44 md:justify-end">
                   {puerta.cta}
                   <span
                     aria-hidden

@@ -66,10 +66,35 @@ Las tres se apagan solas con `prefers-reduced-motion: reduce`, y todo lo que dep
 vive dentro de `@supports (animation-timeline: view())`: si el navegador no lo soporta, el
 contenido simplemente ya está ahí. Verificado con el script apagado y con movimiento reducido.
 
-La energía visual usa sólo la paleta de siempre: bloques en `panel-azul` para romper la
-seguidilla de tarjetas oscuras, `numero` para la banda de cifras —que se cuenta sola desde
-`misas`, `grupos` y `sacramentos`—, `indice` para numerar las pastorales y `acento` para las
-palabras en cursiva.
+La energía visual usa sólo la paleta de siempre: bloques en `panel-azul`, `numero` para la banda
+de cifras —que se cuenta sola desde `misas`, `grupos` y `sacramentos`—, `indice` para numerar y
+`acento` para las palabras en cursiva.
+
+### Que no parezca hecho por una máquina
+
+Lo que delata a una página generada no es el color: es que **todo sea una tarjeta redondeada en
+una rejilla de columnas iguales**, que cada sección tenga la misma estructura y que el fondo sea
+un degradado impecable. Contra eso:
+
+- **Casi no quedan tarjetas.** La información vive sobre el fondo, separada por reglas. La única
+  caja que sobrevive es el bloque azul del cierre, y por eso funciona: es la excepción.
+- **Las rejillas son asimétricas cuando el dato lo es.** El domingo tiene ocho misas y el sábado
+  tres, así que el domingo ocupa una columna y media y los otros dos se apilan detrás de una
+  regla. La jerarquía sale de `misas`, no de una decisión escrita a mano.
+- **Grano encima de todo** (`grano`, en `app/layout.tsx`). Una capa fija de ruido al 5 %, texto
+  incluido. Es lo que hace que una superficie parezca impresa en vez de renderizada.
+- **Trazos a mano.** `_palabra_` dentro de un titular le pone un subrayado torcido que se dibuja
+  al aparecer. La curva es irregular a propósito: una línea recta se lee como un borde de CSS.
+- **Cosas pegadas torcidas.** `calcomania` rota un elemento cinco grados y lo bambolea despacio.
+- **Contraste de escala.** Los números de la banda de cifras son enormes y sus etiquetas
+  diminutas; las horas del domingo son el triple que las del sábado.
+
+Cuidado al quitar cajas: son también lo que separaba el texto del camino. La viñeta de
+`components/three/Camino.tsx` es ahora lo único que lo hace, así que si oscureces menos, revisa
+que una hora de misa se siga leyendo encima de un faro.
+
+**Lo que más ayudaría y no está en el código: fotos reales de la parroquia.** Ningún truco de
+CSS sustituye una foto de la gente que va a misa el domingo.
 
 ## Mobile first
 

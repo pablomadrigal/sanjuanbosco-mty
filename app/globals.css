@@ -163,6 +163,44 @@ body {
   border: 1px solid color-mix(in oklab, var(--color-alba) 28%, transparent);
 }
 
+/* ── Grano ──────────────────────────────────────────────────────────────
+   Un degradado perfectamente limpio se ve hecho a máquina. El grano es lo
+   que hace que una superficie parezca impresa: se pone encima de todo —del
+   texto también, como en papel—, no se toca y es una sola capa estática,
+   así que la GPU la compone una vez y se olvida. */
+@utility grano {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23r)'/%3E%3C/svg%3E");
+}
+
+/* ── Subrayado a mano ───────────────────────────────────────────────────
+   Un trazo irregular bajo una palabra, del ancho que le toque. Se dibuja
+   solo conforme aparece; si el navegador no sabe animar con el scroll, ya
+   está dibujado desde el principio. */
+@utility subrayado {
+  position: absolute;
+  left: -2%;
+  bottom: -0.12em;
+  width: 104%;
+  height: 0.34em;
+  overflow: visible;
+  color: var(--color-alba);
+  pointer-events: none;
+}
+
+/* ── Etiqueta pegada a mano ─────────────────────────────────────────────
+   Nada en una página está torcido por accidente, y justo por eso un par de
+   grados de más se leen como mano y no como plantilla. */
+@utility calcomania {
+  display: inline-block;
+  transform: rotate(-5deg);
+  transform-origin: 50% 60%;
+}
+
 /* Objetivo táctil mínimo. Da los 44 px de alto que pide el dedo sin
    agrandar el texto ni el diseño. */
 @utility toque {
@@ -362,6 +400,27 @@ body {
   }
 }
 
+/* El trazo del subrayado, dibujándose. */
+@keyframes trazar {
+  from {
+    stroke-dashoffset: var(--largo, 320);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* El bamboleo de una calcomanía mal pegada. */
+@keyframes bambolear {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(-2.2deg);
+  }
+}
+
 @keyframes marquesina-corre {
   from {
     transform: translateX(0);
@@ -373,6 +432,16 @@ body {
 
 /* Un brillo que cruza el botón principal cada tantos segundos. En un
    teléfono no hay cursor que lo despierte, así que se despierta solo. */
+/* La segunda banda corre al revés que la primera. */
+@keyframes marquesina-vuelve {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 @keyframes destello {
   0% {
     transform: translateX(-130%) skewX(-18deg);
@@ -433,6 +502,14 @@ body {
     animation: marquesina-corre var(--vuelta, 34s) linear infinite;
   }
 
+  .marquesina-pista[data-vuelta="revés"] {
+    animation-name: marquesina-vuelve;
+  }
+
+  .calcomania {
+    animation: bambolear 7s ease-in-out infinite;
+  }
+
   .flota {
     animation: flotar 4.5s ease-in-out infinite;
   }
@@ -491,6 +568,15 @@ body {
       animation: asomar 1s linear both;
       animation-timeline: view();
       animation-range: entry var(--escalon, 0%) entry calc(30% + var(--escalon, 0%));
+    }
+
+    /* El trazo empieza sin dibujar SÓLO aquí dentro: si el navegador no
+       sabe animar con el scroll, el subrayado ya está completo. */
+    .subrayado path {
+      stroke-dashoffset: var(--largo, 320);
+      animation: trazar 1s linear both;
+      animation-timeline: view();
+      animation-range: entry 12% entry 52%;
     }
 
     [data-deriva] {

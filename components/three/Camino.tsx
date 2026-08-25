@@ -75,20 +75,24 @@ export default function Camino() {
       />
       {montado && <CaminoScene />}
       {/* Viñeta: aterriza el contenido sobre el fondo sin robarle brillo.
+          Desde que el contenido dejó de vivir en tarjetas, este velo es lo
+          único que separa el texto del camino, así que carga más peso: tiene
+          que dejar leer una hora de misa encima de un faro sin apagar el
+          camino que queda a la derecha.
           En el teléfono el texto cruza el centro de la pantalla, así que el
           velo es parejo en vez de venir sólo desde la izquierda. */}
       <div
         className="absolute inset-0 md:hidden"
         style={{
           background:
-            "linear-gradient(180deg, rgba(27,28,27,0.72) 0%, rgba(27,28,27,0.42) 45%, rgba(27,28,27,0.30) 100%)",
+            "linear-gradient(180deg, rgba(27,28,27,0.80) 0%, rgba(27,28,27,0.58) 45%, rgba(27,28,27,0.50) 100%)",
         }}
       />
       <div
         className="absolute inset-0 hidden md:block"
         style={{
           background:
-            "linear-gradient(90deg, rgba(27,28,27,0.78) 0%, rgba(27,28,27,0.30) 42%, rgba(27,28,27,0) 68%)," +
+            "linear-gradient(90deg, rgba(27,28,27,0.86) 0%, rgba(27,28,27,0.62) 38%, rgba(27,28,27,0.28) 66%, rgba(27,28,27,0) 88%)," +
             "radial-gradient(110% 80% at 50% 40%, rgba(27,28,27,0) 46%, rgba(27,28,27,0.6) 100%)",
         }}
       />
