@@ -236,9 +236,19 @@ los archivos originales de marca, no con una fuente sustituta.
 
 ## Pendientes de confirmar con la parroquia
 
-Se buscaron en las fuentes públicas —el sitio, el Linktree, el directorio de grupos, Facebook e
-Instagram— y no están: **las redes de la parroquia piden sesión para leer las publicaciones**, así
-que lo que sólo se anunció ahí no se puede verificar desde fuera.
+Se buscaron y no están. Lo que se revisó, para no repetir la búsqueda:
+
+| Fuente | Qué se sacó |
+| --- | --- |
+| `sanjuanbosco.mx` | Cinco páginas en total (se enumeraron por su `wp-sitemap.xml`). La de horarios sigue publicando el horario viejo de confesiones |
+| Directorio de grupos | Casi todas las comunidades, con día, hora e Instagram. Los apartados del comedor están vacíos |
+| Linktree | Las convocatorias y el misal de la semana |
+| YouTube | Quince descripciones de video. Nada del comedor; aparece un grupo «AmorEs», de talleres para mayores de 18, que no está en el directorio |
+| Instagram | **Cerrado.** El perfil redirige y su API pública responde `require_login` |
+| Facebook | **Cerrado.** Muro de inicio de sesión en las tres variantes, incluida la móvil |
+
+O sea: **lo que sólo se anunció en las redes no se puede verificar desde fuera.** Estos tres datos
+tienen que venir de la parroquia.
 
 - **Comedor Santa Martha.** Aparece en el directorio, dentro de Pastoral Social, pero con los
   apartados «Somos… / Nos juntamos… / Contacto…» vacíos. Falta qué días abre, a qué hora, para
@@ -247,8 +257,13 @@ que lo que sólo se anunció ahí no se puede verificar desde fuera.
 - **Adopta un foráneo.** No aparece en ninguna fuente pública. Falta cuándo se abre la
   convocatoria del año y a dónde se escribe para entrar, como estudiante o como familia.
 - **Dónde se confiesa.** El horario nuevo (lunes a viernes de 18:00 a 19:00 y jueves de 20:00 a
-  21:00) ya está publicado; el lugar no se dice porque el anterior —«en oficina»— pudo haber
-  cambiado junto con el horario.
+  21:00) ya está publicado; el lugar no se dice porque el anterior pudo haber cambiado junto con
+  el horario. `sanjuanbosco.mx/horarios` todavía dice «jueves y viernes de 5:00 pm a 6:50 pm (en
+  la oficina)», así que el lugar probablemente sigue siendo la oficina —pero eso es deducción, no
+  dato—.
+- **El sitio viejo dice otra cosa.** Mientras `sanjuanbosco.mx` siga en pie con el horario
+  anterior, las dos páginas de la parroquia se contradicen. Hay que actualizarlo o apagarlo
+  cuando éste lo sustituya.
 - **Pastoral Universitaria.** Su página en el directorio está vacía. Lo que hoy sostiene la
   sección de universitarios son Semana U, Misiones Don Bosco, Mater Dei y Alpha; si la pastoral
   tiene sus propias juntas, faltan.
