@@ -118,6 +118,11 @@ export default function Grupos() {
                       <h3 className="mt-2.5 text-[clamp(1.5rem,1.15rem+1.6vw,2.25rem)] font-extrabold leading-[1.08] tracking-[-0.025em] text-balance md:mt-3">
                         {obra.nombre}
                       </h3>
+                      {obra.cuando && (
+                        <p className="mt-2 text-[0.8125rem] font-semibold leading-snug text-alba">
+                          {obra.cuando}
+                        </p>
+                      )}
                     </div>
                     <p className="max-w-prose text-sm leading-relaxed text-suave sm:text-base">
                       {obra.descripcion}

@@ -138,7 +138,7 @@ export default function Universitarios() {
         {/* Los cuatro bloques del índice. Cada uno termina en su página de
             siempre: esto junta, no sustituye. */}
         {universitarios.bloques.map((bloque) => {
-          const fichas = bloque.fichas.map(resolver).filter((f): f is Ficha => f !== null);
+          const fichas = bloque.fichas.map(resolver);
 
           return (
             <div

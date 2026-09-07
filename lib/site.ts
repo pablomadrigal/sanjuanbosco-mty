@@ -107,7 +107,10 @@ export const misas: BloqueMisas[] = [
 export const otrosHorarios = [
   {
     titulo: "Confesiones",
-    lineas: ["Lunes a viernes · 18:00 a 19:00", "Jueves · 20:00 a 21:00, en la Hora Santa"],
+    lineas: [
+      "Lunes a viernes · 18:00 a 19:00, en la oficina",
+      "Jueves · 20:00 a 21:00, en el templo, durante la Hora Santa",
+    ],
   },
   { titulo: "Hora Santa", lineas: ["Jueves · 20:00 a 21:00"] },
   {
@@ -316,6 +319,8 @@ export type Obra = {
   slug: string;
   nombre: string;
   para: string;
+  /** Cuándo. Se omite en lo que depende del calendario del año. */
+  cuando?: string;
   descripcion: string;
 };
 
@@ -340,6 +345,7 @@ export const obras: Obra[] = [
     slug: "comedor-santa-martha",
     nombre: "Comedor Santa Martha",
     para: "Una mesa puesta",
+    cuando: "Lunes al mediodía",
     descripcion:
       "El comedor de la parroquia, de la Pastoral Social: se cocina, se pone la mesa y se acompaña a quien llega a ella. Es de los lugares más fáciles para empezar a servir sin comprometerte todavía con un grupo.",
   },
@@ -387,9 +393,10 @@ export const sacramentos: Sacramento[] = [
     slug: "confesion",
     nombre: "Confesión",
     resumen:
-      "Lunes a viernes de 18:00 a 19:00, y los jueves de 20:00 a 21:00 durante la Hora Santa.",
+      "Lunes a viernes de 18:00 a 19:00 en la oficina, y los jueves de 20:00 a 21:00 en el templo, durante la Hora Santa.",
     pasos: [
       "Llega directo en el horario de confesiones, sin cita.",
+      "De lunes a viernes se confiesa en la oficina; el jueves, en el templo.",
       "Si necesitas otro horario, pregunta en la oficina.",
     ],
   },
@@ -494,7 +501,7 @@ export const universitarios = {
         "Monterrey se hace enorme cuando no conoces a nadie. Estas dos son las que la vuelven menos ajena: una familia que te adopta y una mesa donde siempre hay lugar.",
       fichas: [
         { lista: "obras", slug: "adopta-un-foraneo" },
-        { lista: "obras", slug: "comedor-santa-marta" },
+        { lista: "obras", slug: "comedor-santa-martha" },
       ],
       accion: { href: "/grupos#obras", label: "Ver las obras" },
     },
@@ -566,11 +573,17 @@ export function todasLasComunidades(): Comunidad[] {
  * existe en su lista. El texto se escribe una vez y se lee en los dos lados;
  * el enlace siempre lleva a la página por separado, que sigue siendo la de
  * siempre.
+ *
+ * Truena si el slug no existe, y es a propósito. Devolviendo `null` una
+ * referencia rota no se ve: el renglón simplemente no sale, la página queda
+ * bien formada y nadie se entera de que el comedor dejó de aparecer —pasó,
+ * al renombrarlo «Santa Martha»—. Como las páginas se generan al compilar,
+ * tronar aquí significa que el error sale en el `build`, no en el sitio.
  */
-export function resolver({ lista, slug }: Referencia): Ficha | null {
+export function resolver({ lista, slug }: Referencia): Ficha {
   if (lista === "comunidades") {
     const ficha = todasLasComunidades().find((f) => f.slug === slug);
-    if (!ficha) return null;
+    if (!ficha) throw new Error(`No existe la comunidad «${slug}» (lib/site.ts)`);
     return {
       nombre: ficha.nombre,
       texto: ficha.descripcion,
@@ -582,23 +595,28 @@ export function resolver({ lista, slug }: Referencia): Ficha | null {
   if (lista === "obras" || lista === "grupos") {
     const fuente: (Obra | Grupo)[] = lista === "obras" ? obras : grupos;
     const ficha = fuente.find((f) => f.slug === slug);
-    if (!ficha) return null;
+    if (!ficha) throw new Error(`No existe ${lista === "obras" ? "la obra" : "el grupo"} «${slug}» (lib/site.ts)`);
+    /* Una obra se anuncia por su día —«lunes al mediodía»— y una pastoral
+       por su cuenta. Es la misma línea y contesta la misma pregunta: qué
+       hago con esto ahora. */
+    const cuando = "cuando" in ficha ? ficha.cuando : undefined;
+    const cuenta = "instagram" in ficha && ficha.instagram ? `@${ficha.instagram}` : undefined;
     return {
       nombre: ficha.nombre,
       texto: ficha.descripcion,
       href: `/grupos#${ficha.slug}`,
-      nota: "instagram" in ficha && ficha.instagram ? `@${ficha.instagram}` : undefined,
+      nota: [cuando, cuenta].filter(Boolean).join(" · ") || undefined,
     };
   }
 
   if (lista === "sacramentos") {
     const ficha = sacramentos.find((f) => f.slug === slug);
-    if (!ficha) return null;
+    if (!ficha) throw new Error(`No existe el sacramento «${slug}» (lib/site.ts)`);
     return { nombre: ficha.nombre, texto: ficha.resumen, href: `/sacramentos#${ficha.slug}` };
   }
 
   const ficha = formacion.find((f) => f.slug === slug);
-  if (!ficha) return null;
+  if (!ficha) throw new Error(`No existe la convocatoria «${slug}» (lib/site.ts)`);
   return { nombre: ficha.nombre, texto: ficha.descripcion, href: ficha.href, externo: true };
 }
 
