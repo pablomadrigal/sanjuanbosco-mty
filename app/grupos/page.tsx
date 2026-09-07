@@ -7,7 +7,7 @@ import { enlaces, grupos, obras } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Grupos",
   description:
-    "Las diez pastorales de la Parroquia Universitaria San Juan Bosco: infantil, juvenil, universitaria, profesionistas, familiar, litúrgica, social, devociones y Alpha, más el comedor Santa Marta y Adopta un foráneo.",
+    "Las diez pastorales de la Parroquia Universitaria San Juan Bosco: infantil, juvenil, universitaria, profesionistas, familiar, litúrgica, social, devociones y Alpha, más el comedor Santa Martha y Adopta un foráneo.",
 };
 
 export default function Grupos() {
@@ -45,9 +45,50 @@ export default function Grupos() {
                       {grupo.nombre}
                     </h2>
                   </div>
-                  <p className="max-w-prose text-sm leading-relaxed text-suave sm:text-base">
-                    {grupo.descripcion}
-                  </p>
+                  <div>
+                    <p className="max-w-prose text-sm leading-relaxed text-suave sm:text-base">
+                      {grupo.descripcion}
+                    </p>
+
+                    {/* La pastoral es la puerta; a lo que llegas un sábado a
+                        las cuatro es a una comunidad con nombre propio. Van
+                        detrás de una regla, no en tarjetas: es una nota al
+                        margen de la pastoral, no otra lista. */}
+                    {grupo.comunidades && (
+                      <ul className="mt-5 space-y-3 border-l border-regla pl-4 md:mt-6">
+                        {grupo.comunidades.map((comunidad) => (
+                          <li
+                            key={comunidad.slug}
+                            id={comunidad.slug}
+                            className="scroll-mt-24 md:scroll-mt-32"
+                          >
+                            <p className="text-sm font-semibold">
+                              {comunidad.nombre}
+                              <span className="font-normal text-tenue"> · {comunidad.para}</span>
+                            </p>
+                            <p className="mt-0.5 text-[0.8125rem] leading-snug text-tenue">
+                              {/* Sin horario no se inventa uno: el que falta
+                                  en el directorio se pregunta por su cuenta. */}
+                              {comunidad.cuando}
+                              {comunidad.instagram && (
+                                <>
+                                  {comunidad.cuando && " · "}
+                                  <a
+                                    href={`https://www.instagram.com/${comunidad.instagram}/`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-alba transition-colors duration-[120ms] hover:text-alba-tenue active:text-alba-tenue"
+                                  >
+                                    @{comunidad.instagram}
+                                  </a>
+                                </>
+                              )}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </div>
               </article>
             </Reveal>

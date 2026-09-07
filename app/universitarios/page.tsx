@@ -20,7 +20,7 @@ import {
 export const metadata: Metadata = {
   title: "Universitarios",
   description:
-    "Todo lo de la parroquia para estudiantes en un solo lugar: Pastoral Universitaria, Alpha, sacramentos, Diplomado en Teología, comedor Santa Marta y Adopta un foráneo.",
+    "Todo lo de la parroquia para estudiantes en un solo lugar: Pastoral Universitaria, Alpha, sacramentos, Diplomado en Teología, comedor Santa Martha y Adopta un foráneo.",
 };
 
 /**
@@ -51,8 +51,24 @@ function Renglon({ ficha }: { ficha: Ficha }) {
           →
         </span>
       </span>
-      <span className="max-w-prose text-sm leading-relaxed text-suave sm:text-base">
-        {ficha.texto}
+      <span className="max-w-prose">
+        {/* El día y la hora van antes que la descripción: después del nombre,
+            lo que se pregunta es cuándo se juntan. */}
+        {/* En versalitas —el rótulo de la casa— una cuenta de Instagram se
+            vuelve @M D B . S J B: el tracking que luce en una etiqueta de dos
+            palabras arruina un dato que se lee literal. */}
+        {ficha.nota && (
+          <span className="block text-[0.8125rem] font-semibold leading-snug text-alba">
+            {ficha.nota}
+          </span>
+        )}
+        <span
+          className={`block text-sm leading-relaxed text-suave sm:text-base ${
+            ficha.nota ? "mt-2" : ""
+          }`}
+        >
+          {ficha.texto}
+        </span>
       </span>
     </>
   );

@@ -29,9 +29,10 @@ Casi todo el texto del sitio está en un solo archivo: **`lib/site.ts`**.
 
 | Qué | Dónde |
 | --- | --- |
-| Horarios de misa, confesiones, oficina | `misas` y `otrosHorarios` |
+| Horarios de misa, confesiones, adoración, oficina | `misas` y `otrosHorarios` |
 | Grupos y pastorales | `grupos` |
-| Comedor Santa Marta y «Adopta un foráneo» | `obras` |
+| Las comunidades de cada pastoral, con día, hora e Instagram | `comunidades`, dentro de cada grupo |
+| Comedor Santa Martha y «Adopta un foráneo» | `obras` |
 | Sacramentos y sus requisitos | `sacramentos` |
 | Convocatorias de formación | `formacion` |
 | Qué se junta en la sección de universitarios | `universitarios` |
@@ -45,7 +46,7 @@ zona horaria de Monterrey. Si cambian los horarios, se actualiza sin tocar nada 
 
 Somos parroquia universitaria y cada agosto llega gente que no conoce nada. Lo que se decide
 en una tarde —a qué grupo entrar, si confirmarse, dónde comer— estaba repartido en cuatro
-páginas, y el comedor Santa Marta y «Adopta un foráneo» no estaban en ninguna.
+páginas, y el comedor Santa Martha y «Adopta un foráneo» no estaban en ninguna.
 
 `/universitarios` junta todo eso en un índice, **sin duplicar una línea de texto**: cada ficha
 se escribe una sola vez en su lista de siempre (`grupos`, `obras`, `sacramentos`, `formacion`) y
@@ -59,6 +60,20 @@ propio apartado en `/grupos#obras`.
 
 Para agregar algo a la sección basta con una línea nueva en `universitarios.bloques`:
 `{ lista: "grupos", slug: "liturgica" }`.
+
+### Pastoral no es lo mismo que grupo
+
+Nadie se junta con una pastoral: se junta con Semana U un sábado a las cuatro. La pastoral es la
+puerta y la **comunidad** es a lo que llegas, así que el día, la hora y la cuenta de Instagram
+viven en `comunidades`, dentro de la pastoral de la que cuelgan —que es como las clasifica el
+directorio de la parroquia—. En `/grupos` se leen como una nota al margen de su pastoral y en
+`/universitarios` se juntan las que llevan `uni: true`.
+
+Estos datos salen del [directorio de grupos](https://sites.google.com/arquidiocesismty.org/grupos-sjb),
+que se llena por ciclo escolar: **conviene repasarlos cada agosto**, cuando los grupos vuelven a
+arrancar. No están todos —el directorio tiene apartados vacíos, entre ellos el de Pastoral
+Universitaria— y los teléfonos personales de los coordinadores no se publicaron aquí a
+propósito: están en el directorio, que es de la parroquia, no en una página indexable.
 
 ## Escalas
 
@@ -221,13 +236,27 @@ los archivos originales de marca, no con una fuente sustituta.
 
 ## Pendientes de confirmar con la parroquia
 
-- **Comedor Santa Marta.** Falta el dato duro: qué días abre, a qué hora, para quién es y cómo
-  se apunta quien quiera servir. El texto de `obras` describe la obra, no su horario.
-- **Adopta un foráneo.** Falta cuándo se abre la convocatoria del año y a dónde se escribe para
-  entrar —como estudiante o como familia que adopta—.
+Se buscaron en las fuentes públicas —el sitio, el Linktree, el directorio de grupos, Facebook e
+Instagram— y no están: **las redes de la parroquia piden sesión para leer las publicaciones**, así
+que lo que sólo se anunció ahí no se puede verificar desde fuera.
+
+- **Comedor Santa Martha.** Aparece en el directorio, dentro de Pastoral Social, pero con los
+  apartados «Somos… / Nos juntamos… / Contacto…» vacíos. Falta qué días abre, a qué hora, para
+  quién es y cómo se apunta quien quiera servir. En la misma lista están «Miércoles de
+  Chilidogs», «Beatus» y «Entretejiendo Vidas», que tampoco se publicaron aquí por lo mismo.
+- **Adopta un foráneo.** No aparece en ninguna fuente pública. Falta cuándo se abre la
+  convocatoria del año y a dónde se escribe para entrar, como estudiante o como familia.
 - **Dónde se confiesa.** El horario nuevo (lunes a viernes de 18:00 a 19:00 y jueves de 20:00 a
   21:00) ya está publicado; el lugar no se dice porque el anterior —«en oficina»— pudo haber
   cambiado junto con el horario.
+- **Pastoral Universitaria.** Su página en el directorio está vacía. Lo que hoy sostiene la
+  sección de universitarios son Semana U, Misiones Don Bosco, Mater Dei y Alpha; si la pastoral
+  tiene sus propias juntas, faltan.
+- **El misal caduca cada domingo.** `enlaces.misal` es un diseño de Canva distinto cada semana:
+  el que estaba llevaba un mes en el domingo XIX. O se actualiza junto con el Linktree, o se
+  apunta el botón al Linktree —un toque más, pero nunca viejo—.
+- **Rosario.** El directorio lo pone de martes a viernes a las 18:15 en el templo. No se publicó
+  por no llenar de renglones la tabla de horarios; si se quiere, es una línea en `otrosHorarios`.
 - **Teléfono de la oficina.** No se publicó ninguno porque el número que aparece en
   directorios externos está mal formado. Hoy el contacto es por WhatsApp.
 - **Dirección.** `Bogotá 211, Col. Alta Vista, 64840` viene de directorios de misas, no del

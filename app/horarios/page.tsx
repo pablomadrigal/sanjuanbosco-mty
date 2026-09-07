@@ -57,7 +57,10 @@ export default function Horarios() {
           ))}
         </div>
 
-        <div className="mt-4 grid gap-4 md:mt-6 md:grid-cols-3 md:gap-6">
+        {/* Cuatro bloques en tres columnas dejan uno solo en el segundo
+            renglón, y un huérfano se lee como descuido. En dos columnas la
+            rejilla cierra, y de paso cada horario cabe en un renglón. */}
+        <div className="mt-4 grid gap-4 md:mt-6 md:grid-cols-2 md:gap-6">
           {otrosHorarios.map((item, i) => (
             <Reveal key={item.titulo} delay={i * 0.06} className="panel rounded-lg p-6 sm:p-7">
               <h2 className="text-lg font-semibold">{item.titulo}</h2>

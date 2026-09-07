@@ -2,6 +2,10 @@
  * Contenido de la parroquia. Un solo lugar para editar textos, horarios y enlaces.
  * Fuentes: sanjuanbosco.mx, @sanjuanboscomty, linktr.ee/SanJuanBoscoMTY,
  * sites.google.com/arquidiocesismty.org/grupos-sjb
+ *
+ * Los datos de las comunidades —días, horas y cuentas de Instagram— salen del
+ * directorio de grupos de la parroquia, que se llena por ciclo escolar.
+ * Conviene repasarlos cada agosto, cuando los grupos vuelven a arrancar.
  */
 
 export const parroquia = {
@@ -47,7 +51,12 @@ export const enlaces = {
   whatsapp: "https://wa.me/message/OT3V5QRC4VTIG1",
   linktree: "https://linktr.ee/SanJuanBoscoMTY",
   grupos: "https://sites.google.com/arquidiocesismty.org/grupos-sjb",
-  misal: "https://canva.link/wtb71jkn70ktnyl",
+  /* OJO: el misal es un diseño nuevo cada semana, no un enlace que se
+     actualice solo. Éste es el del domingo XXIII del Tiempo Ordinario; el
+     anterior llevaba un mes apuntando al XIX. Se cambia junto con el
+     Linktree, o se apunta al Linktree y se pierde un toque a cambio de que
+     nunca esté viejo. */
+  misal: "https://canva.link/ncjtre0jbbmug8a",
   calendarioMisas:
     "https://calendar.google.com/calendar/u/0/embed?src=qi7vo2ui9bu0je4b1egu9fa334@group.calendar.google.com&ctz=America/Mexico_City",
   buzon: "https://forms.gle/YDxQoNPpw14d6wEQ7",
@@ -102,16 +111,43 @@ export const otrosHorarios = [
   },
   { titulo: "Hora Santa", lineas: ["Jueves · 20:00 a 21:00"] },
   {
+    titulo: "Capilla de Adoración",
+    lineas: ["Abierta las 24 horas, los siete días de la semana"],
+  },
+  {
     titulo: "Oficina parroquial",
     lineas: ["Lunes a viernes · 9:00 a 13:00 y 15:00 a 19:00", "Sábado · 9:00 a 13:00"],
   },
 ];
+
+/**
+ * Una comunidad concreta dentro de una pastoral.
+ *
+ * La pastoral es la puerta —«Pastoral de Adolescentes y Jóvenes»—; la
+ * comunidad es a lo que de verdad llegas un sábado a las cuatro. Nadie se
+ * junta con una pastoral: se junta con Semana U. Por eso el día y la hora
+ * viven aquí, que es la pregunta que sigue a «¿cuál es el mío?».
+ */
+export type Comunidad = {
+  slug: string;
+  nombre: string;
+  para: string;
+  /** Cuándo se juntan. Se omite en los que dependen del calendario del año. */
+  cuando?: string;
+  /** Cuenta propia del grupo, sin arroba. */
+  instagram?: string;
+  descripcion: string;
+  /** true: también se junta en la sección de universitarios. */
+  uni?: boolean;
+};
 
 export type Grupo = {
   slug: string;
   nombre: string;
   para: string;
   descripcion: string;
+  instagram?: string;
+  comunidades?: Comunidad[];
 };
 
 export const grupos: Grupo[] = [
@@ -135,6 +171,46 @@ export const grupos: Grupo[] = [
     para: "12 a 20 años",
     descripcion:
       "Grupos semanales donde se hace amistad, se reza y se crece. El corazón juvenil de la parroquia.",
+    comunidades: [
+      {
+        slug: "iuvenis",
+        nombre: "Iuvenis",
+        para: "Secundaria",
+        cuando: "Sábados de 16:00 a 18:00",
+        instagram: "iuvenis.sjb",
+        descripcion:
+          "Formación cristiana para adolescentes: actividades, juegos, dinámicas y momentos de oración.",
+      },
+      {
+        slug: "misiones-santo-domingo",
+        nombre: "Misiones Santo Domingo",
+        para: "Secundaria",
+        cuando: "Sábados previos a cada misión",
+        instagram: "msd.sjb",
+        descripcion:
+          "Misiones urbanas para chavos de secundaria, en tres semanas del año: Semana Santa, verano y Adviento.",
+      },
+      {
+        slug: "misiones-don-bosco",
+        nombre: "Misiones Don Bosco",
+        para: "Prepa y universidad",
+        cuando: "Sábados previos a cada misión, de 12:00 a 15:00",
+        instagram: "mdb.sjb",
+        uni: true,
+        descripcion:
+          "Misiones rurales en Semana Santa, verano y Adviento. Se va a servir y a evangelizar, y de ahí salen las amistades que quedan para toda la vida.",
+      },
+      {
+        slug: "semana-u",
+        nombre: "Semana U",
+        para: "Universitarios",
+        cuando: "Sábados de 16:00 a 18:00",
+        instagram: "sumonterrey",
+        uni: true,
+        descripcion:
+          "Universitarios que se juntan a formarse y a preparar un retiro kerigmático que se hace una vez al año, en verano. Es el más recomendable si nunca has estado en un grupo.",
+      },
+    ],
   },
   {
     slug: "universitaria",
@@ -149,6 +225,43 @@ export const grupos: Grupo[] = [
     para: "Recién egresados y jóvenes adultos",
     descripcion:
       "Para quienes ya trabajan y buscan seguir creciendo en la fe con gente que va en su misma etapa.",
+    comunidades: [
+      {
+        slug: "mision-catolica-de-profesionistas",
+        nombre: "Misión Católica de Profesionistas",
+        para: "22 a 35 años",
+        cuando: "Lunes 19:30",
+        instagram: "mcpmonterrey",
+        descripcion:
+          "Formación cristiana y oración carismática para vivir un encuentro personal con Cristo.",
+      },
+      {
+        slug: "fratelli",
+        nombre: "Fratelli",
+        para: "22 a 28 años",
+        cuando: "Martes 20:00, en el Ágora de San Pablo",
+        instagram: "fratellisjb",
+        descripcion:
+          "Para quienes acaban de salir de la universidad y buscan qué les pide Dios en esta etapa.",
+      },
+      {
+        slug: "fe-y-cerveza",
+        nombre: "Fe y Cerveza",
+        para: "Mayores de 28",
+        cuando: "Martes de 20:00 a 22:00, en la terraza",
+        instagram: "feycerveza",
+        descripcion:
+          "Encuentro de jóvenes adultos donde se hace comunidad, se dialoga y se crece en la fe.",
+      },
+      {
+        slug: "apostolado-de-la-cruz",
+        nombre: "Apostolado de la Cruz",
+        para: "22 a 34 años",
+        instagram: "apcsjboscomty",
+        descripcion:
+          "Un espacio para integrar a Dios en el trabajo y en las relaciones, desde la espiritualidad del Apostolado de la Cruz y de la beata Conchita Cabrera.",
+      },
+    ],
   },
   {
     slug: "adultos-familiar",
@@ -177,13 +290,25 @@ export const grupos: Grupo[] = [
     para: "Oración y piedad",
     descripcion:
       "Grupos de oración y devociones que sostienen la vida espiritual de la parroquia durante el año.",
+    comunidades: [
+      {
+        slug: "mater-dei",
+        nombre: "Mater Dei",
+        para: "18 a 28 años",
+        cuando: "Sábados 16:00, en el salón Pablo VI",
+        uni: true,
+        descripcion:
+          "Oración y comunidad para jóvenes, cada sábado por la tarde. Es el grupo de devociones que va con la edad de la universidad.",
+      },
+    ],
   },
   {
     slug: "alpha",
     nombre: "Alpha",
     para: "Primer acercamiento",
+    instagram: "alphasjb",
     descripcion:
-      "Sesiones abiertas para preguntar lo que sea sobre la fe. Sin requisitos y sin compromiso.",
+      "Sesiones abiertas para preguntar lo que sea sobre la fe, sin requisitos y sin compromiso. Corre para adolescentes, universitarios, profesionistas y adultos, y hay versiones para novios y para matrimonios.",
   },
 ];
 
@@ -212,11 +337,11 @@ export const obras: Obra[] = [
       "Cada año, familias de la parroquia adoptan a estudiantes que llegaron de fuera: una casa donde caer a comer, alguien a quien llamar y con quién pasar la fiesta cuando no se alcanza a ir a casa.",
   },
   {
-    slug: "comedor-santa-marta",
-    nombre: "Comedor Santa Marta",
+    slug: "comedor-santa-martha",
+    nombre: "Comedor Santa Martha",
     para: "Una mesa puesta",
     descripcion:
-      "El comedor de la parroquia: se cocina, se pone la mesa y se acompaña a quien llega a ella. Es de los lugares más fáciles para empezar a servir sin comprometerte todavía con un grupo.",
+      "El comedor de la parroquia, de la Pastoral Social: se cocina, se pone la mesa y se acompaña a quien llega a ella. Es de los lugares más fáciles para empezar a servir sin comprometerte todavía con un grupo.",
   },
 ];
 
@@ -343,7 +468,7 @@ export const formacion: Convocatoria[] = [
  * (`_palabra_`) va una sola vez por página: aquí, en «tu gente».
  */
 export type Referencia = {
-  lista: "obras" | "grupos" | "sacramentos" | "formacion";
+  lista: "obras" | "grupos" | "comunidades" | "sacramentos" | "formacion";
   slug: string;
 };
 
@@ -378,11 +503,12 @@ export const universitarios = {
       rotulo: "Tu grupo",
       titulo: "Encuentra a _tu gente_",
       texto:
-        "Un grupo es la diferencia entre venir a misa y pertenecer a algo. Estos tres son los que van con tu etapa; el resto de las pastorales están en la página de grupos.",
+        "Un grupo es la diferencia entre venir a misa y pertenecer a algo. Nadie se junta con una pastoral: se junta con Semana U un sábado a las cuatro. Éstos son los que van con tu edad, con su día y su hora; el resto está en la página de grupos.",
       fichas: [
-        { lista: "grupos", slug: "universitaria" },
+        { lista: "comunidades", slug: "semana-u" },
+        { lista: "comunidades", slug: "misiones-don-bosco" },
+        { lista: "comunidades", slug: "mater-dei" },
         { lista: "grupos", slug: "alpha" },
-        { lista: "grupos", slug: "profesionistas" },
       ],
       accion: { href: "/grupos", label: "Ver todos los grupos" },
     },
@@ -417,7 +543,7 @@ export const universitarios = {
   cierre: {
     titulo: "¿No sabes por dónde entrar?",
     texto:
-      "Escríbenos por WhatsApp y te decimos cuándo se reúne el grupo que te toca. O más fácil: llega a la misa juvenil del domingo y pregunta por alguien del equipo. Nadie llega conociendo a nadie.",
+      "Escríbenos por WhatsApp y te decimos cuál te queda. O más fácil: llega a la misa juvenil del domingo y pregunta por alguien del equipo. Nadie llegó conociendo a nadie.",
   },
 };
 
@@ -425,8 +551,15 @@ export type Ficha = {
   nombre: string;
   texto: string;
   href: string;
+  /** Cuándo se junta y dónde seguirlo. La pregunta que sigue al nombre. */
+  nota?: string;
   externo?: boolean;
 };
+
+/** Todas las comunidades, sin importar de qué pastoral cuelguen. */
+export function todasLasComunidades(): Comunidad[] {
+  return grupos.flatMap((grupo) => grupo.comunidades ?? []);
+}
 
 /**
  * Resuelve una referencia de la sección de universitarios a la ficha que ya
@@ -435,11 +568,27 @@ export type Ficha = {
  * siempre.
  */
 export function resolver({ lista, slug }: Referencia): Ficha | null {
+  if (lista === "comunidades") {
+    const ficha = todasLasComunidades().find((f) => f.slug === slug);
+    if (!ficha) return null;
+    return {
+      nombre: ficha.nombre,
+      texto: ficha.descripcion,
+      href: `/grupos#${ficha.slug}`,
+      nota: [ficha.cuando, ficha.instagram && `@${ficha.instagram}`].filter(Boolean).join(" · "),
+    };
+  }
+
   if (lista === "obras" || lista === "grupos") {
-    const fuente = lista === "obras" ? obras : grupos;
+    const fuente: (Obra | Grupo)[] = lista === "obras" ? obras : grupos;
     const ficha = fuente.find((f) => f.slug === slug);
     if (!ficha) return null;
-    return { nombre: ficha.nombre, texto: ficha.descripcion, href: `/grupos#${ficha.slug}` };
+    return {
+      nombre: ficha.nombre,
+      texto: ficha.descripcion,
+      href: `/grupos#${ficha.slug}`,
+      nota: "instagram" in ficha && ficha.instagram ? `@${ficha.instagram}` : undefined,
+    };
   }
 
   if (lista === "sacramentos") {
@@ -509,7 +658,7 @@ export const puertas = [
     rotulo: "Si estás en la uni",
     titulo: "Para universitarios",
     texto:
-      "Tu grupo, los sacramentos, la formación, el comedor Santa Marta y la familia que adopta a los foráneos: todo lo de la uni junto, sin buscarlo por partes.",
+      "Tu grupo, los sacramentos, la formación, el comedor Santa Martha y la familia que adopta a los foráneos: todo lo de la uni junto, sin buscarlo por partes.",
     cta: "Empieza aquí",
   },
   {
