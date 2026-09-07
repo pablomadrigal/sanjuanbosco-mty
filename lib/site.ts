@@ -98,7 +98,7 @@ export const misas: BloqueMisas[] = [
 export const otrosHorarios = [
   {
     titulo: "Confesiones",
-    lineas: ["Jueves y viernes · 17:00 a 18:50 en oficina", "Jueves durante la Hora Santa"],
+    lineas: ["Lunes a viernes · 18:00 a 19:00", "Jueves · 20:00 a 21:00, en la Hora Santa"],
   },
   { titulo: "Hora Santa", lineas: ["Jueves · 20:00 a 21:00"] },
   {
@@ -187,6 +187,39 @@ export const grupos: Grupo[] = [
   },
 ];
 
+export type Obra = {
+  slug: string;
+  nombre: string;
+  para: string;
+  descripcion: string;
+};
+
+/**
+ * Las obras de la parroquia.
+ *
+ * No son pastorales —no te inscribes a ellas ni se reúnen los martes—, son
+ * dos cosas concretas que la parroquia sostiene y a las que se llega por la
+ * puerta de enfrente: una mesa y una familia. Por eso viven en su propia
+ * lista y no dentro de `grupos`: la cuenta de pastorales sigue siendo la del
+ * directorio de la Arquidiócesis.
+ */
+export const obras: Obra[] = [
+  {
+    slug: "adopta-un-foraneo",
+    nombre: "Adopta un foráneo",
+    para: "Si llegaste de otra ciudad",
+    descripcion:
+      "Cada año, familias de la parroquia adoptan a estudiantes que llegaron de fuera: una casa donde caer a comer, alguien a quien llamar y con quién pasar la fiesta cuando no se alcanza a ir a casa.",
+  },
+  {
+    slug: "comedor-santa-marta",
+    nombre: "Comedor Santa Marta",
+    para: "Una mesa puesta",
+    descripcion:
+      "El comedor de la parroquia: se cocina, se pone la mesa y se acompaña a quien llega a ella. Es de los lugares más fáciles para empezar a servir sin comprometerte todavía con un grupo.",
+  },
+];
+
 export type Sacramento = {
   slug: string;
   nombre: string;
@@ -228,7 +261,8 @@ export const sacramentos: Sacramento[] = [
   {
     slug: "confesion",
     nombre: "Confesión",
-    resumen: "Jueves y viernes de 17:00 a 18:50 en oficina, y el jueves durante la Hora Santa.",
+    resumen:
+      "Lunes a viernes de 18:00 a 19:00, y los jueves de 20:00 a 21:00 durante la Hora Santa.",
     pasos: [
       "Llega directo en el horario de confesiones, sin cita.",
       "Si necesitas otro horario, pregunta en la oficina.",
@@ -255,8 +289,17 @@ export const sacramentos: Sacramento[] = [
   },
 ];
 
-export const formacion = [
+export type Convocatoria = {
+  slug: string;
+  nombre: string;
+  descripcion: string;
+  href: string;
+  cta: string;
+};
+
+export const formacion: Convocatoria[] = [
   {
+    slug: "diplomado",
     nombre: "Diplomado en Teología para Jóvenes 2026",
     descripcion:
       "Un año para entender lo que crees: teología, pensamiento cristiano y transformación social, para universitarios y jóvenes adultos.",
@@ -264,6 +307,7 @@ export const formacion = [
     cta: "Ver convocatoria",
   },
   {
+    slug: "christianus-ductor",
     nombre: "Christianus Ductor 2026",
     descripcion:
       "Formación para líderes y coordinadores de los grupos parroquiales, con fundamento cristiano y teológico.",
@@ -271,6 +315,7 @@ export const formacion = [
     cta: "Ver convocatoria",
   },
   {
+    slug: "misal",
     nombre: "Misal digital",
     descripcion:
       "Las lecturas y el orden de la misa, listos en tu celular antes de que empiece la celebración.",
@@ -278,6 +323,135 @@ export const formacion = [
     cta: "Abrir misal",
   },
 ];
+
+/**
+ * La sección para universitarios.
+ *
+ * Somos parroquia universitaria y cada agosto llega gente que no conoce nada:
+ * el grupo está en una página, los sacramentos en otra, la formación en otra
+ * y el comedor y «Adopta un foráneo» no estaban en ninguna. Buscar por partes
+ * lo que se decide en una tarde es justo lo que hace que nadie se quede.
+ *
+ * Esta es la página donde todo eso está junto, y no duplica una línea: cada
+ * ficha se escribe UNA vez en su lista de siempre —`grupos`, `obras`,
+ * `sacramentos`, `formacion`— y aquí sólo se referencia por su slug. Si
+ * mañana cambia la descripción de Alpha, cambia en los dos lados a la vez.
+ * Las páginas por separado siguen existiendo tal cual: esto se suma, no
+ * sustituye.
+ *
+ * Los títulos admiten las marcas de `Palabras`, y el subrayado a mano
+ * (`_palabra_`) va una sola vez por página: aquí, en «tu gente».
+ */
+export type Referencia = {
+  lista: "obras" | "grupos" | "sacramentos" | "formacion";
+  slug: string;
+};
+
+export type BloqueUniversitarios = {
+  id: string;
+  rotulo: string;
+  titulo: string;
+  texto: string;
+  fichas: Referencia[];
+  accion: { href: string; label: string };
+};
+
+export const universitarios = {
+  titular: "Si estás en la uni, *empieza aquí*",
+  entrada:
+    "Llegaste a Monterrey a estudiar, o llevas aquí toda la vida y ahora te tocó la universidad. Esta página junta todo lo que la parroquia tiene para ti: tu grupo, los sacramentos, la formación, el comedor y la familia que adopta a los foráneos. Así no lo tienes que buscar por partes, y cada cosa sigue teniendo su propia página por si prefieres verla aparte.",
+  bloques: [
+    {
+      id: "de-fuera",
+      rotulo: "Si llegaste de fuera",
+      titulo: "No pases el semestre *solo*",
+      texto:
+        "Monterrey se hace enorme cuando no conoces a nadie. Estas dos son las que la vuelven menos ajena: una familia que te adopta y una mesa donde siempre hay lugar.",
+      fichas: [
+        { lista: "obras", slug: "adopta-un-foraneo" },
+        { lista: "obras", slug: "comedor-santa-marta" },
+      ],
+      accion: { href: "/grupos#obras", label: "Ver las obras" },
+    },
+    {
+      id: "tu-grupo",
+      rotulo: "Tu grupo",
+      titulo: "Encuentra a _tu gente_",
+      texto:
+        "Un grupo es la diferencia entre venir a misa y pertenecer a algo. Estos tres son los que van con tu etapa; el resto de las pastorales están en la página de grupos.",
+      fichas: [
+        { lista: "grupos", slug: "universitaria" },
+        { lista: "grupos", slug: "alpha" },
+        { lista: "grupos", slug: "profesionistas" },
+      ],
+      accion: { href: "/grupos", label: "Ver todos los grupos" },
+    },
+    {
+      id: "sacramentos",
+      rotulo: "Sacramentos",
+      titulo: "Da el paso que *te toca*",
+      texto:
+        "Mucha gente llega a la universidad sin confirmar, o sin confesarse desde la primera comunión. Ni es tarde ni es raro: aquí se prepara a adultos todo el año.",
+      fichas: [
+        { lista: "sacramentos", slug: "confirmacion" },
+        { lista: "sacramentos", slug: "confesion" },
+        { lista: "sacramentos", slug: "bautizo" },
+        { lista: "sacramentos", slug: "matrimonio" },
+      ],
+      accion: { href: "/sacramentos", label: "Cómo empezar el trámite" },
+    },
+    {
+      id: "formacion",
+      rotulo: "Formación",
+      titulo: "La fe también *se estudia*",
+      texto:
+        "Somos parroquia universitaria: aquí la fe se piensa y se discute, no sólo se practica. Estas son las convocatorias abiertas.",
+      fichas: [
+        { lista: "formacion", slug: "diplomado" },
+        { lista: "formacion", slug: "christianus-ductor" },
+        { lista: "formacion", slug: "misal" },
+      ],
+      accion: { href: "/formacion", label: "Ver convocatorias" },
+    },
+  ] as BloqueUniversitarios[],
+  cierre: {
+    titulo: "¿No sabes por dónde entrar?",
+    texto:
+      "Escríbenos por WhatsApp y te decimos cuándo se reúne el grupo que te toca. O más fácil: llega a la misa juvenil del domingo y pregunta por alguien del equipo. Nadie llega conociendo a nadie.",
+  },
+};
+
+export type Ficha = {
+  nombre: string;
+  texto: string;
+  href: string;
+  externo?: boolean;
+};
+
+/**
+ * Resuelve una referencia de la sección de universitarios a la ficha que ya
+ * existe en su lista. El texto se escribe una vez y se lee en los dos lados;
+ * el enlace siempre lleva a la página por separado, que sigue siendo la de
+ * siempre.
+ */
+export function resolver({ lista, slug }: Referencia): Ficha | null {
+  if (lista === "obras" || lista === "grupos") {
+    const fuente = lista === "obras" ? obras : grupos;
+    const ficha = fuente.find((f) => f.slug === slug);
+    if (!ficha) return null;
+    return { nombre: ficha.nombre, texto: ficha.descripcion, href: `/grupos#${ficha.slug}` };
+  }
+
+  if (lista === "sacramentos") {
+    const ficha = sacramentos.find((f) => f.slug === slug);
+    if (!ficha) return null;
+    return { nombre: ficha.nombre, texto: ficha.resumen, href: `/sacramentos#${ficha.slug}` };
+  }
+
+  const ficha = formacion.find((f) => f.slug === slug);
+  if (!ficha) return null;
+  return { nombre: ficha.nombre, texto: ficha.descripcion, href: ficha.href, externo: true };
+}
 
 export const equipo = [
   { nombre: "Pbro. Alejandro Beltrán", cargo: "Párroco" },
@@ -319,14 +493,25 @@ export const cifras = {
 };
 
 /**
- * Las tres puertas de entrada desde la portada.
+ * Las puertas de entrada desde la portada.
  *
  * La portada invita; el detalle vive en su página. Quien llega al sitio viene
  * casi siempre por el horario de misa, y quien además quiere quedarse necesita
  * una puerta clara —no el catálogo completo de diez pastorales antes de haber
  * decidido nada.
+ *
+ * La primera es la de universitarios porque es la que más gente cruza: somos
+ * parroquia universitaria y cada agosto llega una generación nueva.
  */
 export const puertas = [
+  {
+    href: "/universitarios",
+    rotulo: "Si estás en la uni",
+    titulo: "Para universitarios",
+    texto:
+      "Tu grupo, los sacramentos, la formación, el comedor Santa Marta y la familia que adopta a los foráneos: todo lo de la uni junto, sin buscarlo por partes.",
+    cta: "Empieza aquí",
+  },
   {
     href: "/grupos",
     rotulo: "Encuentra tu lugar",
@@ -345,7 +530,7 @@ export const puertas = [
   },
   {
     href: "/formacion",
-    rotulo: "Somos universitarios",
+    rotulo: "Estudia lo que crees",
     titulo: "Formación",
     texto:
       "El Diplomado en Teología para Jóvenes, Christianus Ductor y el misal digital. Aquí la fe se piensa y se discute.",
@@ -360,6 +545,7 @@ export function misasPorSemana() {
 
 export const navegacion = [
   { href: "/horarios", label: "Horarios" },
+  { href: "/universitarios", label: "Universitarios" },
   { href: "/grupos", label: "Grupos" },
   { href: "/sacramentos", label: "Sacramentos" },
   { href: "/formacion", label: "Formación" },

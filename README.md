@@ -31,13 +31,34 @@ Casi todo el texto del sitio está en un solo archivo: **`lib/site.ts`**.
 | --- | --- |
 | Horarios de misa, confesiones, oficina | `misas` y `otrosHorarios` |
 | Grupos y pastorales | `grupos` |
+| Comedor Santa Marta y «Adopta un foráneo» | `obras` |
 | Sacramentos y sus requisitos | `sacramentos` |
 | Convocatorias de formación | `formacion` |
+| Qué se junta en la sección de universitarios | `universitarios` |
 | Redes, WhatsApp, calendarios, misal | `enlaces` |
 | Dirección, misión, equipo sacerdotal | `parroquia`, `equipo` |
 
 El indicador de **«Próxima misa»** de la portada se calcula solo a partir de `misas`, en la
 zona horaria de Monterrey. Si cambian los horarios, se actualiza sin tocar nada más.
+
+## La sección para universitarios
+
+Somos parroquia universitaria y cada agosto llega gente que no conoce nada. Lo que se decide
+en una tarde —a qué grupo entrar, si confirmarse, dónde comer— estaba repartido en cuatro
+páginas, y el comedor Santa Marta y «Adopta un foráneo» no estaban en ninguna.
+
+`/universitarios` junta todo eso en un índice, **sin duplicar una línea de texto**: cada ficha
+se escribe una sola vez en su lista de siempre (`grupos`, `obras`, `sacramentos`, `formacion`) y
+la sección sólo la referencia por su `slug`. `universitarios.bloques` dice qué se junta y en qué
+orden, y `resolver()` va por el texto y el enlace. Si mañana cambia la descripción de Alpha,
+cambia en los dos lados a la vez.
+
+Las páginas por separado siguen intactas: **esto se suma, no sustituye**. Cada bloque de la
+sección termina con un enlace a la página completa de la que salió, y las obras tienen además su
+propio apartado en `/grupos#obras`.
+
+Para agregar algo a la sección basta con una línea nueva en `universitarios.bloques`:
+`{ lista: "grupos", slug: "liturgica" }`.
 
 ## Escalas
 
@@ -138,7 +159,7 @@ Lo que eso significa en concreto:
 | Decisión | Dónde |
 | --- | --- |
 | Barra de acciones al alcance del pulgar (horarios, cómo llegar, WhatsApp) | `components/AccionesMovil.tsx` |
-| Menú de pantalla completa, con su propio scroll y sus botones abajo | `components/Nav.tsx` |
+| Menú de pantalla completa, con su propio scroll y sus botones abajo (hasta `xl`: siete destinos ya no caben en la barra a 1024 px) | `components/Nav.tsx` |
 | Botones de ancho completo y objetivos táctiles de 44 px (`toque`) | `components/ui.tsx`, `app/globals.css` |
 | Una sola pista de marquesina; la segunda sólo cuando hay ancho que la sostenga | `components/Marquesina.tsx` |
 | «Próxima misa» en la primera pantalla: es el dato por el que casi todos llegan | `app/page.tsx` |
@@ -200,6 +221,13 @@ los archivos originales de marca, no con una fuente sustituta.
 
 ## Pendientes de confirmar con la parroquia
 
+- **Comedor Santa Marta.** Falta el dato duro: qué días abre, a qué hora, para quién es y cómo
+  se apunta quien quiera servir. El texto de `obras` describe la obra, no su horario.
+- **Adopta un foráneo.** Falta cuándo se abre la convocatoria del año y a dónde se escribe para
+  entrar —como estudiante o como familia que adopta—.
+- **Dónde se confiesa.** El horario nuevo (lunes a viernes de 18:00 a 19:00 y jueves de 20:00 a
+  21:00) ya está publicado; el lugar no se dice porque el anterior —«en oficina»— pudo haber
+  cambiado junto con el horario.
 - **Teléfono de la oficina.** No se publicó ninguno porque el número que aparece en
   directorios externos está mal formado. Hoy el contacto es por WhatsApp.
 - **Dirección.** `Bogotá 211, Col. Alta Vista, 64840` viene de directorios de misas, no del

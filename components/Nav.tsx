@@ -69,7 +69,11 @@ export default function Nav() {
           </span>
         </Link>
 
-        <ul className="hidden items-center gap-1 lg:flex">
+        {/* Siete destinos no caben en la barra a 1024 px junto al logotipo y
+            al botón: se apretaban hasta partirse en dos renglones. El menú de
+            pantalla completa aguanta hasta `xl`, donde ya hay ancho de sobra
+            para la fila entera. */}
+        <ul className="hidden items-center gap-1 xl:flex">
           {navegacion.map((item) => {
             const activo = ruta === item.href;
             return (
@@ -108,7 +112,7 @@ export default function Nav() {
             onClick={() => setAbierto((v) => !v)}
             aria-expanded={abierto}
             aria-controls="menu-movil"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-regla transition-colors duration-[120ms] active:bg-white/10 lg:hidden"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-regla transition-colors duration-[120ms] active:bg-white/10 xl:hidden"
           >
             <span className="sr-only">{abierto ? "Cerrar menú" : "Abrir menú"}</span>
             <span className="relative block h-3 w-5">
@@ -147,7 +151,7 @@ export default function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 bottom-0 top-[calc(var(--barra)+env(safe-area-inset-top))] overflow-y-auto overscroll-contain bg-noche lg:hidden"
+            className="fixed inset-x-0 bottom-0 top-[calc(var(--barra)+env(safe-area-inset-top))] overflow-y-auto overscroll-contain bg-noche xl:hidden"
           >
             <div className="contenedor flex min-h-full flex-col pb-[calc(2rem+env(safe-area-inset-bottom))] pt-2">
               <ul className="flex flex-col">
