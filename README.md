@@ -247,20 +247,15 @@ Se buscaron y no están. Lo que se revisó, para no repetir la búsqueda:
 | Instagram | **Cerrado.** El perfil redirige y su API pública responde `require_login` |
 | Facebook | **Cerrado.** Muro de inicio de sesión en las tres variantes, incluida la móvil |
 
-O sea: **lo que sólo se anunció en las redes no se puede verificar desde fuera.** Estos tres datos
-tienen que venir de la parroquia.
+O sea: **lo que sólo se anunció en las redes no se puede verificar desde fuera.** El lugar de las
+confesiones y el día del comedor los pasó la parroquia; lo que sigue abajo, todavía no.
 
-- **Comedor Santa Martha.** Aparece en el directorio, dentro de Pastoral Social, pero con los
-  apartados «Somos… / Nos juntamos… / Contacto…» vacíos. Falta qué días abre, a qué hora, para
-  quién es y cómo se apunta quien quiera servir. En la misma lista están «Miércoles de
-  Chilidogs», «Beatus» y «Entretejiendo Vidas», que tampoco se publicaron aquí por lo mismo.
+- **Comedor Santa Martha.** Ya se publica el día —lunes al mediodía, dato de la parroquia—.
+  Falta para quién es y cómo se apunta quien quiera servir; su ficha en el directorio sigue
+  vacía. En la misma lista están «Miércoles de Chilidogs», «Beatus» y «Entretejiendo Vidas», que
+  no se publicaron aquí porque no se sabe nada de ellos.
 - **Adopta un foráneo.** No aparece en ninguna fuente pública. Falta cuándo se abre la
   convocatoria del año y a dónde se escribe para entrar, como estudiante o como familia.
-- **Dónde se confiesa.** El horario nuevo (lunes a viernes de 18:00 a 19:00 y jueves de 20:00 a
-  21:00) ya está publicado; el lugar no se dice porque el anterior pudo haber cambiado junto con
-  el horario. `sanjuanbosco.mx/horarios` todavía dice «jueves y viernes de 5:00 pm a 6:50 pm (en
-  la oficina)», así que el lugar probablemente sigue siendo la oficina —pero eso es deducción, no
-  dato—.
 - **El sitio viejo dice otra cosa.** Mientras `sanjuanbosco.mx` siga en pie con el horario
   anterior, las dos páginas de la parroquia se contradicen. Hay que actualizarlo o apagarlo
   cuando éste lo sustituya.
