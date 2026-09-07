@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Marquesina from "@/components/Marquesina";
 import Reveal from "@/components/Reveal";
-import { BotonPrincipal, CabeceraPagina, EnlaceFlecha } from "@/components/ui";
-import { enlaces, grupos } from "@/lib/site";
+import { BotonPrincipal, CabeceraPagina, EncabezadoSeccion, EnlaceFlecha } from "@/components/ui";
+import { enlaces, grupos, obras } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Grupos",
   description:
-    "Las diez pastorales de la Parroquia Universitaria San Juan Bosco: infantil, juvenil, universitaria, profesionistas, familiar, litúrgica, social, devociones y Alpha.",
+    "Las diez pastorales de la Parroquia Universitaria San Juan Bosco: infantil, juvenil, universitaria, profesionistas, familiar, litúrgica, social, devociones y Alpha, más el comedor Santa Marta y Adopta un foráneo.",
 };
 
 export default function Grupos() {
@@ -53,6 +53,40 @@ export default function Grupos() {
             </Reveal>
           ))}
         </ul>
+
+        {/* Las obras no son pastorales: no te inscribes ni se reúnen los
+            martes. Son una mesa y una familia, y a las dos se llega por la
+            puerta de enfrente, así que van en su propia lista y con su propio
+            encabezado —también las junta la sección de universitarios, que es
+            donde más falta hacen. */}
+        <section id="obras" className="scroll-mt-20 pt-14 md:scroll-mt-28 md:pt-20">
+          <EncabezadoSeccion
+            rotulo="Obras"
+            titulo="Dos mesas *puestas*"
+            descripcion="Lo que la parroquia sostiene todo el año y no necesita inscripción: llegas, comes, sirves o te dejas acompañar."
+            accion={{ href: "/universitarios", label: "Si eres universitario" }}
+          />
+
+          <ul className="mt-10 border-t border-regla md:mt-14">
+            {obras.map((obra, i) => (
+              <Reveal key={obra.slug} as="li" delay={i * 0.04} className="border-b border-regla">
+                <article id={obra.slug} className="scroll-mt-20 py-7 md:scroll-mt-28 md:py-9">
+                  <div className="grid gap-3 md:grid-cols-[1.1fr_1fr] md:items-baseline md:gap-10">
+                    <div>
+                      <p className="rotulo">{obra.para}</p>
+                      <h3 className="mt-2.5 text-[clamp(1.5rem,1.15rem+1.6vw,2.25rem)] font-extrabold leading-[1.08] tracking-[-0.025em] text-balance md:mt-3">
+                        {obra.nombre}
+                      </h3>
+                    </div>
+                    <p className="max-w-prose text-sm leading-relaxed text-suave sm:text-base">
+                      {obra.descripcion}
+                    </p>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </ul>
+        </section>
 
         <div className="my-14 md:my-20">
           <Marquesina />

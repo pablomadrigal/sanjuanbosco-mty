@@ -225,16 +225,17 @@ export default function Inicio() {
         </div>
       </section>
 
-      {/* ── Tres puertas ─────────────────────────────────────────────────
-             Una tarjeta por camino, no el contenido de cada camino. Quien
-             quiera el detalle da un toque y lo encuentra completo. ──────── */}
+      {/* ── Las puertas ──────────────────────────────────────────────────
+             Un renglón por camino, no el contenido de cada camino. Quien
+             quiera el detalle da un toque y lo encuentra completo. La
+             primera es la de universitarios: es la que más gente cruza. ─── */}
       <section id="da-un-paso" className="contenedor seccion scroll-mt-20 md:scroll-mt-24">
         <EncabezadoSeccion rotulo="Si te quieres quedar" titulo="Aquí empieza _lo que sigue_" />
 
-        {/* Tres tarjetas iguales en fila son la forma más rápida de que algo
-            parezca salido de una plantilla. Como renglones se leen como el
-            índice de un libro: el número grande, el nombre enorme y la línea
-            de qué hay detrás. */}
+        {/* Cuatro tarjetas iguales en fila son la forma más rápida de que
+            algo parezca salido de una plantilla. Como renglones se leen como
+            el índice de un libro: el número grande, el nombre enorme y la
+            línea de qué hay detrás. */}
         <ul className="mt-10 border-t border-regla md:mt-14">
           {puertas.map((puerta, i) => (
             <Reveal key={puerta.href} as="li" delay={i * 0.04} className="border-b border-regla">

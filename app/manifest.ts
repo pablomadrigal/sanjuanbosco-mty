@@ -37,6 +37,7 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       { name: "Horarios de misa", url: "/horarios" },
+      { name: "Universitarios", url: "/universitarios" },
       { name: "Grupos", url: "/grupos" },
       { name: "Contacto", url: "/contacto" },
     ],
